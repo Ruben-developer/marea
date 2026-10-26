@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tinta Negra - Catálogo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Tinta Negra</h1>
+        <div class="filtros">
+            <input type="text" id="buscador" placeholder="Buscar..." autocomplete="off">
+            <select id="filtroColeccion">
+                <option value="todos">Todas las colecciones</option>
+                <option value="antiguos">Libros y Cuadernillos Antiguos</option>
+                <option value="actuales">Cuadernillos Actuales</option>
+                <option value="hackratas">Cuadernillos con Hackratas</option>
+            </select>
+        </div>
+    </header>
+    <main>
+        <div id="catalogo" class="grid"></div>
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>
