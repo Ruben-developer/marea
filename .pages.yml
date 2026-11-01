@@ -1,0 +1,90 @@
+# Configuración de Pages CMS (https://pagescms.org) para MAREA.
+# Se lee desde la raíz del repo. Edita catalogo.json con formularios.
+#
+# Los PDFs NO se suben acá: van a Cloudflare R2 (ver descargas.antarquia.cl).
+# Las portadas sí: viven en covers/ y pesan poco.
+
+media:
+  input: covers
+  output: covers
+  rename: safe
+  extensions: [jpg, jpeg, png, webp]
+  categories: [image]
+
+content:
+  - name: catalogo
+    label: Catálogo
+    type: file
+    path: catalogo.json
+    format: json
+    list: true
+    fields:
+      - name: titulo
+        label: Título
+        type: string
+        required: true
+
+      - name: autor
+        label: Autoría
+        type: string
+        description: "Si se deja vacío, el sitio muestra «Sin autoría»."
+
+      - name: coleccion
+        label: Colección
+        type: select
+        required: true
+        options:
+          values:
+            - name: praxis
+              label: Praxis
+            - name: historia
+              label: Historia
+
+      - name: anio
+        label: Año de edición
+        type: number
+        description: "Año del texto original, si se conoce."
+
+      - name: paginas
+        label: Páginas
+        type: number
+
+      - name: sinopsis
+        label: Sinopsis
+        type: text
+        description: "Vacía por ahora: es lo que falta escribir. Dos o tres frases."
+
+      - name: portada
+        label: Portada
+        type: image
+        description: "Opcional. Se sube a covers/. Si falta, el sitio dibuja una portada generada."
+
+      - name: archivo
+        label: Archivo PDF
+        type: string
+        description: "Nombre del PDF en el servidor de descargas (R2), por ejemplo la-comuna-de-paris.pdf. El PDF se sube aparte, no por acá."
+
+      - name: enlace
+        label: Enlace externo
+        type: string
+        description: "Alternativa al PDF: URL de otra web o archivo (Mega, Internet Archive)."
+
+      - name: precio
+        label: Precio (CLP)
+        type: number
+        description: "Vacío = no hay edición impresa."
+
+      - name: stock
+        label: Stock
+        type: number
+        description: "0 = agotado."
+
+      - name: destacado
+        label: Destacado
+        type: boolean
+        description: "Aparece en la portada, en «Destacados»."
+
+      - name: id
+        label: Identificador (opcional)
+        type: string
+        description: "Déjalo vacío: se genera del título. Las fichas viejas usan m-001…m-067."

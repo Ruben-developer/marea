@@ -5,6 +5,7 @@
    El catálogo vive en catalogo.json. Campos por ficha:
      id, titulo, autor, coleccion, anio, paginas, sinopsis,
      portada, archivo, enlace, precio, stock, destacado
+   - id:      opcional; si falta se genera del título (m-titulo)
    - archivo: nombre en el servidor de PDFs (se antepone MAREA_PDF_BASE)
    - enlace:  URL externa de respaldo (p. ej. Mega)
    - precio/stock en null: título sin edición impresa
@@ -40,6 +41,17 @@
   // ignora acentos y mayúsculas al buscar
   function norm(s) {
     return String(s == null ? '' : s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  }
+  // genera un id legible cuando la ficha no trae uno (las que se crean desde el CMS)
+  function slug(s) {
+    return norm(s).replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  }
+  // acepta rutas con o sin barra inicial; deja intactas las URL absolutas
+  function rutaMedia(v) {
+    if (!v) return null;
+    var s = String(v).trim();
+    if (!s) return null;
+    return /^https?:\/\//i.test(s) ? s : s.replace(/^\/+/, '');
   }
   function clp(n) {
     if (n == null || isNaN(n)) return '';
@@ -79,16 +91,18 @@
      DATOS
      ========================================================= */
   function normalizar(p) {
-    if (!p || !p.id || !p.titulo) return null;
+    if (!p || !p.titulo) return null;
+    var id = p.id ? String(p.id).trim() : 'm-' + slug(p.titulo);
+    if (!id || id === 'm-') return null;
     return {
-      id: String(p.id),
+      id: id,
       titulo: String(p.titulo),
       autor: p.autor ? String(p.autor) : 'Sin autoría',
       coleccion: p.coleccion === 'historia' ? 'historia' : 'praxis',
       anio: num(p.anio),
       paginas: num(p.paginas),
       sinopsis: p.sinopsis ? String(p.sinopsis).trim() : '',
-      portada: p.portada || null,
+      portada: rutaMedia(p.portada),
       archivo: p.archivo || null,
       enlace: p.enlace || null,
       precio: num(p.precio),

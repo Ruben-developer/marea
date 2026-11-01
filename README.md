@@ -26,8 +26,11 @@ style.css       Estética Cuadernillo; el tema noche cuelga de [data-theme=dark]
 app.js          Router por hash, catálogo, filtros, carrito, modales, portadas SVG
 config.js       window.MAREA_PDF_BASE (base del servidor de PDFs)
 catalogo.json   Las fichas
+covers/         Portadas subidas desde el CMS (hoy vacío: se generan en SVG)
 assets/         sello.png (máscara alfa del sello real) y favicon.png
 pdfs/           PDFs servidos junto al sitio
+.pages.yml      Configuración de Pages CMS (formularios sobre catalogo.json)
+scripts/        validar.mjs, revisa el catálogo antes de publicar
 ```
 
 ## Ficha del catálogo
@@ -91,9 +94,31 @@ servirlo por HTTP (`file://` lo bloquea).
 
 ## Añadir contenido
 
-1. Copia el PDF a `pdfs/` y escribe su nombre en `archivo`.
-2. Si hay portada real, cópiala a `covers/` y escribe la ruta en `portada`.
-3. Añade o edita la ficha en `catalogo.json`.
+La ficha se puede editar de dos maneras: con **Pages CMS** (formularios, sin
+tocar JSON) o a mano en `catalogo.json`.
+
+Con Pages CMS:
+
+1. Entrar a `app.pagescms.org` y autorizar la GitHub App sobre
+   `Ruben-developer/marea` (una vez).
+2. Abrir **Catálogo** → **Add entry**, o editar una ficha existente.
+3. Las portadas se suben desde el campo «Portada» y quedan en `covers/`.
+4. Guardar: hace commit y GitHub Pages redespliega.
+
+A mano:
+
+1. Si el PDF va al sitio (mientras no exista R2), copiarlo a `pdfs/` y escribir
+   su nombre en `archivo`. Con R2, subirlo allá y dejar solo el nombre.
+2. Si hay portada real, copiarla a `covers/` y escribir la ruta en `portada`.
+3. Añadir o editar la ficha en `catalogo.json`.
+4. Validar antes de subir:
+
+```bash
+node scripts/validar.mjs
+```
+
+El `id` es opcional: si falta, el sitio lo genera del título (`m-titulo`). Las
+fichas viejas conservan `m-001`…`m-067`.
 
 ## Publicación
 
