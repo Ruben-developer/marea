@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="dark" data-estetica="imprenta">
+<html lang="es" data-theme="light" data-estetica="cuadernillo">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,14 +9,11 @@
 <link rel="icon" href="assets/favicon.png" type="image/png">
 <link rel="stylesheet" href="style.css">
 <script>
-  /* Aplica tema y estética guardados antes de pintar, para evitar el destello. */
+  /* Aplica el tema guardado antes de pintar, para evitar el destello. */
   (function(){
     try{
-      var r = document.documentElement;
-      var est = localStorage.getItem('marea_estetica_v1');
-      if(est === 'cuadernillo' || est === 'imprenta') r.dataset.estetica = est;
-      var t = localStorage.getItem('marea_tema_v1_' + r.dataset.estetica);
-      r.dataset.theme = (t === 'light' || t === 'dark') ? t : (r.dataset.estetica === 'cuadernillo' ? 'light' : 'dark');
+      var t = localStorage.getItem('marea_tema_v1_cuadernillo');
+      document.documentElement.dataset.theme = (t === 'light' || t === 'dark') ? t : 'light';
     }catch(e){}
   })();
 </script>
@@ -44,9 +41,7 @@
       </ul>
     </nav>
     <div class="head-tools">
-      <!-- Cambia entre la estética A (Imprenta) y la B (Cuadernillo); se recuerda en localStorage -->
-      <button class="theme-btn" id="estBtn" type="button" aria-label="Cambiar estética. Actual: Imprenta">⇄ Estética: Imprenta</button>
-      <button class="theme-btn" id="themeBtn" type="button" aria-pressed="false">Modo claro</button>
+      <button class="theme-btn" id="themeBtn" type="button" aria-pressed="true">Modo noche</button>
     </div>
   </div>
 </header>

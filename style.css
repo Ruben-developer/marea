@@ -1,14 +1,12 @@
 /* =========================================================
    MAREA · M.A.R. Editorial Anarquista
-   Dos estéticas en un solo archivo:
-   A · Imprenta    (por defecto, data-estetica="imprenta")
-   B · Cuadernillo (data-estetica="cuadernillo")
+   Estética única: Cuadernillo (data-estetica="cuadernillo").
+   Los tokens base de abajo son la capa de arranque; el bloque
+   [data-estetica=cuadernillo] del final pisa lo que corresponde
+   al papel crema, la tinta azul y el sello rojo.
 
-   Tokens
-   Un solo acento rojo (tinta de imprenta) y se usa UNA vez por
-   pantalla:
-   - Inicio: el botón «Descargar gratis»
-   - Resto de vistas: la barra bajo el título
+   El rojo queda reservado al sello. El azul es la tinta de
+   identidad y el único acento de botones y títulos.
    ========================================================= */
 
 :root{
@@ -244,7 +242,6 @@ footer ul{list-style:none;padding:0}
   -webkit-mask:var(--sello-img) center/contain no-repeat;mask:var(--sello-img) center/contain no-repeat}
 .sello--rojo{--sello-color:var(--red)}
 .sello--azul{--sello-color:var(--azul,var(--ink))}
-html:not([data-estetica=cuadernillo]) .solo-cuad{display:none!important}
 /* marcas de corte de las esquinas (como en la hoja interior) */
 .crop{position:absolute;width:18px;height:18px;border:0 solid var(--ink2)}
 .crop-tl{top:14px;left:14px;border-top-width:1px;border-left-width:1px}
