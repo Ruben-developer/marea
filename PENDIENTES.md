@@ -50,7 +50,15 @@ enlace de Mega (18 antiguas, 11 actuales, 2 hackratas). El WordPress se va a ret
       funcione la URL de `github.io`).
 - [ ] En GitHub: Settings → Pages → Custom domain `marea.antarquia.cl` + «Enforce HTTPS».
 
-## 5. Decisiones de diseño
+## 5. Seguridad y CI
+
+- [x] Escapado del catálogo y validación de esquemas (`http(s)` o relativo).
+- [x] CSP en `index.html`; `.nojekyll` para servir `pdfs/` y `covers/`.
+- [x] `LICENSE`, `SECURITY.md`, `robots.txt`, `.editorconfig`, `.gitattributes`.
+- [ ] Subir `.github/workflows/ci.yml`: el token de `gh` no tiene scope `workflow`.
+      Ejecutar `gh auth refresh -s workflow` y luego `git push`.
+
+## 6. Decisiones de diseño
 
 - [x] **Estética definitiva: Cuadernillo** (papel crema, serif, tinta azul, sello rojo).
       Es la única: se eliminó el conmutador y el código de la estética Imprenta.
@@ -62,7 +70,7 @@ enlace de Mega (18 antiguas, 11 actuales, 2 hackratas). El WordPress se va a ret
 - [ ] Quitar el aviso de «versión en desarrollo» cuando estén los PDFs y los precios
       verificados.
 
-## 6. Después
+## 7. Después
 
 - [ ] Aviso en el WordPress viejo apuntando a `marea.antarquia.cl`.
 - [ ] Enlazar el catálogo desde `porlaanarquia.antarquia.cl`.

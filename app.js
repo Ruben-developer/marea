@@ -51,7 +51,9 @@
     if (!v) return null;
     var s = String(v).trim();
     if (!s) return null;
-    return /^https?:\/\//i.test(s) ? s : s.replace(/^\/+/, '');
+    if (/^https?:\/\//i.test(s)) return s;
+    if (/^[a-z][a-z0-9+.-]*:/i.test(s)) return null; // rechaza javascript:, data:, etc.
+    return s.replace(/^\/+/, '');
   }
   function clp(n) {
     if (n == null || isNaN(n)) return '';
@@ -78,13 +80,19 @@
     return null;
   }
   function pdfBase() { return window.MAREA_PDF_BASE || 'pdfs/'; }
+  // Solo http(s) cuenta como enlace externo: evita javascript:, data: y similares
+  // colados desde el CMS en un href.
+  function urlExterna(v) {
+    if (!v) return null;
+    var s = String(v).trim();
+    return /^https?:\/\//i.test(s) ? s : null;
+  }
   function urlDescarga(p) {
     if (p.archivo) return /^https?:\/\//i.test(p.archivo) ? p.archivo : pdfBase() + p.archivo.replace(/^\/+/, '');
-    if (p.enlace) return p.enlace;
-    return null;
+    return urlExterna(p.enlace);
   }
   function hayDescarga(p) { return !!urlDescarga(p); }
-  function esExterno(p) { return !p.archivo && !!p.enlace; }
+  function esExterno(p) { return !p.archivo && !!urlExterna(p.enlace); }
   function hayImpreso(p) { return p.precio != null; }
 
   /* =========================================================

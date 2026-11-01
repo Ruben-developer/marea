@@ -52,6 +52,12 @@ catalogo.forEach((p, i) => {
   if (typeof p.destacado !== 'boolean') errores.push(`${donde} ${nombre}: «destacado» debe ser true o false`);
 
   if (p.archivo && p.enlace) avisos.push(`${donde} ${nombre}: tiene «archivo» y «enlace»; se usará el archivo`);
+  if (p.archivo && !/^https?:\/\//i.test(p.archivo) && p.archivo.includes(':')) {
+    errores.push(`${donde} ${nombre}: «archivo» solo admite ruta relativa o http(s) (tiene «${p.archivo}»)`);
+  }
+  if (p.enlace && !/^https?:\/\//i.test(p.enlace)) {
+    errores.push(`${donde} ${nombre}: «enlace» debe empezar por http:// o https:// (tiene «${p.enlace}»)`);
+  }
   if (p.archivo) {
     descargables++;
     if (!/^https?:\/\//i.test(p.archivo) && !existsSync(fileURLToPath(new URL(`pdfs/${p.archivo.replace(/^\/+/, '')}`, raiz)))) {
