@@ -1,113 +1,713 @@
-// Base de los PDFs. En local se sirve desde el mismo origen (/pdfs/);
-// en producción apunta al servidor de descargas (ver .env.example).
-const PDF_BASE = window.MAREA_PDF_BASE || '/pdfs/';
-const PLACEHOLDER = 'covers/placeholder.svg';
+/* =========================================================
+   MAREA · M.A.R. Editorial Anarquista
+   Router, catálogo, carrito y modales. Sin dependencias.
 
-let catalogo = [];
-let filtroActual = 'todos';
-let busquedaActual = '';
+   El catálogo vive en catalogo.json. Campos por ficha:
+     id, titulo, autor, coleccion, anio, paginas, sinopsis,
+     portada, archivo, enlace, precio, stock, destacado
+   - archivo: nombre en el servidor de PDFs (se antepone MAREA_PDF_BASE)
+   - enlace:  URL externa de respaldo (p. ej. Mega)
+   - precio/stock en null: título sin edición impresa
+   ========================================================= */
+(function () {
+  'use strict';
 
-async function cargarCatalogo() {
+  /* ---------- constantes ---------- */
+  var COLECCIONES = { historia: 'Historia', praxis: 'Praxis' };
+  var MICROCOPY_DESCARGA = 'Copiá, compartí, reimprimí. Se reconoce la autoría, no su propiedad.';
+  var LS_CART = 'marea_carrito_v1';
+  var LS_THEME = 'marea_tema_v1';
+  var LS_EST = 'marea_estetica_v1';
+  var CONTACTO = { correo: 'antarquia@riseup.net', sitio: 'marea.antarquia.cl' };
+  var ESTETICAS = { imprenta: 'Imprenta', cuadernillo: 'Cuadernillo' };
+  var TITULOS = {
+    inicio: 'Inicio',
+    catalogo: 'Catálogo',
+    historia: 'Colección Historia',
+    praxis: 'Colección Praxis',
+    difusion: 'Difusión',
+    carrito: 'Carrito'
+  };
+
+  var ICON_DL = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16"/></svg>';
+
+  /* ---------- utilidades ---------- */
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  // ignora acentos y mayúsculas al buscar
+  function norm(s) {
+    return String(s == null ? '' : s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  }
+  function clp(n) {
+    if (n == null || isNaN(n)) return '';
+    return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 }).format(n);
+  }
+  function num(v) {
+    if (v === null || v === undefined || v === '') return null;
+    var n = Number(v);
+    return isFinite(n) ? n : null;
+  }
+  function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+
+  /* ---------- estado ---------- */
+  var PUBLICACIONES = [];
+  var cargado = false;
+  var state = { q: '', col: 'todas', disp: 'todo', orden: 'titulo' };
+  var cart = {};
+  var ultimoFoco = null;
+  var toastT = null;
+
+  function byId(id) {
+    for (var i = 0; i < PUBLICACIONES.length; i++) if (PUBLICACIONES[i].id === id) return PUBLICACIONES[i];
+    return null;
+  }
+  function pdfBase() { return window.MAREA_PDF_BASE || 'pdfs/'; }
+  function urlDescarga(p) {
+    if (p.archivo) return /^https?:\/\//i.test(p.archivo) ? p.archivo : pdfBase() + p.archivo.replace(/^\/+/, '');
+    if (p.enlace) return p.enlace;
+    return null;
+  }
+  function hayDescarga(p) { return !!urlDescarga(p); }
+  function esExterno(p) { return !p.archivo && !!p.enlace; }
+  function hayImpreso(p) { return p.precio != null; }
+
+  /* =========================================================
+     DATOS
+     ========================================================= */
+  function normalizar(p) {
+    if (!p || !p.id || !p.titulo) return null;
+    return {
+      id: String(p.id),
+      titulo: String(p.titulo),
+      autor: p.autor ? String(p.autor) : 'Sin autoría',
+      coleccion: p.coleccion === 'historia' ? 'historia' : 'praxis',
+      anio: num(p.anio),
+      paginas: num(p.paginas),
+      sinopsis: p.sinopsis ? String(p.sinopsis).trim() : '',
+      portada: p.portada || null,
+      archivo: p.archivo || null,
+      enlace: p.enlace || null,
+      precio: num(p.precio),
+      stock: num(p.stock) || 0,
+      destacado: !!p.destacado
+    };
+  }
+
+  function cargarCatalogo() {
+    return fetch('catalogo.json', { cache: 'no-cache' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(function (data) {
+        if (!Array.isArray(data)) throw new Error('catalogo.json no es una lista');
+        PUBLICACIONES = data.map(normalizar).filter(Boolean);
+        cargado = true;
+      });
+  }
+
+  function errorCatalogo() {
+    var msg = '<div class="empty"><h2>No se pudo cargar el catálogo</h2>' +
+      '<p>Revisá que <code>catalogo.json</code> exista y que la página se esté sirviendo por HTTP ' +
+      '(con <code>python3 -m http.server</code>, por ejemplo). Abrir el archivo con <code>file://</code> bloquea la lectura.</p></div>';
+    var g = $('#catalogGrid'); if (g) g.innerHTML = msg;
+    var f = $('#featured'); if (f) f.innerHTML = msg;
+  }
+
+  /* =========================================================
+     PORTADAS
+     Sin imagen propia se dibuja un SVG en línea según id y
+     colección: Historia oscura, Praxis papel. Cero imágenes
+     externas, cero peticiones.
+     ========================================================= */
+  var _cv = 0;
+
+  function wrapText(text, max) {
+    var out = [], line = '';
+    String(text).split(/\s+/).forEach(function (w) {
+      if ((line + ' ' + w).trim().length > max && line) { out.push(line); line = w; }
+      else line = (line + ' ' + w).trim();
+    });
+    if (line) out.push(line);
+    return out;
+  }
+
+  /* Elige el mayor cuerpo de letra que quepa en el ancho y el alto dados.
+     Evita que los títulos largos se salgan del marco de la portada.
+     El factor 0.68 estima el ancho medio de glifo + el letter-spacing. */
+  function ajustarTitulo(titulo, maxW, maxLines, tamanos) {
+    var fs = tamanos[tamanos.length - 1], lines = [], i, k, maxChars, ancho, ok;
+    for (i = 0; i < tamanos.length; i++) {
+      fs = tamanos[i];
+      maxChars = Math.max(6, Math.floor(maxW / (fs * 0.68)));
+      lines = wrapText(titulo, maxChars);
+      ancho = 0;
+      for (k = 0; k < lines.length; k++) ancho = Math.max(ancho, lines[k].length);
+      ok = lines.length <= maxLines && ancho * fs * 0.68 <= maxW;
+      if (ok) return { fs: fs, lines: lines };
+    }
+    return { fs: fs, lines: lines.slice(0, maxLines) };
+  }
+
+  function portada(p, label) {
+    if (p.portada) {
+      var alt = label ? 'Portada de ' + p.titulo + ', de ' + p.autor : '';
+      return '<img src="' + esc(p.portada) + '" alt="' + esc(alt) + '" loading="lazy" width="300" height="420">';
+    }
+    return document.documentElement.dataset.estetica === 'cuadernillo' ? portadaCU(p, label) : portadaImp(p, label);
+  }
+
+  /* Estética B: papel crema, tarjeta redondeada con el título, píldora con el
+     autor y una ilustración simple en tinta azul (olas + sol para Historia;
+     círculo de asamblea para Praxis). */
+  function portadaCU(p, label) {
+    var id = 'cu' + (++_cv);
+    var hist = p.coleccion === 'historia';
+    var bg = hist ? '#eadfc4' : '#dfe4e0', azul = '#1f3d63', papel = '#fbf7ec', tinta = '#1c1b18';
+    function wave(y, amp, ph, fill, op) {
+      var d = 'M0,' + y;
+      for (var x = 0; x <= 300; x += 6) d += ' L' + x + ',' + (y + amp * Math.sin(x / 300 * Math.PI * 3 + ph)).toFixed(1);
+      return '<path d="' + d + ' L300,420 L0,420 Z" fill="' + fill + '" opacity="' + (op || 1) + '"/>';
+    }
+    var ilus = '';
+    if (hist) {
+      var rays = '';
+      for (var i = 0; i <= 9; i++) {
+        var a = Math.PI + i * Math.PI / 9, c = Math.cos(a), s = Math.sin(a);
+        rays += '<line x1="' + (150 + c * 54).toFixed(1) + '" y1="' + (250 + s * 54).toFixed(1) +
+          '" x2="' + (150 + c * 70).toFixed(1) + '" y2="' + (250 + s * 70).toFixed(1) +
+          '" stroke="' + azul + '" stroke-width="3" stroke-linecap="round"/>';
+      }
+      ilus = rays + '<circle cx="150" cy="250" r="42" fill="' + papel + '" fill-opacity=".6" stroke="' + azul + '" stroke-width="5"/>' +
+        '<path d="M124,284 L150,214 L176,284 M133,262 L167,262" fill="none" stroke="' + azul + '" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>' +
+        wave(268, 7, 0, '#9bb3cc') + wave(296, 9, 1.3, '#5f81a6') + wave(328, 8, 2.4, azul) + wave(364, 6, 3.3, '#14283f');
+    } else {
+      var ring = '';
+      for (var j = 0; j < 10; j++) {
+        var b = j * 2 * Math.PI / 10;
+        ring += '<circle cx="' + (150 + Math.cos(b) * 68).toFixed(1) + '" cy="' + (290 + Math.sin(b) * 68).toFixed(1) +
+          '" r="15" fill="' + (j % 2 ? 'none' : azul) + '" stroke="' + azul + '" stroke-width="4"/>';
+      }
+      ilus = ring + '<circle cx="150" cy="290" r="28" fill="' + azul + '"/><rect x="0" y="372" width="300" height="48" fill="' + azul + '" opacity=".14"/>';
+    }
+    var ajuste = ajustarTitulo(p.titulo, 228, 5, [26, 23, 20, 18, 16, 14]);
+    var lines = ajuste.lines;
+    var fs = ajuste.fs;
+    var cardH = 34 + lines.length * (fs + 6);
+    var txt = lines.map(function (l, k) {
+      return '<text x="150" y="' + (40 + fs + k * (fs + 6)) + '" text-anchor="middle" font-size="' + fs +
+        '" font-style="italic" font-weight="700" fill="' + tinta + '" style="font-family:Georgia,\'Times New Roman\',serif">' + esc(l) + '</text>';
+    }).join('');
+    var afs = Math.max(8, Math.min(13, Math.floor(220 / (p.autor.length * 0.55))));
+    var aria = label ? 'role="img" aria-label="Portada de ejemplo: ' + esc(p.titulo) + ', de ' + esc(p.autor) + '"' : 'aria-hidden="true"';
+    return '<svg viewBox="0 0 300 420" xmlns="http://www.w3.org/2000/svg" ' + aria + '>' +
+      '<defs><clipPath id="' + id + 'c"><rect width="300" height="420" rx="4"/></clipPath></defs>' +
+      '<g clip-path="url(#' + id + 'c)">' +
+      '<rect width="300" height="420" fill="' + bg + '"/>' + ilus +
+      '<rect x="18" y="22" width="264" height="' + cardH + '" rx="18" fill="' + papel + '" fill-opacity=".9"/>' + txt +
+      '<rect x="36" y="368" width="228" height="32" rx="16" fill="' + papel + '" fill-opacity=".94"/>' +
+      '<text x="150" y="' + (389 - (13 - afs) / 2) + '" text-anchor="middle" font-size="' + afs +
+      '" font-weight="700" fill="' + tinta + '" style="font-family:system-ui,Arial,sans-serif">' + esc(p.autor) + '</text>' +
+      '</g></svg>';
+  }
+
+  function portadaImp(p, label) {
+    var id = 'ht' + (++_cv);
+    var dark = p.coleccion === 'historia';
+    var bg = dark ? '#17160f' : '#e8e1cf', fg = dark ? '#ece6d8' : '#0d0d0c';
+    var n = 0, i;
+    for (i = 0; i < p.id.length; i++) n += p.id.charCodeAt(i);
+    var r = 62 + (n % 5) * 10, cx = 70 + ((n * 37) % 160), cy = 280 + ((n * 13) % 50);
+    var ajuste = ajustarTitulo(p.titulo.toUpperCase(), 248, 6, [32, 28, 25, 22, 19, 17, 15]);
+    var lines = ajuste.lines;
+    var fs = ajuste.fs;
+    var txt = lines.map(function (l, k) {
+      return '<text x="26" y="' + (100 + k * (fs + 6)) + '" font-size="' + fs + '">' + esc(l) + '</text>';
+    }).join('');
+    var pie = COLECCIONES[p.coleccion].toUpperCase() + (p.anio ? ' · ' + p.anio : '');
+    var aria = label ? 'role="img" aria-label="Portada de ejemplo: ' + esc(p.titulo) + ', de ' + esc(p.autor) + '"' : 'aria-hidden="true"';
+    return '<svg viewBox="0 0 300 420" xmlns="http://www.w3.org/2000/svg" ' + aria + '>' +
+      '<defs>' +
+      '<pattern id="' + id + '" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="3.5" cy="3.5" r="2" fill="' + fg + '"/></pattern>' +
+      '<clipPath id="' + id + 'c"><rect width="300" height="420"/></clipPath>' +
+      '</defs>' +
+      '<rect width="300" height="420" fill="' + bg + '"/>' +
+      '<g clip-path="url(#' + id + 'c)"><circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="url(#' + id + ')" opacity=".5"/>' +
+      '<circle cx="' + (cx + 40) + '" cy="' + (cy + 30) + '" r="' + (r * 0.5) + '" fill="url(#' + id + ')" opacity=".8"/></g>' +
+      '<rect x="10" y="10" width="280" height="400" fill="none" stroke="' + fg + '" stroke-width="1.5"/>' +
+      '<g fill="' + fg + '" style="font-family:var(--display);font-weight:700;letter-spacing:.05em">' +
+      '<text x="26" y="42" font-size="12" style="letter-spacing:.35em">MAREA</text>' + txt +
+      '<text x="26" y="398" font-size="12" style="letter-spacing:.3em">' + esc(pie) + '</text>' +
+      '</g>' +
+      '<line x1="26" y1="52" x2="274" y2="52" stroke="' + fg + '" stroke-width="1"/>' +
+      '<line x1="26" y1="378" x2="274" y2="378" stroke="' + fg + '" stroke-width="1"/>' +
+      '</svg>';
+  }
+
+  /* =========================================================
+     CARRITO
+     ========================================================= */
+  function loadCart() {
+    var out = {};
     try {
-        const response = await fetch('catalogo.json');
-        catalogo = await response.json();
-        mostrarCatalogo();
-    } catch (error) {
-        console.error('Error al cargar el catálogo:', error);
-        document.getElementById('catalogo').innerHTML =
-            '<p class="aviso">Error al cargar el catálogo</p>';
+      var raw = JSON.parse(lsGet(LS_CART) || '{}');
+      Object.keys(raw).forEach(function (id) {
+        var p = byId(id), n = Math.floor(Number(raw[id]));
+        if (p && p.precio != null && p.stock > 0 && n > 0) out[id] = Math.min(n, p.stock);
+      });
+    } catch (e) { out = {}; }
+    return out;
+  }
+  function saveCart() { lsSet(LS_CART, JSON.stringify(cart)); updateCartUI(); }
+  function cartItems() {
+    return Object.keys(cart).map(function (id) { return { p: byId(id), q: cart[id] }; })
+      .filter(function (it) { return it.p; });
+  }
+  function cartCount() {
+    return Object.keys(cart).reduce(function (a, id) { return a + cart[id]; }, 0);
+  }
+  function cartTotal() {
+    return cartItems().reduce(function (a, it) { return a + it.p.precio * it.q; }, 0);
+  }
+  function updateCartUI() {
+    var n = cartCount(), c = $('#cartCount'), l = $('#cartLink');
+    if (c) c.textContent = n;
+    if (l) l.setAttribute('aria-label', 'Carrito, ' + n + (n === 1 ? ' artículo' : ' artículos'));
+  }
+
+  function addToCart(id) {
+    var p = byId(id);
+    if (!p || p.precio == null || p.stock <= 0) return;
+    var cur = cart[id] || 0;
+    if (cur >= p.stock) { toast('Ya tenés todo el stock disponible (' + p.stock + ')'); return; }
+    cart[id] = cur + 1;
+    saveCart();
+    toast('«' + p.titulo + '» añadido al carrito');
+    if (!$('[data-view="carrito"]').hidden) renderCart();
+  }
+  function setQty(id, q) {
+    var p = byId(id);
+    if (!p) return;
+    if (q <= 0) delete cart[id];
+    else cart[id] = Math.min(q, p.stock);
+    saveCart();
+    renderCart();
+  }
+
+  /* =========================================================
+     TOAST
+     ========================================================= */
+  function toast(msg) {
+    var t = $('#toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add('show');
+    try { t.hidePopover(); t.showPopover(); } catch (e) {}
+    clearTimeout(toastT);
+    toastT = setTimeout(function () {
+      t.classList.remove('show');
+      try { t.hidePopover(); } catch (e) {}
+    }, 3400);
+  }
+
+  /* =========================================================
+     TARJETAS
+     ========================================================= */
+  function metaLinea(p) {
+    var partes = [COLECCIONES[p.coleccion]];
+    if (p.anio) partes.push(p.anio);
+    if (p.paginas) partes.push(p.paginas + ' p.');
+    return partes.join(' · ');
+  }
+
+  function estadoPrecio(p) {
+    if (p.precio == null) return hayDescarga(p) ? 'Solo digital' : 'Sin edición aún';
+    if (p.stock > 0) return 'Impreso ' + clp(p.precio) + (p.stock <= 5 ? ' · quedan ' + p.stock : '');
+    return 'Impreso agotado' + (hayDescarga(p) ? ' · el PDF sigue libre' : '');
+  }
+
+  function botonDescarga(p, clase) {
+    var url = urlDescarga(p);
+    if (!url) return '<button class="btn ' + (clase || '') + '" type="button" disabled>Próximamente</button>';
+    var ext = esExterno(p);
+    return '<a class="btn btn-solid ' + (clase || '') + '" href="' + esc(url) + '"' +
+      (ext ? ' target="_blank" rel="noopener"' : ' download') +
+      ' data-action="download" aria-label="Descargar PDF de ' + esc(p.titulo) + '">' +
+      ICON_DL + ' ' + (ext ? 'Descargar (externo)' : 'Descargar PDF') + '</a>';
+  }
+
+  function botonCompra(p, clase) {
+    if (p.precio == null) return '';
+    if (p.stock > 0) {
+      return '<button class="btn ' + (clase || '') + '" type="button" data-action="add" data-id="' + esc(p.id) +
+        '" aria-label="Comprar impreso de ' + esc(p.titulo) + '">Comprar</button>';
     }
-}
+    return '<button class="btn ' + (clase || '') + '" type="button" disabled>Agotado</button>';
+  }
 
-function normalizarTexto(texto) {
-    if (!texto) return '';
-    return texto.toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '');
-}
+  function cardHTML(p) {
+    var tiene = hayDescarga(p), stock = p.stock > 0, impreso = hayImpreso(p);
+    var nota;
+    if (tiene) nota = '<p class="micro">' + MICROCOPY_DESCARGA + '</p>';
+    else if (!stock && impreso) nota = '<p class="note">Impreso agotado y sin PDF todavía. Vuelve pronto.</p>';
+    else if (impreso) nota = '<p class="note">El PDF libre llega pronto. El impreso ya se puede reservar.</p>';
+    else nota = '<p class="note">Todavía no hay archivo disponible.</p>';
 
-function urlDescarga(item) {
-    if (item.archivo) return PDF_BASE + item.archivo;
-    return item.enlace || null;
-}
+    return '<article class="card">' +
+      '<button class="cover-btn" type="button" data-action="open" data-id="' + esc(p.id) + '" aria-label="Ver ficha de ' + esc(p.titulo) + '">' + portada(p) + '</button>' +
+      '<div class="card-body">' +
+      '<p class="meta">' + esc(metaLinea(p)) + '</p>' +
+      '<h3><button type="button" data-action="open" data-id="' + esc(p.id) + '">' + esc(p.titulo) + '</button></h3>' +
+      '<p class="autor">' + esc(p.autor) + '</p>' +
+      '<p class="price">' + esc(estadoPrecio(p)) + '</p>' +
+      '<div class="actions' + (impreso ? '' : ' una') + '">' + botonDescarga(p, 'btn-sm') + botonCompra(p, 'btn-sm') + '</div>' +
+      nota +
+      '</div></article>';
+  }
 
-function mostrarCatalogo() {
-    const contenedor = document.getElementById('catalogo');
-    contenedor.innerHTML = '';
+  /* =========================================================
+     CATÁLOGO
+     ========================================================= */
+  function filtrar() {
+    var q = norm(state.q).trim();
+    var out = PUBLICACIONES.filter(function (p) {
+      if (state.col !== 'todas' && p.coleccion !== state.col) return false;
+      if (state.disp === 'descarga' && !hayDescarga(p)) return false;
+      if (state.disp === 'proximamente' && hayDescarga(p)) return false;
+      if (q && norm(p.titulo + ' ' + p.autor + ' ' + p.sinopsis + ' ' + COLECCIONES[p.coleccion]).indexOf(q) === -1) return false;
+      return true;
+    });
+    var porTitulo = function (a, b) { return a.titulo.localeCompare(b.titulo, 'es'); };
+    var cmp = {
+      'titulo': porTitulo,
+      'anio-desc': function (a, b) { return (b.anio || -9999) - (a.anio || -9999) || porTitulo(a, b); },
+      'anio-asc': function (a, b) { return (a.anio || 9999) - (b.anio || 9999) || porTitulo(a, b); }
+    }[state.orden] || porTitulo;
+    return out.sort(cmp);
+  }
 
-    const filtrados = catalogo.filter(item => {
-        const cumpleColeccion = filtroActual === 'todos' || item.coleccion === filtroActual;
-        const textoBusqueda = normalizarTexto(item.titulo + ' ' + (item.autor || ''));
-        const cumpleBusqueda = busquedaActual === '' || textoBusqueda.includes(normalizarTexto(busquedaActual));
-        return cumpleColeccion && cumpleBusqueda;
+  function renderCatalog() {
+    if (!cargado) return;
+    var res = filtrar(), total = PUBLICACIONES.length;
+    var rc = $('#resultCount');
+    if (rc) rc.textContent = 'Mostrando ' + res.length + ' de ' + total + (total === 1 ? ' publicación' : ' publicaciones');
+    var g = $('#catalogGrid');
+    if (!g) return;
+
+    if (!res.length) {
+      var activos = [];
+      if (state.q.trim()) activos.push('búsqueda «' + esc(state.q.trim()) + '»');
+      if (state.col !== 'todas') activos.push('colección ' + COLECCIONES[state.col]);
+      if (state.disp === 'descarga') activos.push('solo con descarga');
+      if (state.disp === 'proximamente') activos.push('solo próximamente');
+      var extra = state.disp === 'descarga'
+        ? ' Todavía estamos subiendo los PDF: por ahora solo hay un título descargable.'
+        : '';
+      g.innerHTML = '<div class="empty"><h2>Nada coincide con eso</h2>' +
+        '<p>Filtros activos: ' + (activos.join(' · ') || 'ninguno') + '.' + extra +
+        ' La búsqueda ya ignora tildes y mayúsculas; probá con menos palabras o quitá algún filtro.</p>' +
+        '<button class="btn btn-solid" type="button" data-action="clearfilters">Limpiar filtros</button></div>';
+    } else {
+      g.innerHTML = '<div class="grid">' + res.map(cardHTML).join('') + '</div>';
+    }
+  }
+
+  function syncControls() {
+    $$('#segCol button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.col === state.col)); });
+    $$('#segDisp button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.disp === state.disp)); });
+    if ($('#orden')) $('#orden').value = state.orden;
+    if ($('#q')) $('#q').value = state.q;
+    if ($('#h-catalogo')) $('#h-catalogo').textContent = state.col === 'todas' ? 'Catálogo' : 'Colección ' + COLECCIONES[state.col];
+  }
+
+  function renderFeatured() {
+    if (!cargado) return;
+    var f = $('#featured');
+    if (!f) return;
+    var destacados = PUBLICACIONES.filter(function (p) { return p.destacado; });
+    if (!destacados.length) destacados = PUBLICACIONES.slice(0, 4);
+    f.innerHTML = destacados.map(cardHTML).join('');
+  }
+
+  /* =========================================================
+     CARRITO · vista
+     ========================================================= */
+  function renderCart() {
+    var b = $('#cartBody');
+    if (!b) return;
+    var items = cartItems();
+    if (!items.length) {
+      b.innerHTML = '<div class="empty"><h2>Tu carrito está vacío</h2>' +
+        '<p>No hace falta comprar nada para leer: todos los PDF disponibles se descargan libres. Si querés sostener el proyecto, elegí un impreso.</p>' +
+        '<p><a class="btn btn-solid" href="#/catalogo">Ver catálogo</a> <a class="btn" href="#/catalogo/descarga">Descargar gratis</a></p></div>';
+      return;
+    }
+    b.innerHTML = items.map(function (it) {
+      var p = it.p, q = it.q;
+      return '<div class="cart-row">' +
+        portada(p) +
+        '<div><h3>' + esc(p.titulo) + '</h3><p class="autor" style="margin:0">' + esc(p.autor) + ' · impreso</p></div>' +
+        '<div class="line-total">' + clp(p.precio * q) + '</div>' +
+        '<div class="cart-tools">' +
+        '<div class="qty" role="group" aria-label="Cantidad de ' + esc(p.titulo) + '">' +
+        '<button type="button" data-action="dec" data-id="' + esc(p.id) + '" aria-label="Quitar una unidad">−</button>' +
+        '<output aria-live="polite">' + q + '</output>' +
+        '<button type="button" data-action="inc" data-id="' + esc(p.id) + '" aria-label="Añadir una unidad"' + (q >= p.stock ? ' disabled' : '') + '>+</button>' +
+        '</div>' +
+        '<button class="linklike" type="button" data-action="remove" data-id="' + esc(p.id) + '" aria-label="Quitar ' + esc(p.titulo) + ' del carrito">Quitar</button>' +
+        (hayDescarga(p) ? '<a class="linklike" href="' + esc(urlDescarga(p)) + '" data-action="download">o descargá el PDF libre</a>' : '') +
+        '</div></div>';
+    }).join('') +
+      '<div class="subtotal"><span>Subtotal</span><span>' + clp(cartTotal()) + '</span></div>' +
+      '<p class="note">Envío no incluido. Tu aporte financia impresión y reimpresión; el contenido no se vende.</p>' +
+      '<div class="cta-row" style="margin-top:18px">' +
+      '<button class="btn btn-solid" type="button" data-action="checkout">Armar pedido</button>' +
+      '<a class="btn" href="#/catalogo">Seguir mirando</a>' +
+      '</div>';
+  }
+
+  /* =========================================================
+     MODALES
+     <dialog>.showModal() aporta foco atrapado, Escape y fondo inerte.
+     ========================================================= */
+  function openDialog(dlg) {
+    ultimoFoco = document.activeElement;
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+  }
+  function closeDialog(dlg) {
+    if (!dlg) return;
+    if (dlg.close) dlg.close(); else dlg.removeAttribute('open');
+  }
+  $$('dialog').forEach(function (d) {
+    d.addEventListener('click', function (e) { if (e.target === d) closeDialog(d); });
+    d.addEventListener('close', function () {
+      if (ultimoFoco && document.contains(ultimoFoco)) ultimoFoco.focus();
+    });
+  });
+
+  function openFicha(id) {
+    var p = byId(id);
+    if (!p) return;
+    var tiene = hayDescarga(p), stock = p.stock > 0, impreso = hayImpreso(p);
+
+    var datos = '<dt>Colección</dt><dd>' + COLECCIONES[p.coleccion] + '</dd>';
+    if (p.anio) datos += '<dt>Año</dt><dd>' + p.anio + '</dd>';
+    if (p.paginas) datos += '<dt>Páginas</dt><dd>' + p.paginas + '</dd>';
+    if (impreso) datos += '<dt>Impreso</dt><dd>' + (stock ? clp(p.precio) + ' · ' + p.stock + ' en stock' : 'Agotado por ahora') + '</dd>';
+
+    var libre = tiene
+      ? botonDescarga(p) + '<p class="micro">' + MICROCOPY_DESCARGA + '</p>'
+      : '<button class="btn" type="button" disabled>Próximamente</button>' +
+        '<p class="note">Este texto todavía no tiene archivo. Cuando exista, será libre y sin registro.</p>';
+
+    var apoyo;
+    if (!impreso) {
+      apoyo = '<p class="note" style="margin-top:0">Por ahora este título circula solo en digital. Si querés una edición impresa, escribinos.</p>' +
+        '<a class="btn" href="mailto:' + CONTACTO.correo + '?subject=' + encodeURIComponent('Consulta: ' + p.titulo) + '">Escribir a la editorial</a>';
+    } else if (stock) {
+      apoyo = '<p class="note" style="margin-top:0">Impreso: ' + clp(p.precio) + (p.stock <= 5 ? ' · quedan ' + p.stock : '') +
+        '. Tu compra financia papel y tinta; no es el precio del texto.</p>' + botonCompra(p);
+    } else {
+      apoyo = '<p class="note" style="margin-top:0">Impreso agotado' + (tiene ? '. Mientras tanto, el PDF sigue libre.' : '.') + '</p>' +
+        '<button class="btn" type="button" disabled>Agotado</button>';
+    }
+
+    $('#fichaBody').innerHTML =
+      '<div class="dlg-head">' +
+      '<p class="meta" style="margin:0">' + esc(metaLinea(p)) + '</p>' +
+      '<button class="close-btn" type="button" data-action="close" aria-label="Cerrar ficha">✕</button>' +
+      '</div>' +
+      '<div class="ficha">' +
+      '<div class="cover-col">' + portada(p, true) + '</div>' +
+      '<div class="ficha-info">' +
+      '<h2 id="fichaTitulo">' + esc(p.titulo) + '</h2>' +
+      '<p class="autor" style="font-size:1.1rem;margin-top:.4em">' + esc(p.autor) + '</p>' +
+      '<dl class="datos">' + datos + '</dl>' +
+      (p.sinopsis ? '<p class="sinopsis">' + esc(p.sinopsis) + '</p>' : '<p class="sinopsis vacio">Sin sinopsis todavía.</p>') +
+      '<div class="block libre">' +
+      (tiene ? '<span class="sello sello--rojo sello-stamp solo-cuad" aria-hidden="true"></span>' : '') +
+      '<h3>Lectura libre</h3>' + libre + '</div>' +
+      '<div class="block"><h3>Apoya el proyecto</h3>' + apoyo + '</div>' +
+      '<div class="contra solo-cuad"><span class="sello sello--azul" style="--s:64px" aria-hidden="true"></span>' +
+      '<span>' + CONTACTO.correo + '<br>' + CONTACTO.sitio + '</span></div>' +
+      '</div></div>';
+
+    openDialog($('#dlgFicha'));
+  }
+
+  function openCheckout() {
+    var items = cartItems();
+    if (!items.length) return;
+
+    var lineas = items.map(function (it) {
+      return '- ' + it.q + ' × ' + it.p.titulo + ' — ' + it.p.autor + ' — ' + clp(it.p.precio * it.q);
+    });
+    var cuerpo = ['Hola:', '', 'Quiero encargar estos impresos de Marea:', '']
+      .concat(lineas)
+      .concat(['', 'Subtotal: ' + clp(cartTotal()), '', 'Mi nombre:', 'Dirección o punto de entrega:', 'Comuna / ciudad:', '', 'Gracias.'])
+      .join('\n');
+    var mailto = 'mailto:' + CONTACTO.correo +
+      '?subject=' + encodeURIComponent('Pedido de impresos · Marea') +
+      '&body=' + encodeURIComponent(cuerpo);
+
+    $('#checkoutBody').innerHTML =
+      '<div class="dlg-head">' +
+      '<h2 id="checkoutTitulo" style="font-size:1.6rem">Resumen del pedido</h2>' +
+      '<button class="close-btn" type="button" data-action="close" aria-label="Cerrar resumen">✕</button>' +
+      '</div>' +
+      '<div class="block libre" role="note"><h3>Cómo funciona</h3>' +
+      '<p class="note" style="margin:0;font-size:.95rem">No hay pago en línea ni datos guardados en el sitio. ' +
+      'El resumen se envía por correo y la editorial acuerda contigo el pago y la entrega.</p></div>' +
+      '<ul style="list-style:none;padding:0;margin:18px 0">' +
+      items.map(function (it) {
+        return '<li style="display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line)">' +
+          '<span>' + it.q + ' × ' + esc(it.p.titulo) + '</span><span>' + clp(it.p.precio * it.q) + '</span></li>';
+      }).join('') +
+      '</ul>' +
+      '<div class="subtotal"><span>Subtotal</span><span>' + clp(cartTotal()) + '</span></div>' +
+      '<p class="note">Gracias por sostener la imprenta. Los PDF siguen libres, hayas comprado o no.</p>' +
+      '<div class="cta-row" style="margin-top:14px">' +
+      '<a class="btn btn-solid" href="' + esc(mailto) + '">Enviar pedido por correo</a>' +
+      '<button class="btn" type="button" data-action="clear">Vaciar carrito</button>' +
+      '</div>';
+
+    openDialog($('#dlgCheckout'));
+  }
+
+  /* =========================================================
+     EVENTOS
+     ========================================================= */
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-action]');
+    if (!t || t.disabled) return;
+    var action = t.dataset.action, id = t.dataset.id;
+    switch (action) {
+      case 'open': openFicha(id); break;
+      case 'add': addToCart(id); break;
+      case 'download': {
+        var p = byId(id);
+        if (p) toast('Descargando «' + p.titulo + '». Sin registro.');
+        break; // deja que el navegador siga el enlace
+      }
+      case 'inc': setQty(id, (cart[id] || 0) + 1); break;
+      case 'dec': setQty(id, (cart[id] || 0) - 1); break;
+      case 'remove': setQty(id, 0); break;
+      case 'checkout': openCheckout(); break;
+      case 'clear':
+        cart = {}; saveCart(); renderCart();
+        closeDialog($('#dlgCheckout')); toast('Carrito vaciado'); break;
+      case 'close': closeDialog(t.closest('dialog')); break;
+      case 'clearfilters':
+        state.q = ''; state.col = 'todas'; state.disp = 'todo';
+        syncControls(); renderCatalog(); break;
+    }
+  });
+
+  if ($('#q')) $('#q').addEventListener('input', function (e) { state.q = e.target.value; renderCatalog(); });
+  if ($('#orden')) $('#orden').addEventListener('change', function (e) { state.orden = e.target.value; renderCatalog(); });
+  if ($('#segCol')) $('#segCol').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    state.col = b.dataset.col; syncControls(); renderCatalog();
+  });
+  if ($('#segDisp')) $('#segDisp').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    state.disp = b.dataset.disp; syncControls(); renderCatalog();
+  });
+
+  /* ---------- tema ---------- */
+  function estActual() { return document.documentElement.dataset.estetica || 'imprenta'; }
+
+  function setTheme(t) {
+    document.documentElement.dataset.theme = t;
+    var cu = estActual() === 'cuadernillo', claro = t === 'light';
+    var b = $('#themeBtn');
+    if (b) {
+      b.textContent = cu ? (claro ? 'Modo noche' : 'Modo papel') : (claro ? 'Modo oscuro' : 'Modo claro');
+      b.setAttribute('aria-pressed', String(claro));
+    }
+    lsSet(LS_THEME + '_' + estActual(), t);
+  }
+  if ($('#themeBtn')) $('#themeBtn').addEventListener('click', function () {
+    setTheme(document.documentElement.dataset.theme === 'light' ? 'dark' : 'light');
+  });
+
+  /* ---------- estética ---------- */
+  function setEstetica(e) {
+    if (!ESTETICAS[e]) e = 'imprenta';
+    document.documentElement.dataset.estetica = e;
+    lsSet(LS_EST, e);
+    var b = $('#estBtn');
+    if (b) {
+      b.textContent = '⇄ Estética: ' + ESTETICAS[e];
+      b.setAttribute('aria-label', 'Cambiar estética. Actual: ' + ESTETICAS[e]);
+    }
+    setTheme(lsGet(LS_THEME + '_' + e) || (e === 'cuadernillo' ? 'light' : 'dark'));
+    $$('dialog[open]').forEach(closeDialog);
+    renderFeatured();
+    if (!$('[data-view="catalogo"]').hidden) renderCatalog();
+    if (!$('[data-view="carrito"]').hidden) renderCart();
+  }
+  if ($('#estBtn')) $('#estBtn').addEventListener('click', function () {
+    setEstetica(estActual() === 'cuadernillo' ? 'imprenta' : 'cuadernillo');
+  });
+
+  /* =========================================================
+     ROUTER (hash, sin recargar)
+     #/inicio  #/catalogo[/descarga]  #/historia  #/praxis  #/difusion  #/carrito
+     ========================================================= */
+  var primeraCarga = true;
+
+  function route() {
+    if (!cargado) return;
+    var trozos = (location.hash.replace(/^#\/?/, '') || 'inicio').split('/');
+    var n0 = trozos[0], param = trozos[1];
+    var name = TITULOS[n0] ? n0 : 'inicio';
+    var vista = name;
+
+    if (name === 'historia' || name === 'praxis') { state.col = name; vista = 'catalogo'; }
+    else if (name === 'catalogo') { state.col = 'todas'; state.disp = param === 'descarga' ? 'descarga' : 'todo'; }
+
+    $$('dialog[open]').forEach(closeDialog);
+    $$('.view').forEach(function (v) { v.hidden = v.dataset.view !== vista; });
+    $$('[data-nav]').forEach(function (a) {
+      if (a.dataset.nav === name) a.setAttribute('aria-current', 'page');
+      else a.removeAttribute('aria-current');
     });
 
-    if (filtrados.length === 0) {
-        contenedor.innerHTML = '<p class="aviso">No se encontraron resultados</p>';
-        return;
+    if (vista === 'catalogo') { syncControls(); renderCatalog(); }
+    if (vista === 'carrito') renderCart();
+
+    document.title = TITULOS[name] + ' · MAREA, M.A.R. Editorial Anarquista';
+    window.scrollTo(0, 0);
+    if (!primeraCarga) {
+      var h = $('[data-view="' + vista + '"] h1');
+      if (h) h.focus({ preventScroll: true });
     }
+    primeraCarga = false;
+  }
+  window.addEventListener('hashchange', route);
 
-    filtrados.forEach(item => {
-        const itemDiv = document.createElement('div');
-        itemDiv.className = 'item';
+  /* =========================================================
+     ARRANQUE
+     ========================================================= */
+  setEstetica(lsGet(LS_EST) || 'imprenta');
+  updateCartUI();
 
-        const portada = document.createElement('img');
-        portada.className = 'portada';
-        portada.src = item.portada || PLACEHOLDER;
-        portada.alt = item.titulo || 'Sin título';
-        portada.loading = 'lazy';
-        portada.onerror = function () {
-            this.src = PLACEHOLDER;
-        };
-
-        const info = document.createElement('div');
-        info.className = 'info';
-
-        const titulo = document.createElement('div');
-        titulo.className = 'titulo';
-        if (!item.titulo || item.titulo.startsWith('Sin título')) {
-            titulo.classList.add('sin-titulo');
-        }
-        titulo.textContent = item.titulo || 'Sin título';
-
-        const autor = document.createElement('div');
-        autor.className = 'autor';
-        autor.textContent = item.autor || '';
-
-        const descarga = urlDescarga(item);
-
-        info.appendChild(titulo);
-        if (item.autor) info.appendChild(autor);
-
-        if (descarga) {
-            const enlace = document.createElement('a');
-            enlace.className = 'descargar';
-            enlace.href = descarga;
-            enlace.target = '_blank';
-            enlace.rel = 'noopener noreferrer';
-            enlace.textContent = 'Descargar';
-            info.appendChild(enlace);
-        } else {
-            const pendiente = document.createElement('span');
-            pendiente.className = 'descargar pendiente';
-            pendiente.textContent = 'Próximamente';
-            info.appendChild(pendiente);
-        }
-
-        itemDiv.appendChild(portada);
-        itemDiv.appendChild(info);
-        contenedor.appendChild(itemDiv);
+  cargarCatalogo()
+    .then(function () {
+      cart = loadCart();
+      updateCartUI();
+      renderFeatured();
+      route();
+    })
+    .catch(function (err) {
+      if (window.console) console.error('Marea: no se pudo cargar catalogo.json', err);
+      errorCatalogo();
     });
-}
-
-document.getElementById('buscador').addEventListener('input', (e) => {
-    busquedaActual = e.target.value;
-    mostrarCatalogo();
-});
-
-document.getElementById('filtroColeccion').addEventListener('change', (e) => {
-    filtroActual = e.target.value;
-    mostrarCatalogo();
-});
-
-cargarCatalogo();
+})();

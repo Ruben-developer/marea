@@ -1,29 +1,246 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark" data-estetica="imprenta">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marea — Catálogo</title>
-    <meta name="description" content="Catálogo de Marea, editorial libertaria: Historia y Praxis.">
-    <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MAREA · M.A.R. Editorial Anarquista</title>
+<meta name="description" content="Cuadernillos y libros libertarios. El PDF es libre y sin registro; comprar el impreso sostiene la imprenta.">
+<meta name="theme-color" content="#0b0b0a">
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="stylesheet" href="style.css">
+<script>
+  /* Aplica tema y estética guardados antes de pintar, para evitar el destello. */
+  (function(){
+    try{
+      var r = document.documentElement;
+      var est = localStorage.getItem('marea_estetica_v1');
+      if(est === 'cuadernillo' || est === 'imprenta') r.dataset.estetica = est;
+      var t = localStorage.getItem('marea_tema_v1_' + r.dataset.estetica);
+      r.dataset.theme = (t === 'light' || t === 'dark') ? t : (r.dataset.estetica === 'cuadernillo' ? 'light' : 'dark');
+    }catch(e){}
+  })();
+</script>
 </head>
 <body>
-    <header>
-        <h1>Marea</h1>
-        <p class="lema">Editorial libertaria · Historia y Praxis</p>
-        <div class="filtros">
-            <input type="text" id="buscador" placeholder="Buscar por título o autoría..." autocomplete="off">
-            <select id="filtroColeccion">
-                <option value="todos">Todas las colecciones</option>
-                <option value="historia">Historia</option>
-                <option value="praxis">Praxis</option>
-            </select>
+<a class="skip" href="#main">Saltar al contenido</a>
+<div class="maqueta-bar" role="note">Versión en desarrollo · catálogo real · los PDF se están subiendo · los pedidos aún se acuerdan por correo</div>
+
+<header class="site-header">
+  <div class="wrap head-row">
+    <a class="brand" href="#/inicio" aria-label="Marea, M.A.R. Editorial Anarquista. Ir al inicio">
+      <span class="sello sello--azul solo-cuad" style="--s:58px" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-name">MAREA</span>
+        <span class="brand-sub">M.A.R. Editorial Anarquista</span>
+      </span>
+    </a>
+    <nav aria-label="Principal">
+      <ul>
+        <li><a href="#/catalogo" data-nav="catalogo">Catálogo</a></li>
+        <li><a href="#/historia" data-nav="historia">Historia</a></li>
+        <li><a href="#/praxis" data-nav="praxis">Praxis</a></li>
+        <li><a href="#/difusion" data-nav="difusion">Difusión</a></li>
+        <li><a href="#/carrito" data-nav="carrito" id="cartLink" aria-label="Carrito, 0 artículos">Carrito <span class="count" id="cartCount" aria-hidden="true">0</span></a></li>
+      </ul>
+    </nav>
+    <div class="head-tools">
+      <!-- Cambia entre la estética A (Imprenta) y la B (Cuadernillo); se recuerda en localStorage -->
+      <button class="theme-btn" id="estBtn" type="button" aria-label="Cambiar estética. Actual: Imprenta">⇄ Estética: Imprenta</button>
+      <button class="theme-btn" id="themeBtn" type="button" aria-pressed="false">Modo claro</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ================= INICIO ================= -->
+  <section class="view" data-view="inicio" aria-labelledby="h-inicio" style="padding-block:0">
+    <div class="hero">
+      <div class="wrap">
+       <div class="hoja"><!-- .hoja solo tiene estilo en la estética Cuadernillo (portadilla con marcas de corte y sello) -->
+        <span class="crop crop-tl solo-cuad" aria-hidden="true"></span><span class="crop crop-tr solo-cuad" aria-hidden="true"></span>
+        <span class="crop crop-bl solo-cuad" aria-hidden="true"></span><span class="crop crop-br solo-cuad" aria-hidden="true"></span>
+        <h1 id="h-inicio" tabindex="-1">Ideas sin dueño</h1>
+        <p class="verbs" aria-label="Lee, comparte, organízate"><span>Lee</span><span>Comparte</span><span>Organízate</span></p>
+        <p class="lead">Cuadernillos y libros libertarios. El PDF es gratis, siempre y sin registro. Comprar el impreso sostiene el proyecto; no es pagar por leer.</p>
+        <div class="cta-row">
+          <a class="btn btn-solid" href="#/catalogo">Ver catálogo</a>
+          <a class="btn btn-red" href="#/catalogo/descarga">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16"/></svg>
+            Descargar gratis
+          </a>
         </div>
-    </header>
-    <main>
-        <div id="catalogo" class="grid"></div>
-    </main>
-    <script src="config.js"></script>
-    <script src="app.js"></script>
+        <span class="sello sello--rojo sello-hero solo-cuad" role="img" aria-label="Sello de Marea: Memoria, Análisis, Revuelta. Editorial Anarquista"></span>
+       </div>
+      </div>
+    </div>
+
+    <div class="strip">
+      <div class="wrap">
+        <p>Comprar es sostener la imprenta, no pagar por leer. Cada PDF es libre, hoy y siempre.</p>
+        <a class="btn btn-sm" href="#/difusion">Leer el manifiesto →</a>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <h2 class="section-h">Dos caminos, un mismo texto</h2>
+      <div class="two">
+        <div class="panel">
+          <h3>Lee y comparte</h3>
+          <p>Descarga cualquier PDF disponible. Sin cuenta, sin correo, sin cookies de seguimiento. Imprímelo, pásalo, tradúcelo.</p>
+        </div>
+        <div class="panel">
+          <h3>Sostén el proyecto</h3>
+          <p>Si puedes, compra el cuadernillo impreso. Ese aporte paga papel, tinta y reimpresiones. El contenido sigue siendo de todxs.</p>
+        </div>
+      </div>
+
+      <p class="band" role="separator">¡La propiedad es un robo!</p>
+
+      <h2 class="section-h" style="margin-top:0">Destacados</h2>
+      <div class="grid" id="featured"><p class="cargando">Cargando catálogo…</p></div>
+    </div>
+  </section>
+
+  <!-- ================= CATÁLOGO ================= -->
+  <section class="view" data-view="catalogo" aria-labelledby="h-catalogo" hidden>
+    <div class="wrap">
+      <h1 class="view-title" id="h-catalogo" tabindex="-1">Catálogo</h1>
+      <p class="lead">Todo PDF disponible se descarga libre. Lo que aparece como «Próximamente» aún no tiene archivo: lo marcamos así en vez de dejarte un enlace roto.</p>
+
+      <form class="controls" role="search" aria-label="Buscar y filtrar el catálogo" onsubmit="return false">
+        <div class="ctl-row">
+          <div class="field search-field">
+            <label for="q">Buscar</label>
+            <input type="search" id="q" placeholder="título, autoría o tema" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="orden">Ordenar por</label>
+            <select id="orden">
+              <option value="titulo">Título (A–Z)</option>
+              <option value="anio-desc">Año (más reciente)</option>
+              <option value="anio-asc">Año (más antiguo)</option>
+            </select>
+          </div>
+        </div>
+        <div class="ctl-row">
+          <fieldset class="field">
+            <legend>Colección</legend>
+            <div class="seg" id="segCol">
+              <button type="button" data-col="todas" aria-pressed="true">Todas</button>
+              <button type="button" data-col="historia" aria-pressed="false">Historia</button>
+              <button type="button" data-col="praxis" aria-pressed="false">Praxis</button>
+            </div>
+          </fieldset>
+          <fieldset class="field">
+            <legend>Disponibilidad</legend>
+            <div class="seg" id="segDisp">
+              <button type="button" data-disp="todo" aria-pressed="true">Todo</button>
+              <button type="button" data-disp="descarga" aria-pressed="false">Descarga disponible</button>
+              <button type="button" data-disp="proximamente" aria-pressed="false">Próximamente</button>
+            </div>
+          </fieldset>
+        </div>
+      </form>
+
+      <p class="result-count" id="resultCount" role="status" aria-live="polite"></p>
+      <div id="catalogGrid"><p class="cargando">Cargando catálogo…</p></div>
+    </div>
+  </section>
+
+  <!-- ================= DIFUSIÓN ================= -->
+  <section class="view" data-view="difusion" aria-labelledby="h-difusion" hidden>
+    <div class="wrap prose" style="max-width:1160px">
+      <div class="prose">
+        <h1 class="view-title" id="h-difusion" tabindex="-1">LEE, COMPARTE Y ORGANÍZATE</h1>
+        <p class="big-copy">Difundimos este material para aportar a la propagación de las ideas y las prácticas anarquistas. Fomentamos la reproducción de todas las publicaciones de M.A.R Editorial Anarquista mediante cualquier medio. Se reconoce la autoría del texto, no su propiedad.</p>
+        <p class="cierre">¡Colectivicemos las ideas!</p>
+      </div>
+
+      <p class="band" role="separator">¡La propiedad es un robo!</p>
+
+      <div class="prose">
+        <h2>Manifiesto</h2>
+        <p><em>(Texto provisional; se reemplaza por el definitivo.)</em></p>
+        <p>Una editorial anarquista no es una tienda con otra estética. Es una herramienta para que las ideas circulen más rápido de lo que alcanzan a prohibirlas.</p>
+        <p>Por eso el acceso al conocimiento no se vende. Quien compra un cuadernillo impreso no compra el texto: sostiene la imprenta, el papel y la próxima reimpresión. El texto ya era suyo.</p>
+        <p>Publicamos para que se lea en la asamblea, en el taller, en la fila del bus. Para que se subraye, se fotocopie y se discuta. Un libro que nadie puede copiar es un libro a medias.</p>
+
+        <h2>Política de reproducción</h2>
+        <ul>
+          <li>Puedes copiar, fotocopiar, imprimir y reimprimir cualquier publicación, completa o en parte.</li>
+          <li>Puedes compartir los PDF por cualquier medio, sin pedir permiso y sin registrarte en nada.</li>
+          <li>Puedes traducir, adaptar y remezclar; indica la autoría del texto original.</li>
+          <li>No necesitas autorización de la editorial ni se cobra por reproducir.</li>
+          <li>Lo único que pedimos: reconoce la autoría y no encierres el texto tras un muro de pago.</li>
+        </ul>
+
+        <h2>Lemas</h2>
+        <ul>
+          <li>Lee · Comparte · Organízate</li>
+          <li>¡Colectivicemos las ideas!</li>
+          <li>¡La propiedad es un robo!</li>
+        </ul>
+        <p style="margin-top:28px"><a class="btn" href="#/catalogo/descarga">Ir a las descargas libres</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CARRITO ================= -->
+  <section class="view" data-view="carrito" aria-labelledby="h-carrito" hidden>
+    <div class="wrap" style="max-width:860px">
+      <h1 class="view-title" id="h-carrito" tabindex="-1">Carrito</h1>
+      <p class="lead">Estás sosteniendo el proyecto: este carrito es solo de impresos. Los PDF no se compran; se descargan libres.</p>
+      <div id="cartBody"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <span class="sello sello--azul solo-cuad" style="--s:88px;margin-bottom:14px" aria-hidden="true"></span>
+        <h2>Contacto</h2>
+        <p><a href="mailto:antarquia@riseup.net">antarquia@riseup.net</a><br>marea.antarquia.cl</p>
+      </div>
+      <div>
+        <h2>Licencia</h2>
+        <p>Sin copyright. Reproducción libre con reconocimiento de autoría. Se reconoce la autoría del texto, no su propiedad.</p>
+      </div>
+      <div>
+        <h2>Lemas</h2>
+        <ul>
+          <li>Lee · Comparte · Organízate</li>
+          <li>¡Colectivicemos las ideas!</li>
+          <li>¡La propiedad es un robo!</li>
+        </ul>
+      </div>
+    </div>
+    <p class="foot-end">¡Contra toda autoridad y que viva la anarquía!</p>
+  </div>
+</footer>
+
+<!-- Modal: ficha de publicación (<dialog> nativo: atrapa foco, cierra con Escape) -->
+<dialog id="dlgFicha" aria-labelledby="fichaTitulo">
+  <div class="dlg-in" id="fichaBody"></div>
+</dialog>
+
+<!-- Modal: resumen del pedido -->
+<dialog id="dlgCheckout" aria-labelledby="checkoutTitulo">
+  <div class="dlg-in" id="checkoutBody"></div>
+</dialog>
+
+<div id="toast" popover="manual" role="status" aria-live="polite"></div>
+
+<noscript>
+  <div class="wrap" style="padding-block:32px">
+    <p>Este catálogo necesita JavaScript para filtrar y armar el carrito. Los PDF también se pueden pedir por correo a
+      <a href="mailto:antarquia@riseup.net">antarquia@riseup.net</a>.</p>
+  </div>
+</noscript>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300" width="200" height="300" role="img" aria-label="Portada no disponible">
-  <rect width="200" height="300" fill="#0a0a0a"/>
-  <rect x="8" y="8" width="184" height="284" fill="none" stroke="#333" stroke-width="2"/>
-  <text x="100" y="150" text-anchor="middle" fill="#ff0000" font-family="system-ui, sans-serif" font-size="26" font-weight="700" letter-spacing="3">MAREA</text>
-  <text x="100" y="180" text-anchor="middle" fill="#666" font-family="system-ui, sans-serif" font-size="11">sin portada</text>
-</svg>

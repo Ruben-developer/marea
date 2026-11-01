@@ -1,41 +1,64 @@
 # Pendientes — Marea
 
-Catálogo digital de la editorial libertaria Marea.
-Dominio final: `marea.antarquia.cl`
+Sitio de la editorial libertaria Marea. Dominio final: `marea.antarquia.cl`.
 
-## 1. Contenido (lo urgente)
+## 1. Catálogo (estado real)
 
-El catálogo real sigue en el WordPress viejo (`porlaanarquia.wordpress.com/catalogos/`),
-que se va a retirar. Hay **31 publicaciones** con portada y enlace de descarga:
+Ya está cargado el inventario completo de `MAREA.xlsx`: **67 fichas**
+(29 Historia / 38 Praxis), 32 con stock y 1 con PDF propio.
 
-| Página del WordPress | Publicaciones |
-|---|---|
-| `/catalogos/libros-y-cuadernillos-antiguos` | 18 |
-| `/catalogos/cuadernillos` | 11 |
-| `/catalogos/cuadernillos-hackratas` | 2 |
+Lo que falta verificar o completar:
 
-- [ ] Extraer las 31 fichas a `catalogo.json` (título, autoría, portada, descripción).
-- [ ] Clasificar cada una en `historia` o `praxis` (el WP separa por época y formato, no por tema).
-- [ ] Descargar las 31 portadas a `covers/` y corregir la ruta `portada` en cada ficha.
-- [ ] Verificar los 31 enlaces de Mega (son de 2016–2019, muchos pueden estar caídos).
-- [ ] Completar los títulos que faltan (cuadernillos antiguos sin portada).
+- [ ] **Clasificación Historia/Praxis**: es provisional. La planilla no trae colección;
+      se asignó por tema (teoría y organización → Praxis; episodios y biografías → Historia).
+      Revisar una por una con la editorial.
+- [ ] **Año y sinopsis**: hoy van `null` / vacíos. Hay que escribirlos.
+- [ ] **Precio y stock**: salen de la planilla y pueden estar desactualizados.
+- [ ] **Portadas reales**: las 67 fichas usan portada SVG generada. Descargar las
+      portadas del WordPress viejo a `covers/` y rellenar `portada`.
+- [ ] **Títulos dudosos**: «Ai Ferri Corti» (¿es el título o una expresión?) y
+      «Golpear donde duele y El buque de los necios» (¿dos textos en un cuadernillo?).
+- [ ] **«Contra los jueces»**: la planilla dice 180 páginas y $2.000; parece un libro,
+      no un cuadernillo. Confirmar.
 
-## 2. Servidor de PDFs (aún no existe)
+## 2. PDFs (servidor aún inexistente)
 
-- [ ] Montar el almacenamiento de PDFs y definir `MAREA_PDF_BASE` / `PDF_BASE`.
-- [ ] Subir los PDFs y rellenar el campo `archivo` de cada ficha.
-- [ ] Sustituir los enlaces de Mega por `archivo` a medida que se rehospeden.
+Hoy solo hay un PDF de muestra: `pdfs/la-anarquia-desde-el-punto-de-vista-de-un-cristiano.pdf`.
 
-## 3. Publicación
+- [ ] Definir dónde vivirán los PDFs (mismo sitio o servidor aparte).
+- [ ] Subirlos y rellenar `archivo` en cada ficha.
+- [ ] Si se rehospedan desde Mega, mantener `enlace` como respaldo mientras se migra.
+- [ ] Confirmar peso y licencia de cada texto antes de publicarlo.
 
-- [ ] Crear repo público `marea` en GitHub (cuenta `Ruben-developer`). Hoy no existe (404).
+## 3. Contenido del WordPress viejo
+
+`porlaanarquia.wordpress.com/catalogos/` tiene **31 publicaciones** con portada y
+enlace de Mega (18 antiguas, 11 actuales, 2 hackratas). El WordPress se va a retirar.
+
+- [ ] Rescatar las 31 portadas y sus descripciones.
+- [ ] Verificar los enlaces de Mega (2016–2019; varios pueden estar caídos).
+- [ ] Cruzar esas 31 fichas con las 67 de la planilla y unificar duplicados.
+
+## 4. Publicación
+
+- [ ] Crear el repo público `marea` en GitHub (cuenta `Ruben-developer`). Hoy da 404.
 - [ ] `git push -u origin main`.
 - [ ] Activar Pages: Settings → Pages → Deploy from a branch → `main` / `(root)`.
-- [ ] Añadir `CNAME` con `marea.antarquia.cl` (ya está en el repo).
-- [ ] Crear el registro DNS `marea` → `ruben-developer.github.io` en Cloudflare.
+- [ ] `CNAME` con `marea.antarquia.cl` (ya está en el repo).
+- [ ] Registro DNS `marea` → `ruben-developer.github.io` en Cloudflare.
 - [ ] URL provisional: `https://ruben-developer.github.io/marea/`
 
-## 4. Después
+## 5. Decisiones de diseño
+
+- [ ] **Elegir estética definitiva**: Imprenta o Cuadernillo. Hoy conviven las dos
+      (botón «⇄ Estética»); al elegir una, se puede dejar la otra como tema alternativo
+      o eliminar su CSS.
+- [ ] Definir si el manifiesto de la vista Difusión queda así o se reemplaza por el
+      texto definitivo (hoy está marcado como provisional).
+- [ ] Añadir el aviso de versión en desarrollo solo mientras dure la carga de PDFs.
+
+## 6. Después
 
 - [ ] Aviso en el WordPress viejo apuntando a `marea.antarquia.cl`.
-- [ ] Revisar si el catálogo de la editorial debe enlazarse desde `porlaanarquia.antarquia.cl`.
+- [ ] Enlazar el catálogo desde `porlaanarquia.antarquia.cl`.
+- [ ] Revisar accesibilidad con teclado y lector de pantalla en las dos estéticas.
