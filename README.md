@@ -8,23 +8,20 @@ Sitio de la editorial libertaria Marea. Dos funciones: **descargar los PDF grati
 - **Contenido**: `catalogo.json` (67 fichas) · `pdfs/` (PDFs) · `assets/` (sello y favicon)
 - **Contacto**: antarquia@riseup.net
 
-## Estéticas
+## Estética
 
-El sitio trae dos diseños conmutables desde el botón «⇄ Estética»:
+El sitio usa una sola estética, **Cuadernillo**: papel crema, serif, tinta azul y el
+sello rojo estampado (`data-estetica="cuadernillo"` en `<html>`). El rojo queda
+reservado al sello; el azul es el acento de botones y títulos.
 
-| Valor de `data-estetica` | Nombre | Rasgo |
-|---|---|---|
-| `imprenta` (por defecto) | Imprenta | Tinta clara sobre negro, tipografía condensada, rojo de imprenta |
-| `cuadernillo` | Cuadernillo | Papel crema, serif, tinta azul, sello rojo estampado |
-
-La estética y el tema (claro/oscuro) se guardan en `localStorage` y se aplican antes
-de pintar para evitar el destello.
+El tema (papel claro / modo noche) se guarda en `localStorage` y se aplica antes de
+pintar para evitar el destello.
 
 ## Estructura
 
 ```
 index.html      Todas las vistas (inicio, catálogo, difusión, carrito) + modales
-style.css       Ambas estéticas; lo de Cuadernillo cuelga de [data-estetica=cuadernillo]
+style.css       Estética Cuadernillo; el tema noche cuelga de [data-theme=dark]
 app.js          Router por hash, catálogo, filtros, carrito, modales, portadas SVG
 config.js       window.MAREA_PDF_BASE (base del servidor de PDFs)
 catalogo.json   Las fichas

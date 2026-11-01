@@ -50,12 +50,15 @@ enlace de Mega (18 antiguas, 11 actuales, 2 hackratas). El WordPress se va a ret
 
 ## 5. Decisiones de diseño
 
-- [ ] **Elegir estética definitiva**: Imprenta o Cuadernillo. Hoy conviven las dos
-      (botón «⇄ Estética»); al elegir una, se puede dejar la otra como tema alternativo
-      o eliminar su CSS.
+- [x] **Estética definitiva: Cuadernillo** (papel crema, serif, tinta azul, sello rojo).
+      Es la única: se eliminó el conmutador y el código de la estética Imprenta.
+      Queda el modo noche/papel.
+- [ ] Purgar del CSS la capa base heredada de Imprenta que ya no se usa
+      (tokens y reglas que Cuadernillo pisa). No afecta al render, es limpieza.
 - [ ] Definir si el manifiesto de la vista Difusión queda así o se reemplaza por el
       texto definitivo (hoy está marcado como provisional).
-- [ ] Añadir el aviso de versión en desarrollo solo mientras dure la carga de PDFs.
+- [ ] Quitar el aviso de «versión en desarrollo» cuando estén los PDFs y los precios
+      verificados.
 
 ## 6. Después
 
