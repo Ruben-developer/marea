@@ -3,7 +3,8 @@
 Sitio de la editorial libertaria Marea. Dos funciones: **descargar los PDF gratis** y
 **comprar los impresos** para sostener la imprenta. El acceso al texto nunca se paga.
 
-- **Dominio**: `marea.antarquia.cl`
+- **En línea**: https://ruben-developer.github.io/marea/
+- **Dominio final**: `marea.antarquia.cl` (pendiente de DNS; ver «Publicación»)
 - **Stack**: HTML + CSS + JavaScript vanilla. Sin build, sin dependencias, sin CDN.
 - **Contenido**: `catalogo.json` (67 fichas) · `pdfs/` (PDFs) · `assets/` (sello y favicon)
 - **Contacto**: antarquia@riseup.net
@@ -93,6 +94,22 @@ servirlo por HTTP (`file://` lo bloquea).
 1. Copia el PDF a `pdfs/` y escribe su nombre en `archivo`.
 2. Si hay portada real, cópiala a `covers/` y escribe la ruta en `portada`.
 3. Añade o edita la ficha en `catalogo.json`.
+
+## Publicación
+
+GitHub Pages sirve la rama `main` desde la raíz. URL actual:
+
+**https://ruben-developer.github.io/marea/**
+
+El dominio `marea.antarquia.cl` todavía no tiene DNS. Para activarlo:
+
+1. En Cloudflare, crear `CNAME marea` → `ruben-developer.github.io`.
+2. Renombrar `CNAME.pending` a `CNAME` (contiene `marea.antarquia.cl`) y hacer push.
+3. En GitHub: Settings → Pages → Custom domain, verificar y activar «Enforce HTTPS».
+
+Mientras el DNS no exista, el archivo `CNAME` debe quedar fuera: si Pages tiene un
+dominio personalizado configurado, la URL `github.io` redirige a él y el sitio queda
+inaccesible.
 
 ## Origen del catálogo
 

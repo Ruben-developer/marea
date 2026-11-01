@@ -41,12 +41,14 @@ enlace de Mega (18 antiguas, 11 actuales, 2 hackratas). El WordPress se va a ret
 
 ## 4. Publicación
 
-- [ ] Crear el repo público `marea` en GitHub (cuenta `Ruben-developer`). Hoy da 404.
-- [ ] `git push -u origin main`.
-- [ ] Activar Pages: Settings → Pages → Deploy from a branch → `main` / `(root)`.
-- [ ] `CNAME` con `marea.antarquia.cl` (ya está en el repo).
+- [x] Crear el repo público `marea` en GitHub (cuenta `Ruben-developer`).
+- [x] `git push -u origin main`.
+- [x] Activar Pages: `main` / `(root)`.
+- [x] URL provisional: https://ruben-developer.github.io/marea/
 - [ ] Registro DNS `marea` → `ruben-developer.github.io` en Cloudflare.
-- [ ] URL provisional: `https://ruben-developer.github.io/marea/`
+- [ ] Renombrar `CNAME.pending` a `CNAME` y hacer push (hoy está fuera para que
+      funcione la URL de `github.io`).
+- [ ] En GitHub: Settings → Pages → Custom domain `marea.antarquia.cl` + «Enforce HTTPS».
 
 ## 5. Decisiones de diseño
 
