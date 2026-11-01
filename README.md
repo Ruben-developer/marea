@@ -11,8 +11,8 @@ Catálogo digital de Marea, editorial libertaria.
 
 | Clave | Nombre |
 |---|---|
-| `historia` | Historia Anarquista |
-| `praxis` | Ideas y Praxis |
+| `historia` | Historia |
+| `praxis` | Praxis |
 
 ## Estructura de una ficha
 
