@@ -1,31 +1,41 @@
-# Pendientes — Tinta Negra
+# Pendientes — Marea
 
-Catálogo digital de cuadernillos y publicaciones (antes "Editorial Gato Negro").
-Dominio final: `tintanegra.antarquia.cl`
+Catálogo digital de la editorial libertaria Marea.
+Dominio final: `marea.antarquia.cl`
 
-## Publicar en GitHub Pages (pendiente)
+## 1. Contenido (lo urgente)
 
-1. Crear repo público `tinta-negra` en github.com (cuenta `Ruben-developer`).
-   - El remote ya está configurado en este repo.
-2. Subir:
-   ```bash
-   cd /home/nbk/Repositorios/tinta-negra
-   git push -u origin main
-   ```
-3. Activar Pages: Settings → Pages → Deploy from a branch → `main` / `(root)`.
-4. URL provisional: `https://ruben-developer.github.io/tinta-negra/`
+El catálogo real sigue en el WordPress viejo (`porlaanarquia.wordpress.com/catalogos/`),
+que se va a retirar. Hay **31 publicaciones** con portada y enlace de descarga:
 
-## Datos del catálogo (pendiente)
+| Página del WordPress | Publicaciones |
+|---|---|
+| `/catalogos/libros-y-cuadernillos-antiguos` | 18 |
+| `/catalogos/cuadernillos` | 11 |
+| `/catalogos/cuadernillos-hackratas` | 2 |
 
-- [ ] Completar los 5 títulos sin nombre (`Sin título N (completar)`):
-      3 cuadernillos antiguos sin portada + 2 actuales con portadas
-      `diapositiva10-1` y `diapositiva11-1`.
-- [ ] Correr `python3 descargar_portadas.py` para bajar las portadas a `covers/`
-      (mientras no se haga, se cargan desde WordPress como respaldo).
-- [ ] Revisar los enlaces `mega.nz/#!...` de 2016–2019: pueden haber caído.
+- [ ] Extraer las 31 fichas a `catalogo.json` (título, autoría, portada, descripción).
+- [ ] Clasificar cada una en `historia` o `praxis` (el WP separa por época y formato, no por tema).
+- [ ] Descargar las 31 portadas a `covers/` y corregir la ruta `portada` en cada ficha.
+- [ ] Verificar los 31 enlaces de Mega (son de 2016–2019, muchos pueden estar caídos).
+- [ ] Completar los títulos que faltan (cuadernillos antiguos sin portada).
 
-## Después
+## 2. Servidor de PDFs (aún no existe)
 
-- [ ] Conectar Cloudflare Pages y dominio `tintanegra.antarquia.cl`.
-- [ ] Revisar si el WordPress viejo (`porlaanarquia.wordpress.com/catalogos`)
-      se deja con aviso o se paga el "Site Redirect".
+- [ ] Montar el almacenamiento de PDFs y definir `MAREA_PDF_BASE` / `PDF_BASE`.
+- [ ] Subir los PDFs y rellenar el campo `archivo` de cada ficha.
+- [ ] Sustituir los enlaces de Mega por `archivo` a medida que se rehospeden.
+
+## 3. Publicación
+
+- [ ] Crear repo público `marea` en GitHub (cuenta `Ruben-developer`). Hoy no existe (404).
+- [ ] `git push -u origin main`.
+- [ ] Activar Pages: Settings → Pages → Deploy from a branch → `main` / `(root)`.
+- [ ] Añadir `CNAME` con `marea.antarquia.cl` (ya está en el repo).
+- [ ] Crear el registro DNS `marea` → `ruben-developer.github.io` en Cloudflare.
+- [ ] URL provisional: `https://ruben-developer.github.io/marea/`
+
+## 4. Después
+
+- [ ] Aviso en el WordPress viejo apuntando a `marea.antarquia.cl`.
+- [ ] Revisar si el catálogo de la editorial debe enlazarse desde `porlaanarquia.antarquia.cl`.

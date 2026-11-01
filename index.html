@@ -3,25 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tinta Negra - Catálogo</title>
+    <title>Marea — Catálogo</title>
+    <meta name="description" content="Catálogo de Marea, editorial libertaria: historia anarquista, ideas y praxis.">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <h1>Tinta Negra</h1>
+        <h1>Marea</h1>
+        <p class="lema">Editorial libertaria</p>
         <div class="filtros">
-            <input type="text" id="buscador" placeholder="Buscar..." autocomplete="off">
+            <input type="text" id="buscador" placeholder="Buscar por título o autoría..." autocomplete="off">
             <select id="filtroColeccion">
                 <option value="todos">Todas las colecciones</option>
-                <option value="antiguos">Libros y Cuadernillos Antiguos</option>
-                <option value="actuales">Cuadernillos Actuales</option>
-                <option value="hackratas">Cuadernillos con Hackratas</option>
+                <option value="historia">Historia Anarquista</option>
+                <option value="praxis">Ideas y Praxis</option>
             </select>
         </div>
     </header>
     <main>
         <div id="catalogo" class="grid"></div>
     </main>
+    <script src="config.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
