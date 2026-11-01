@@ -7,7 +7,7 @@ Sitio de la editorial libertaria Marea. Dos funciones: **descargar los PDF grati
 - **Dominio final**: `marea.antarquia.cl` (pendiente de DNS; ver «Publicación»)
 - **Stack**: HTML + CSS + JavaScript vanilla. Sin build, sin dependencias, sin CDN.
 - **Contenido**: `catalogo.json` (67 fichas) · `pdfs/` (PDFs) · `assets/` (sello y favicon)
-- **Contacto**: antarquia@riseup.net
+- **Contacto**: mar-editorial-anarquista@riseup.net
 
 ## Estética
 
@@ -77,7 +77,7 @@ servidor de descargas, basta cambiarlo por su URL en `config.js`.
 ## Carrito
 
 No hay backend ni pago en línea. «Armar pedido» genera un resumen y abre el cliente
-de correo con un `mailto:` a antarquia@riseup.net; el pedido se acuerda por correo.
+de correo con un `mailto:` a mar-editorial-anarquista@riseup.net; el pedido se acuerda por correo.
 El carrito se guarda en `localStorage` y solo acepta títulos con impreso y stock.
 
 ## Desarrollo local
