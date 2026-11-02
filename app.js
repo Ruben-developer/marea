@@ -18,7 +18,7 @@
   var MICROCOPY_DESCARGA = 'Copiá, compartí, reimprimí. Se reconoce la autoría, no su propiedad.';
   var LS_CART = 'marea_carrito_v1';
   var LS_THEME = 'marea_tema_v1_cuadernillo';
-  var CONTACTO = { correo: 'mar-editorial-anarquista@riseup.net', sitio: 'marea.antarquia.cl' };
+  var CONTACTO = { correo: 'contacto-marea@riseup.net', sitio: 'marea.antarquia.cl' };
   var TITULOS = {
     inicio: 'Inicio',
     catalogo: 'Catálogo',

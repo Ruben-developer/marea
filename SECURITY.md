@@ -5,7 +5,7 @@ por JSON con Pages CMS y los PDFs se sirven aparte.
 
 ## Cómo reportar
 
-Escribe a **mar-editorial-anarquista@riseup.net** con la URL afectada, qué ocurre
+Escribe a **contacto-marea@riseup.net** con la URL afectada, qué ocurre
 y cómo reproducirlo.
 
 Si el fallo permite ejecutar código en el navegador de otra persona, no abras un

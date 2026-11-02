@@ -2,6 +2,11 @@
 
 Sitio de la editorial libertaria Marea. Dominio final: `marea.antarquia.cl`.
 
+## 0. Correo
+
+- [ ] Crear en Riseup el alias `contacto-marea@riseup.net` (entrega en
+      `antarquia@riseup.net`) y probar un pedido real.
+
 ## 1. Catálogo (estado real)
 
 Ya está cargado el inventario completo de `MAREA.xlsx`: **67 fichas**
