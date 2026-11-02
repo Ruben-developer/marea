@@ -6,6 +6,9 @@
 <title>MAREA · M.A.R. Editorial Anarquista</title>
 <meta name="description" content="Cuadernillos y libros libertarios. El PDF es libre y sin registro; comprar el impreso sostiene la imprenta.">
 <meta name="theme-color" content="#0b0b0a">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<!-- Todo se sirve desde el propio dominio (catálogo, portadas, PDFs). -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self'">
 <link rel="icon" href="assets/favicon.png" type="image/png">
 <link rel="stylesheet" href="style.css">
 <script>
@@ -56,7 +59,7 @@
         <span class="crop crop-tl solo-cuad" aria-hidden="true"></span><span class="crop crop-tr solo-cuad" aria-hidden="true"></span>
         <span class="crop crop-bl solo-cuad" aria-hidden="true"></span><span class="crop crop-br solo-cuad" aria-hidden="true"></span>
         <h1 id="h-inicio" tabindex="-1">Ideas sin dueño</h1>
-        <p class="verbs" aria-label="Lee, comparte, organízate"><span>Lee</span><span>Comparte</span><span>Organízate</span></p>
+        <p class="verbs" role="group" aria-label="Lee, comparte, organízate"><span>Lee</span><span>Comparte</span><span>Organízate</span></p>
         <p class="lead">Cuadernillos y libros libertarios. El PDF es gratis, siempre y sin registro. Comprar el impreso sostiene el proyecto; no es pagar por leer.</p>
         <div class="cta-row">
           <a class="btn btn-solid" href="#/catalogo">Ver catálogo</a>
@@ -103,7 +106,7 @@
       <h1 class="view-title" id="h-catalogo" tabindex="-1">Catálogo</h1>
       <p class="lead">Todo PDF disponible se descarga libre. Lo que aparece como «Próximamente» aún no tiene archivo: lo marcamos así en vez de dejarte un enlace roto.</p>
 
-      <form class="controls" role="search" aria-label="Buscar y filtrar el catálogo" onsubmit="return false">
+      <div class="controls" role="search" aria-label="Buscar y filtrar el catálogo">
         <div class="ctl-row">
           <div class="field search-field">
             <label for="q">Buscar</label>
@@ -136,7 +139,7 @@
             </div>
           </fieldset>
         </div>
-      </form>
+      </div>
 
       <p class="result-count" id="resultCount" role="status" aria-live="polite"></p>
       <div id="catalogGrid"><p class="cargando">Cargando catálogo…</p></div>

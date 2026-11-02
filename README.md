@@ -31,7 +31,20 @@ assets/         sello.png (máscara alfa del sello real) y favicon.png
 pdfs/           PDFs servidos junto al sitio
 .pages.yml      Configuración de Pages CMS (formularios sobre catalogo.json)
 scripts/        validar.mjs, revisa el catálogo antes de publicar
+.nojekyll       Evita que Pages procese pdfs/ y covers/ con Jekyll
+.github/        CI (catálogo + HTML + gitleaks) y Dependabot
 ```
+
+## Seguridad y CI
+
+- `enlace` debe ser `http(s)` y `archivo`/`portada` solo admiten ruta relativa o
+  `http(s)`: se rechazan `javascript:`, `data:` y otros esquemas, tanto en el
+  sitio (`app.js`) como en `scripts/validar.mjs`.
+- CSP en `index.html`: sin CDN, sin tipografías de terceros, sin peticiones
+  externas.
+- CI: `node scripts/validar.mjs`, `html-validate` y gitleaks en cada PR.
+- Cómo reportar un fallo: ver [`SECURITY.md`](SECURITY.md).
+- Licencia del código: MIT (ver [`LICENSE`](LICENSE)).
 
 ## Ficha del catálogo
 
