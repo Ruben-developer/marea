@@ -6,7 +6,7 @@ Sitio de la editorial libertaria Marea. Dos funciones: **descargar los PDF grati
 - **En línea**: https://ruben-developer.github.io/marea/
 - **Dominio final**: `marea.antarquia.cl` (pendiente de DNS; ver «Publicación»)
 - **Stack**: HTML + CSS + JavaScript vanilla. Sin build, sin dependencias, sin CDN.
-- **Contenido**: `catalogo.json` (67 fichas) · `pdfs/` (PDFs) · `assets/` (sello y favicon)
+- **Contenido**: `catalogo.json` (2 fichas de muestra) · `pdfs/` (PDFs) · `assets/` (sello y favicon)
 - **Contacto**: contacto-marea@riseup.net (alias de Riseup; crearlo antes de usarlo)
 
 ## Estética
@@ -151,7 +151,10 @@ inaccesible.
 
 ## Origen del catálogo
 
-Las 67 fichas salen de `MAREA.xlsx` (inventario real de la editorial). La
-clasificación Historia/Praxis es **provisional**: la planilla no trae ese campo y
-se asignó por tema. Faltan año, sinopsis y portadas reales; el precio y el stock
-también hay que verificarlos antes de publicar.
+Las 67 fichas originales salen de `MAREA.xlsx` (inventario real de la
+editorial). **Hoy `catalogo.json` conserva solo 2 fichas de muestra**
+(`m-001` y `m-067`, esta última con PDF); el resto sigue en la planilla y en el
+historial de git, en el commit anterior a la reducción. La clasificación
+Historia/Praxis es **provisional**: la planilla no trae ese campo y se asignó por
+tema. Faltan año, sinopsis y portadas reales; el precio y el stock también hay
+que verificarlos antes de publicar.

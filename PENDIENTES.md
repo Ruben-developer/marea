@@ -9,8 +9,11 @@ Sitio de la editorial libertaria Marea. Dominio final: `marea.antarquia.cl`.
 
 ## 1. Catálogo (estado real)
 
-Ya está cargado el inventario completo de `MAREA.xlsx`: **67 fichas**
-(29 Historia / 38 Praxis), 32 con stock y 1 con PDF propio.
+El inventario completo de `MAREA.xlsx` tiene **67 fichas** (29 Historia / 38
+Praxis), 32 con stock y 1 con PDF propio. Por pedido, `catalogo.json` quedó
+**reducido a 2 fichas de muestra**: `m-001` *Ai Ferri Corti* y `m-067` *La
+anarquía desde el punto de vista de un cristiano* (la única con PDF). Las otras
+65 se recuperan de la planilla o del historial de git.
 
 Lo que falta verificar o completar:
 
@@ -19,7 +22,9 @@ Lo que falta verificar o completar:
       Revisar una por una con la editorial.
 - [ ] **Año y sinopsis**: hoy van `null` / vacíos. Hay que escribirlos.
 - [ ] **Precio y stock**: salen de la planilla y pueden estar desactualizados.
-- [ ] **Portadas reales**: las 67 fichas usan portada SVG generada. Descargar las
+- [ ] **Restaurar el catálogo completo**: si se retoma el inventario de 67, recuperar
+      las fichas desde `MAREA.xlsx` o el commit anterior a la reducción.
+- [ ] **Portadas reales**: las fichas usan portada SVG generada. Descargar las
       portadas del WordPress viejo a `covers/` y rellenar `portada`.
 - [ ] **Títulos dudosos**: «Ai Ferri Corti» (¿es el título o una expresión?) y
       «Golpear donde duele y El buque de los necios» (¿dos textos en un cuadernillo?).
