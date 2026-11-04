@@ -70,25 +70,22 @@ enlace de Mega (18 antiguas, 11 actuales, 2 hackratas). El WordPress se va a ret
 
 ## 6. Decisiones de diseño
 
-- [x] **Cuatro estéticas conmutables** desde la cabecera (3 nov 2026): Cuadernillo
-      (base), Xilografía, Washi y Sello y tipos. Selector accesible, persistencia
-      en `localStorage` y vista previa con `?estetica=`. Ver [`ESTETICA.md`](ESTETICA.md).
-- [x] Cada estética tiene portadas SVG propias; la colección decide el acento
-      (Historia = índigo, Praxis = bermellón/caqui).
-- [ ] **Decidir la estética definitiva** después de la revisión visual. Si se elige
-      una de las tres nuevas, borrar los bloques de las otras dos de `style.css`
-      y sus portadas de `app.js`.
+- [x] **Estética definitiva: Xilografía** (4 nov 2026). Se eliminó el selector y
+      las estéticas Cuadernillo, Washi y Sello y tipos. Papel crudo, tinta negra
+      y bermellón, con colores planos (sin texturas ni degradados). Ver
+      [`ESTETICA.md`](ESTETICA.md).
+- [x] Logo oficial `assets/sello-rojo.png` en cabecera, portada, pie y fichas.
+- [x] Marca visible `M.A.R.E.A.`, sin subtítulo.
+- [x] Manifiesto definitivo en Difusión y su introducción en Inicio.
+- [x] Se quitaron la barra de estado, el aviso del catálogo, las bandas de
+      «¡La propiedad es un robo!», la política de reproducción y los lemas.
 - [ ] **Fuentes**: evaluar una Mincho self-hosteada y subseteada para titulares
       (la CSP prohíbe fuentes externas). Hoy todo va con pilas del sistema.
-- [ ] Purgar del CSS la capa base heredada de Imprenta que ya no se usa
-      (tokens y reglas que cada estética pisa). No afecta al render, es limpieza.
-- [ ] Definir si el manifiesto de la vista Difusión queda así o se reemplaza por el
-      texto definitivo (hoy está marcado como provisional).
-- [ ] Quitar el aviso de «versión en desarrollo» cuando estén los PDFs y los precios
-      verificados.
+- [ ] Revisar el contraste del bermellón en textos pequeños (hoy se usa solo en
+      titulares, sellos y botones).
 
 ## 7. Después
 
 - [ ] Aviso en el WordPress viejo apuntando a `marea.antarquia.cl`.
 - [ ] Enlazar el catálogo desde `porlaanarquia.antarquia.cl`.
-- [ ] Revisar accesibilidad con teclado y lector de pantalla en las dos estéticas.
+- [ ] Revisar accesibilidad con teclado y lector de pantalla en tema claro y oscuro.

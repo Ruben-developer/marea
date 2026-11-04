@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <!-- Sello cuadrado (hanko) usado como máscara alfa: el cuadrado pinta,
-       las barras interiores quedan en blanco, como una estampa tallada. -->
-  <path fill="#fff" fill-rule="evenodd" d="M4 4 H96 V96 H4 Z M19 21 h22 v3.5 h-22 Z M19 29 h22 v3.5 h-22 Z M19 37 h22 v3.5 h-22 Z M30.5 19 h3.5 v26 h-3.5 Z M59 21 h22 v3.5 h-22 Z M59 29 h22 v3.5 h-22 Z M59 37 h22 v3.5 h-22 Z M70.5 19 h3.5 v26 h-3.5 Z M19 61 h22 v3.5 h-22 Z M19 69 h22 v3.5 h-22 Z M19 77 h22 v3.5 h-22 Z M30.5 59 h3.5 v26 h-3.5 Z M59 61 h22 v3.5 h-22 Z M59 69 h22 v3.5 h-22 Z M59 77 h22 v3.5 h-22 Z M70.5 59 h3.5 v26 h-3.5 Z"/>
-</svg>
