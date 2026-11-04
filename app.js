@@ -18,6 +18,19 @@
   var MICROCOPY_DESCARGA = 'Copiá, compartí, reimprimí. Se reconoce la autoría, no su propiedad.';
   var LS_CART = 'marea_carrito_v1';
   var LS_THEME = 'marea_tema_v1_cuadernillo';
+  var LS_ESTILO = 'marea_estetica_v1';
+  var ESTILOS = {
+    cuadernillo: { nombre: 'Cuadernillo', nota: 'Papel crema, serif, tinta azul' },
+    xilografia: { nombre: 'Xilografía', nota: 'Dos tintas, talla y sello bermellón' },
+    washi: { nombre: 'Washi', nota: 'Índigo, plantilla y papel crudo' },
+    sello: { nombre: 'Sello y tipos', nota: 'Tipografía, filetes y sello cuadrado' }
+  };
+  var COLOR_BARRA = {
+    cuadernillo: { light: '#efe9dc', dark: '#12171d' },
+    xilografia: { light: '#e9e1cd', dark: '#14130f' },
+    washi: { light: '#ece5d3', dark: '#101820' },
+    sello: { light: '#f2ecdb', dark: '#15130f' }
+  };
   var CONTACTO = { correo: 'contacto-marea@riseup.net', sitio: 'marea.antarquia.cl' };
   var TITULOS = {
     inicio: 'Inicio',
@@ -180,13 +193,146 @@
       var alt = label ? 'Portada de ' + p.titulo + ', de ' + p.autor : '';
       return '<img src="' + esc(p.portada) + '" alt="' + esc(alt) + '" loading="lazy" width="300" height="420">';
     }
-    return portadaCU(p, label);
+    var est = estiloActual();
+    if (est === 'xilografia') return portadaXilo(p, label);
+    if (est === 'washi') return portadaWashi(p, label);
+    if (est === 'sello') return portadaSello(p, label);
+    return portadaCuadernillo(p, label);
   }
 
-  /* Portada generada: papel crema, tarjeta redondeada con el título, píldora con
+  /* Cada estética tiene su propia portada generada. Todas comparten el
+     formato 300×420 y el ajuste de título; cambian tinta, composición
+     y sello. La colección decide el acento: Historia = índigo,
+     Praxis = bermellón (o caqui en Washi). */
+  var PALETA_PORTADA = {
+    xilografia: { papel: '#ede6d4', tinta: '#17150f', hist: '#22364a', praxis: '#b5342a' },
+    washi: { papel: '#efe9da', tinta: '#223a52', hist: '#223a52', praxis: '#8c5a2b' },
+    sello: { papel: '#f3ecdc', tinta: '#17150f', hist: '#22364a', praxis: '#a83226' }
+  };
+
+  function estiloActual() {
+    var e = document.documentElement.dataset.estetica;
+    return ESTILOS[e] ? e : 'cuadernillo';
+  }
+  function acentoPortada(p, pal) { return p.coleccion === 'historia' ? pal.hist : pal.praxis; }
+  function n1(v) { return Math.round(v * 10) / 10; }
+
+  function ariaPortada(p, label, tipo) {
+    if (!label) return 'aria-hidden="true"';
+    return 'role="img" aria-label="Portada de ejemplo (' + tipo + '): ' + esc(p.titulo) + ', de ' + esc(p.autor) + '"';
+  }
+
+  /* Sello cuadrado dibujado en SVG: cuadrado macizo con barras del color
+     del papel, como una estampa tallada. */
+  function selloSVG(x, y, s, color, papel) {
+    var out = '<rect x="' + x + '" y="' + y + '" width="' + s + '" height="' + s + '" fill="' + color + '"/>';
+    var m = s * 0.15, cell = s * 0.30, gap = s * 0.10;
+    var pos = [m, m + cell + gap];
+    for (var i = 0; i < 2; i++) {
+      for (var j = 0; j < 2; j++) {
+        var cx = x + pos[i], cy = y + pos[j];
+        [0.22, 0.45, 0.68].forEach(function (f) {
+          out += '<rect x="' + n1(cx + cell * 0.16) + '" y="' + n1(cy + cell * f) + '" width="' + n1(cell * 0.68) +
+            '" height="' + n1(cell * 0.10) + '" fill="' + papel + '"/>';
+        });
+        out += '<rect x="' + n1(cx + cell * 0.45) + '" y="' + n1(cy + cell * 0.14) + '" width="' + n1(cell * 0.10) +
+          '" height="' + n1(cell * 0.72) + '" fill="' + papel + '"/>';
+      }
+    }
+    return out;
+  }
+
+  /* Xilografía: marco doble, título en bloque, barra de acento y sello. */
+  function portadaXilo(p, label) {
+    var pal = PALETA_PORTADA.xilografia, ac = acentoPortada(p, pal);
+    var aj = ajustarTitulo(p.titulo, 215, 4, [30, 26, 22, 19, 16]);
+    var fs = aj.fs, lines = aj.lines, y = 104, salto = fs + 8;
+    var alto = lines.length * salto;
+    var txt = lines.map(function (l, k) {
+      return '<text x="32" y="' + (y + fs + k * salto) + '" font-family="Georgia,serif" font-size="' + fs +
+        '" font-weight="700" letter-spacing="-0.4" fill="' + pal.tinta + '">' + esc(String(l).toUpperCase()) + '</text>';
+    }).join('');
+    var trazos = '';
+    for (var i = 0; i < 3; i++) {
+      trazos += '<rect x="32" y="' + (302 + i * 13) + '" width="' + (86 + i * 38) + '" height="6" fill="' + pal.tinta + '"/>';
+    }
+    var autor = p.autor.toUpperCase();
+    if (autor.length > 34) autor = autor.slice(0, 33) + '…';
+    return '<svg viewBox="0 0 300 420" xmlns="http://www.w3.org/2000/svg" ' + ariaPortada(p, label, 'xilografía') + '>' +
+      '<rect width="300" height="420" fill="' + pal.papel + '"/>' +
+      '<rect x="12" y="12" width="276" height="396" fill="none" stroke="' + pal.tinta + '" stroke-width="2"/>' +
+      '<rect x="17" y="17" width="266" height="386" fill="none" stroke="' + pal.tinta + '" stroke-width="0.8"/>' +
+      '<text x="32" y="50" font-family="Courier New,monospace" font-size="10" letter-spacing="2.5" fill="' + pal.tinta + '">M.A.R · ' +
+      COLECCIONES[p.coleccion].toUpperCase() + '</text>' +
+      '<rect x="19" y="88" width="7" height="' + n1(alto + 12) + '" fill="' + ac + '"/>' +
+      txt + trazos +
+      '<text x="32" y="392" font-family="Courier New,monospace" font-size="9" letter-spacing="1.6" fill="' + pal.tinta + '">' +
+      esc(autor) + '</text>' +
+      selloSVG(212, 320, 54, ac, pal.papel) +
+      '</svg>';
+  }
+
+  /* Washi: panel índigo con trama de plantilla y título en crema. */
+  function portadaWashi(p, label) {
+    var pal = PALETA_PORTADA.washi, ac = acentoPortada(p, pal);
+    var id = 'wa' + (++_cv);
+    var aj = ajustarTitulo(p.titulo, 220, 4, [27, 24, 21, 18, 15]);
+    var fs = aj.fs, lines = aj.lines, y = 74, salto = fs + 7, panel = 270;
+    var txt = lines.map(function (l, k) {
+      return '<text x="150" y="' + (y + k * salto) + '" text-anchor="middle" font-family="Georgia,serif" font-size="' + fs +
+        '" font-weight="600" letter-spacing="0.5" fill="' + pal.papel + '">' + esc(String(l).toUpperCase()) + '</text>';
+    }).join('');
+    var trama = '';
+    for (var x = -300; x < 340; x += 24) {
+      trama += '<line x1="' + x + '" y1="0" x2="' + n1(x + panel * 0.577) + '" y2="' + panel + '" stroke="' + pal.papel + '" stroke-width="1" opacity="0.10"/>';
+      trama += '<line x1="' + x + '" y1="' + panel + '" x2="' + n1(x + panel * 0.577) + '" y2="0" stroke="' + pal.papel + '" stroke-width="1" opacity="0.10"/>';
+    }
+    var autor = p.autor.toUpperCase();
+    if (autor.length > 36) autor = autor.slice(0, 35) + '…';
+    return '<svg viewBox="0 0 300 420" xmlns="http://www.w3.org/2000/svg" ' + ariaPortada(p, label, 'washi') + '>' +
+      '<defs><clipPath id="' + id + 'c"><rect width="300" height="' + panel + '"/></clipPath></defs>' +
+      '<rect width="300" height="420" fill="' + pal.papel + '"/>' +
+      '<g clip-path="url(#' + id + 'c)"><rect width="300" height="' + panel + '" fill="' + pal.tinta + '"/>' + trama + '</g>' +
+      txt +
+      '<text x="150" y="306" text-anchor="middle" font-family="Courier New,monospace" font-size="10" letter-spacing="1.8" fill="' + pal.tinta + '">' +
+      esc(autor) + '</text>' +
+      '<rect x="60" y="320" width="180" height="1" fill="' + pal.tinta + '"/>' +
+      '<text x="60" y="350" font-family="Courier New,monospace" font-size="9" letter-spacing="2.4" fill="' + pal.tinta + '">MAREA · M.A.R.</text>' +
+      selloSVG(208, 338, 54, ac, pal.papel) +
+      '</svg>';
+  }
+
+  /* Sello y tipos: todo tipográfico, doble filete y sello cuadrado. */
+  function portadaSello(p, label) {
+    var pal = PALETA_PORTADA.sello, ac = acentoPortada(p, pal);
+    var aj = ajustarTitulo(p.titulo, 210, 5, [26, 23, 20, 17, 15]);
+    var fs = aj.fs, lines = aj.lines, salto = fs + 7, y = 112;
+    var txt = lines.map(function (l, k) {
+      return '<text x="150" y="' + (y + k * salto) + '" text-anchor="middle" font-family="Georgia,serif" font-size="' + fs +
+        '" font-weight="600" letter-spacing="0.4" fill="' + pal.tinta + '">' + esc(String(l).toUpperCase()) + '</text>';
+    }).join('');
+    var fin = y + lines.length * salto;
+    var autor = p.autor.toUpperCase();
+    if (autor.length > 40) autor = autor.slice(0, 39) + '…';
+    return '<svg viewBox="0 0 300 420" xmlns="http://www.w3.org/2000/svg" ' + ariaPortada(p, label, 'sello y tipos') + '>' +
+      '<rect width="300" height="420" fill="' + pal.papel + '"/>' +
+      '<rect x="11" y="11" width="278" height="398" fill="none" stroke="' + pal.tinta + '" stroke-width="1"/>' +
+      '<rect x="17" y="17" width="266" height="386" fill="none" stroke="' + pal.tinta + '" stroke-width="0.6"/>' +
+      '<text x="150" y="40" text-anchor="middle" font-family="Courier New,monospace" font-size="9" letter-spacing="3" fill="' + pal.tinta + '">M · A · R · EDITORIAL</text>' +
+      txt +
+      '<rect x="70" y="' + n1(fin + 2) + '" width="160" height="1.2" fill="' + pal.tinta + '"/>' +
+      selloSVG(124, 286, 52, ac, pal.papel) +
+      '<text x="150" y="374" text-anchor="middle" font-family="Courier New,monospace" font-size="10" letter-spacing="1.6" fill="' + pal.tinta + '">' +
+      esc(autor) + '</text>' +
+      '<text x="150" y="394" text-anchor="middle" font-family="Courier New,monospace" font-size="8.5" letter-spacing="2.4" fill="' + pal.tinta + '">' +
+      COLECCIONES[p.coleccion].toUpperCase() + ' · MAREA</text>' +
+      '</svg>';
+  }
+
+  /* Cuadernillo: papel crema, tarjeta redondeada con el título, píldora con
      el autor y una ilustración simple en tinta azul (olas + sol para Historia;
      círculo de asamblea para Praxis). */
-  function portadaCU(p, label) {
+  function portadaCuadernillo(p, label) {
     var id = 'cu' + (++_cv);
     var hist = p.coleccion === 'historia';
     var bg = hist ? '#eadfc4' : '#dfe4e0', azul = '#1f3d63', papel = '#fbf7ec', tinta = '#1c1b18';
@@ -518,10 +664,10 @@
       '<dl class="datos">' + datos + '</dl>' +
       (p.sinopsis ? '<p class="sinopsis">' + esc(p.sinopsis) + '</p>' : '<p class="sinopsis vacio">Sin sinopsis todavía.</p>') +
       '<div class="block libre">' +
-      (tiene ? '<span class="sello sello--rojo sello-stamp solo-cuad" aria-hidden="true"></span>' : '') +
+      (tiene ? '<span class="sello sello--rojo sello-stamp" aria-hidden="true"></span>' : '') +
       '<h3>Lectura libre</h3>' + libre + '</div>' +
       '<div class="block"><h3>Apoya el proyecto</h3>' + apoyo + '</div>' +
-      '<div class="contra solo-cuad"><span class="sello sello--azul" style="--s:64px" aria-hidden="true"></span>' +
+      '<div class="contra"><span class="sello sello--azul" style="--s:64px" aria-hidden="true"></span>' +
       '<span>' + CONTACTO.correo + '<br>' + CONTACTO.sitio + '</span></div>' +
       '</div></div>';
 
@@ -617,10 +763,99 @@
       b.setAttribute('aria-pressed', String(claro));
     }
     lsSet(LS_THEME, t);
+    aplicarColorBarra();
   }
   if ($('#themeBtn')) $('#themeBtn').addEventListener('click', function () {
     setTheme(document.documentElement.dataset.theme === 'light' ? 'dark' : 'light');
   });
+
+  /* ---------- estilo visual ---------- */
+  function aplicarColorBarra() {
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (!m) return;
+    var e = estiloActual();
+    var tono = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+    var par = COLOR_BARRA[e] || COLOR_BARRA.cuadernillo;
+    m.setAttribute('content', par[tono]);
+  }
+
+  function syncEstiloUI() {
+    var e = estiloActual();
+    $$('#estiloPanel input[name="estilo"]').forEach(function (r) { r.checked = r.value === e; });
+    var l = $('#estiloLabel');
+    if (l) l.textContent = ESTILOS[e].nombre;
+    var b = $('#estiloBtn');
+    if (b) b.setAttribute('aria-label', 'Estilo visual: ' + ESTILOS[e].nombre + '. Cambiar estilo');
+  }
+
+  function refrescarVistas() {
+    if (!cargado) return;
+    renderFeatured();
+    renderCatalog();
+    var vc = $('[data-view="carrito"]');
+    if (vc && !vc.hidden) renderCart();
+  }
+
+  function quitarParamEstilo() {
+    if (location.search.indexOf('estetica=') === -1) return;
+    try {
+      var u = new URL(location.href);
+      u.searchParams.delete('estetica');
+      history.replaceState(null, '', u.pathname + u.search + u.hash);
+    } catch (e) {}
+  }
+
+  /* Cambia la estética sin recargar: tokens CSS por data-estetica y
+     portadas SVG regeneradas. La elección se guarda; ?estetica= solo
+     sirve para una vista previa. */
+  function setEstilo(e, silencio) {
+    if (!ESTILOS[e]) e = 'cuadernillo';
+    document.documentElement.dataset.estetica = e;
+    lsSet(LS_ESTILO, e);
+    quitarParamEstilo();
+    syncEstiloUI();
+    aplicarColorBarra();
+    $$('dialog[open]').forEach(closeDialog);
+    refrescarVistas();
+    if (!silencio) toast('Estilo «' + ESTILOS[e].nombre + '» aplicado');
+  }
+
+  (function initEstiloPicker() {
+    var picker = $('#estiloPicker'), panel = $('#estiloPanel'), btn = $('#estiloBtn');
+    if (!picker || !panel || !btn) return;
+
+    function abrir(v) {
+      panel.hidden = !v;
+      btn.setAttribute('aria-expanded', String(v));
+      if (v) {
+        var c = panel.querySelector('input:checked');
+        if (c) c.focus();
+      }
+    }
+
+    btn.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+      abrir(panel.hidden);
+    });
+    panel.addEventListener('change', function (ev) {
+      if (ev.target.name !== 'estilo') return;
+      setEstilo(ev.target.value);
+      abrir(false);
+      btn.focus();
+    });
+    document.addEventListener('click', function (ev) {
+      if (!panel.hidden && !picker.contains(ev.target)) abrir(false);
+    });
+    document.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Escape' && !panel.hidden) {
+        abrir(false);
+        btn.focus();
+      }
+    });
+
+    syncEstiloUI();
+    aplicarColorBarra();
+  })();
 
   /* =========================================================
      ROUTER (hash, sin recargar)

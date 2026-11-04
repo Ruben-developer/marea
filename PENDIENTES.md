@@ -70,11 +70,18 @@ enlace de Mega (18 antiguas, 11 actuales, 2 hackratas). El WordPress se va a ret
 
 ## 6. Decisiones de diseño
 
-- [x] **Estética definitiva: Cuadernillo** (papel crema, serif, tinta azul, sello rojo).
-      Es la única: se eliminó el conmutador y el código de la estética Imprenta.
-      Queda el modo noche/papel.
+- [x] **Cuatro estéticas conmutables** desde la cabecera (3 nov 2026): Cuadernillo
+      (base), Xilografía, Washi y Sello y tipos. Selector accesible, persistencia
+      en `localStorage` y vista previa con `?estetica=`. Ver [`ESTETICA.md`](ESTETICA.md).
+- [x] Cada estética tiene portadas SVG propias; la colección decide el acento
+      (Historia = índigo, Praxis = bermellón/caqui).
+- [ ] **Decidir la estética definitiva** después de la revisión visual. Si se elige
+      una de las tres nuevas, borrar los bloques de las otras dos de `style.css`
+      y sus portadas de `app.js`.
+- [ ] **Fuentes**: evaluar una Mincho self-hosteada y subseteada para titulares
+      (la CSP prohíbe fuentes externas). Hoy todo va con pilas del sistema.
 - [ ] Purgar del CSS la capa base heredada de Imprenta que ya no se usa
-      (tokens y reglas que Cuadernillo pisa). No afecta al render, es limpieza.
+      (tokens y reglas que cada estética pisa). No afecta al render, es limpieza.
 - [ ] Definir si el manifiesto de la vista Difusión queda así o se reemplaza por el
       texto definitivo (hoy está marcado como provisional).
 - [ ] Quitar el aviso de «versión en desarrollo» cuando estén los PDFs y los precios

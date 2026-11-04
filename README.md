@@ -11,23 +11,33 @@ Sitio de la editorial libertaria Marea. Dos funciones: **descargar los PDF grati
 
 ## Estética
 
-El sitio usa una sola estética, **Cuadernillo**: papel crema, serif, tinta azul y el
-sello rojo estampado (`data-estetica="cuadernillo"` en `<html>`). El rojo queda
-reservado al sello; el azul es el acento de botones y títulos.
+El sitio tiene **cuatro estéticas conmutables** desde la cabecera (botón
+«Estilo»). Cada una cambia paleta, tipografía, geometría, sello y portadas SVG;
+no es solo un cambio de color. La elección se guarda en `localStorage`
+(`marea_estetica_v1`) y se aplica antes de pintar. `?estetica=washi` permite
+probar una sin guardarla.
 
-El tema (papel claro / modo noche) se guarda en `localStorage` y se aplica antes de
-pintar para evitar el destello.
+| id | Nombre | Papel | Acento | Idea |
+|---|---|---|---|---|
+| `cuadernillo` | Cuadernillo | `#f1e9d6` | `#1f3d63` azul | papel crema, serif, sello circular |
+| `xilografia` | Xilografía | `#ede6d4` | `#b5342a` bermellón | dos tintas, marco, talla, sello cuadrado |
+| `washi` | Washi | `#ece5d3` | `#223a52` índigo | plantilla, panel índigo, papel crudo |
+| `sello` | Sello y tipos | `#f2ecdb` | `#a83226` rojo | tipografía, filetes, sello cuadrado |
+
+El tema (papel claro / modo noche) es independiente de la estética y también se
+guarda en `localStorage`. Detalle de tokens, reglas y cómo añadir una estética:
+[`ESTETICA.md`](ESTETICA.md).
 
 ## Estructura
 
 ```
-index.html      Todas las vistas (inicio, catálogo, difusión, carrito) + modales
-style.css       Estética Cuadernillo; el tema noche cuelga de [data-theme=dark]
-app.js          Router por hash, catálogo, filtros, carrito, modales, portadas SVG
+index.html      Todas las vistas + modales + selector de estilo
+style.css       Tokens por [data-estetica] y capa de componentes
+app.js          Router, catálogo, carrito, modales, portadas SVG por estética
 config.js       window.MAREA_PDF_BASE (base del servidor de PDFs)
 catalogo.json   Las fichas
 covers/         Portadas subidas desde el CMS (hoy vacío: se generan en SVG)
-assets/         sello.png (máscara alfa del sello real) y favicon.png
+assets/         sello.png, sello-hanko.svg (máscara del sello cuadrado) y favicon
 pdfs/           PDFs servidos junto al sitio
 .pages.yml      Configuración de Pages CMS (formularios sobre catalogo.json)
 scripts/        validar.mjs, revisa el catálogo antes de publicar

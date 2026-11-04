@@ -12,11 +12,20 @@
 <link rel="icon" href="assets/favicon.png" type="image/png">
 <link rel="stylesheet" href="style.css">
 <script>
-  /* Aplica el tema guardado antes de pintar, para evitar el destello. */
+  /* Aplica tema y estilo guardados antes de pintar, para evitar el destello.
+     ?estetica=xilografia permite probar un estilo sin guardarlo. */
   (function(){
+    var ESTILOS = ['cuadernillo', 'xilografia', 'washi', 'sello'];
+    function valido(v){ return ESTILOS.indexOf(v) !== -1; }
     try{
       var t = localStorage.getItem('marea_tema_v1_cuadernillo');
       document.documentElement.dataset.theme = (t === 'light' || t === 'dark') ? t : 'light';
+
+      var q = null;
+      try { q = new URLSearchParams(location.search).get('estetica'); } catch(e){}
+      var g = localStorage.getItem('marea_estetica_v1');
+      var e = valido(q) ? q : (valido(g) ? g : 'cuadernillo');
+      document.documentElement.dataset.estetica = e;
     }catch(e){}
   })();
 </script>
@@ -28,7 +37,7 @@
 <header class="site-header">
   <div class="wrap head-row">
     <a class="brand" href="#/inicio" aria-label="Marea, M.A.R. Editorial Anarquista. Ir al inicio">
-      <span class="sello sello--azul solo-cuad" style="--s:58px" aria-hidden="true"></span>
+      <span class="sello sello--azul" style="--s:58px" aria-hidden="true"></span>
       <span class="brand-text">
         <span class="brand-name">MAREA</span>
         <span class="brand-sub">M.A.R. Editorial Anarquista</span>
@@ -44,6 +53,37 @@
       </ul>
     </nav>
     <div class="head-tools">
+      <div class="estilo-picker" id="estiloPicker">
+        <button class="estilo-btn" id="estiloBtn" type="button" aria-expanded="false" aria-controls="estiloPanel">
+          <span class="ep-swatches ep-swatches--sm" aria-hidden="true"><i style="--sw1:#f1e9d6;--sw2:#1f3d63;--sw3:#c1121f"></i><i style="--sw2:#1f3d63"></i><i style="--sw3:#c1121f"></i></span>
+          <span>Estilo: <strong id="estiloLabel">Cuadernillo</strong></span>
+        </button>
+        <div class="ep-panel" id="estiloPanel" hidden>
+          <fieldset class="ep-group">
+            <legend class="ep-legend">Estilo visual</legend>
+            <label class="ep-opt">
+              <input type="radio" name="estilo" value="cuadernillo" checked>
+              <span class="ep-swatches" aria-hidden="true"><i style="--sw1:#f1e9d6;--sw2:#1f3d63;--sw3:#c1121f"></i><i style="--sw2:#1f3d63"></i><i style="--sw3:#c1121f"></i></span>
+              <span class="ep-text"><strong>Cuadernillo</strong><small>Papel crema, serif, tinta azul</small></span>
+            </label>
+            <label class="ep-opt">
+              <input type="radio" name="estilo" value="xilografia">
+              <span class="ep-swatches" aria-hidden="true"><i style="--sw1:#ede6d4;--sw2:#17150f;--sw3:#b5342a"></i><i style="--sw2:#17150f"></i><i style="--sw3:#b5342a"></i></span>
+              <span class="ep-text"><strong>Xilografía</strong><small>Dos tintas, talla y sello bermellón</small></span>
+            </label>
+            <label class="ep-opt">
+              <input type="radio" name="estilo" value="washi">
+              <span class="ep-swatches" aria-hidden="true"><i style="--sw1:#efe9da;--sw2:#223a52;--sw3:#8c5a2b"></i><i style="--sw2:#223a52"></i><i style="--sw3:#8c5a2b"></i></span>
+              <span class="ep-text"><strong>Washi</strong><small>Índigo, plantilla y papel crudo</small></span>
+            </label>
+            <label class="ep-opt">
+              <input type="radio" name="estilo" value="sello">
+              <span class="ep-swatches" aria-hidden="true"><i style="--sw1:#f3ecdc;--sw2:#17150f;--sw3:#a83226"></i><i style="--sw2:#17150f"></i><i style="--sw3:#a83226"></i></span>
+              <span class="ep-text"><strong>Sello y tipos</strong><small>Tipografía, filetes y sello cuadrado</small></span>
+            </label>
+          </fieldset>
+        </div>
+      </div>
       <button class="theme-btn" id="themeBtn" type="button" aria-pressed="true">Modo noche</button>
     </div>
   </div>
@@ -68,7 +108,7 @@
             Descargar gratis
           </a>
         </div>
-        <span class="sello sello--rojo sello-hero solo-cuad" role="img" aria-label="Sello de Marea: Memoria, Análisis, Revuelta. Editorial Anarquista"></span>
+        <span class="sello sello--rojo sello-hero" role="img" aria-label="Sello de Marea: Memoria, Análisis, Revuelta. Editorial Anarquista"></span>
        </div>
       </div>
     </div>
@@ -198,7 +238,7 @@
   <div class="wrap">
     <div class="foot-grid">
       <div>
-        <span class="sello sello--azul solo-cuad" style="--s:88px;margin-bottom:14px" aria-hidden="true"></span>
+        <span class="sello sello--azul" style="--s:88px;margin-bottom:14px" aria-hidden="true"></span>
         <h2>Contacto</h2>
         <p><a href="mailto:contacto-marea@riseup.net">contacto-marea@riseup.net</a><br>marea.antarquia.cl</p>
       </div>
