@@ -1,32 +1,21 @@
 [
   {
-    "id": "m-001",
     "titulo": "Ai Ferri Corti",
     "autor": "Anónimo",
     "coleccion": "praxis",
-    "anio": null,
     "paginas": 28,
-    "sinopsis": "",
-    "portada": null,
-    "archivo": null,
-    "enlace": null,
     "precio": 500,
     "stock": 3,
-    "destacado": true
+    "destacado": true,
+    "id": "m-001"
   },
   {
-    "id": "m-067",
     "titulo": "La anarquía desde el punto de vista de un cristiano",
     "autor": "Jacques Ellul",
     "coleccion": "praxis",
-    "anio": null,
-    "paginas": null,
-    "sinopsis": "",
-    "portada": null,
     "archivo": "la-anarquia-desde-el-punto-de-vista-de-un-cristiano.pdf",
-    "enlace": null,
-    "precio": null,
     "stock": 0,
-    "destacado": false
+    "destacado": true,
+    "id": "m-067"
   }
 ]
