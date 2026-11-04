@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="light" data-estetica="cuadernillo">
+<html lang="es" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MAREA · M.A.R. Editorial Anarquista</title>
+<title>M.A.R.E.A. · Editorial Anarquista</title>
 <meta name="description" content="Cuadernillos y libros libertarios. El PDF es libre y sin registro; comprar el impreso sostiene la imprenta.">
-<meta name="theme-color" content="#0b0b0a">
+<meta name="theme-color" content="#e9e1cd">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <!-- Todo se sirve desde el propio dominio (catálogo, portadas, PDFs). -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self'">
@@ -15,7 +15,7 @@
   /* Aplica el tema guardado antes de pintar, para evitar el destello. */
   (function(){
     try{
-      var t = localStorage.getItem('marea_tema_v1_cuadernillo');
+      var t = localStorage.getItem('marea_tema_v1');
       document.documentElement.dataset.theme = (t === 'light' || t === 'dark') ? t : 'light';
     }catch(e){}
   })();
@@ -23,22 +23,16 @@
 </head>
 <body>
 <a class="skip" href="#main">Saltar al contenido</a>
-<div class="maqueta-bar" role="note">Versión en desarrollo · catálogo real · los PDF se están subiendo · los pedidos aún se acuerdan por correo</div>
 
 <header class="site-header">
   <div class="wrap head-row">
-    <a class="brand" href="#/inicio" aria-label="Marea, M.A.R. Editorial Anarquista. Ir al inicio">
-      <span class="sello sello--azul solo-cuad" style="--s:58px" aria-hidden="true"></span>
-      <span class="brand-text">
-        <span class="brand-name">MAREA</span>
-        <span class="brand-sub">M.A.R. Editorial Anarquista</span>
-      </span>
+    <a class="brand" href="#/inicio" aria-label="M.A.R.E.A. Editorial Anarquista. Ir al inicio">
+      <img class="logo" src="assets/sello-rojo.png" alt="" width="500" height="500" aria-hidden="true">
+      <span class="brand-name">M.A.R.E.A.</span>
     </a>
     <nav aria-label="Principal">
       <ul>
         <li><a href="#/catalogo" data-nav="catalogo">Catálogo</a></li>
-        <li><a href="#/historia" data-nav="historia">Historia</a></li>
-        <li><a href="#/praxis" data-nav="praxis">Praxis</a></li>
         <li><a href="#/difusion" data-nav="difusion">Difusión</a></li>
         <li><a href="#/carrito" data-nav="carrito" id="cartLink" aria-label="Carrito, 0 artículos">Carrito <span class="count" id="cartCount" aria-hidden="true">0</span></a></li>
       </ul>
@@ -55,12 +49,10 @@
   <section class="view" data-view="inicio" aria-labelledby="h-inicio" style="padding-block:0">
     <div class="hero">
       <div class="wrap">
-       <div class="hoja"><!-- .hoja solo tiene estilo en la estética Cuadernillo (portadilla con marcas de corte y sello) -->
-        <span class="crop crop-tl solo-cuad" aria-hidden="true"></span><span class="crop crop-tr solo-cuad" aria-hidden="true"></span>
-        <span class="crop crop-bl solo-cuad" aria-hidden="true"></span><span class="crop crop-br solo-cuad" aria-hidden="true"></span>
-        <h1 id="h-inicio" tabindex="-1">Ideas sin dueño</h1>
-        <p class="verbs" role="group" aria-label="Lee, comparte, organízate"><span>Lee</span><span>Comparte</span><span>Organízate</span></p>
-        <p class="lead">Cuadernillos y libros libertarios. El PDF es gratis, siempre y sin registro. Comprar el impreso sostiene el proyecto; no es pagar por leer.</p>
+       <div class="hoja">
+        <h1 id="h-inicio" tabindex="-1">Lee, comparte y organízate</h1>
+        <p class="big-copy">Difundimos este material para aportar a la propagación de las ideas y las prácticas anarquistas. Fomentamos la reproducción de todas las publicaciones de M.A.R.E.A. Editorial Anarquista mediante cualquier medio. Se reconoce la autoría del texto, no su propiedad.</p>
+        <p class="cierre">¡Colectivicemos las ideas!</p>
         <div class="cta-row">
           <a class="btn btn-solid" href="#/catalogo">Ver catálogo</a>
           <a class="btn btn-red" href="#/catalogo/descarga">
@@ -68,7 +60,7 @@
             Descargar gratis
           </a>
         </div>
-        <span class="sello sello--rojo sello-hero solo-cuad" role="img" aria-label="Sello de Marea: Memoria, Análisis, Revuelta. Editorial Anarquista"></span>
+        <img class="logo logo--hero" src="assets/sello-rojo.png" alt="Sello de M.A.R.E.A.: Memoria, Análisis, Revuelta" width="500" height="500">
        </div>
       </div>
     </div>
@@ -93,8 +85,6 @@
         </div>
       </div>
 
-      <p class="band" role="separator">¡La propiedad es un robo!</p>
-
       <h2 class="section-h" style="margin-top:0">Destacados</h2>
       <div class="grid" id="featured"><p class="cargando">Cargando catálogo…</p></div>
     </div>
@@ -104,7 +94,6 @@
   <section class="view" data-view="catalogo" aria-labelledby="h-catalogo" hidden>
     <div class="wrap">
       <h1 class="view-title" id="h-catalogo" tabindex="-1">Catálogo</h1>
-      <p class="lead">Todo PDF disponible se descarga libre. Lo que aparece como «Próximamente» aún no tiene archivo: lo marcamos así en vez de dejarte un enlace roto.</p>
 
       <div class="controls" role="search" aria-label="Buscar y filtrar el catálogo">
         <div class="ctl-row">
@@ -148,39 +137,14 @@
 
   <!-- ================= DIFUSIÓN ================= -->
   <section class="view" data-view="difusion" aria-labelledby="h-difusion" hidden>
-    <div class="wrap prose" style="max-width:1160px">
-      <div class="prose">
-        <h1 class="view-title" id="h-difusion" tabindex="-1">LEE, COMPARTE Y ORGANÍZATE</h1>
-        <p class="big-copy">Difundimos este material para aportar a la propagación de las ideas y las prácticas anarquistas. Fomentamos la reproducción de todas las publicaciones de M.A.R Editorial Anarquista mediante cualquier medio. Se reconoce la autoría del texto, no su propiedad.</p>
-        <p class="cierre">¡Colectivicemos las ideas!</p>
-      </div>
-
-      <p class="band" role="separator">¡La propiedad es un robo!</p>
-
-      <div class="prose">
-        <h2>Manifiesto</h2>
-        <p><em>(Texto provisional; se reemplaza por el definitivo.)</em></p>
-        <p>Una editorial anarquista no es una tienda con otra estética. Es una herramienta para que las ideas circulen más rápido de lo que alcanzan a prohibirlas.</p>
-        <p>Por eso el acceso al conocimiento no se vende. Quien compra un cuadernillo impreso no compra el texto: sostiene la imprenta, el papel y la próxima reimpresión. El texto ya era suyo.</p>
-        <p>Publicamos para que se lea en la asamblea, en el taller, en la fila del bus. Para que se subraye, se fotocopie y se discuta. Un libro que nadie puede copiar es un libro a medias.</p>
-
-        <h2>Política de reproducción</h2>
-        <ul>
-          <li>Puedes copiar, fotocopiar, imprimir y reimprimir cualquier publicación, completa o en parte.</li>
-          <li>Puedes compartir los PDF por cualquier medio, sin pedir permiso y sin registrarte en nada.</li>
-          <li>Puedes traducir, adaptar y remezclar; indica la autoría del texto original.</li>
-          <li>No necesitas autorización de la editorial ni se cobra por reproducir.</li>
-          <li>Lo único que pedimos: reconoce la autoría y no encierres el texto tras un muro de pago.</li>
-        </ul>
-
-        <h2>Lemas</h2>
-        <ul>
-          <li>Lee · Comparte · Organízate</li>
-          <li>¡Colectivicemos las ideas!</li>
-          <li>¡La propiedad es un robo!</li>
-        </ul>
-        <p style="margin-top:28px"><a class="btn" href="#/catalogo/descarga">Ir a las descargas libres</a></p>
-      </div>
+    <div class="wrap prose" style="max-width:760px">
+      <h1 class="view-title" id="h-difusion" tabindex="-1">Manifiesto</h1>
+      <p>Una editorial anarquista no es una tienda con otra estética. Es una herramienta para que las ideas circulen más rápido de lo que alcanzan a prohibirlas.</p>
+      <p>Por eso el acceso al conocimiento no se vende. Todo lo que publicamos se puede leer, descargar y copiar sin pagar. Quien compra un cuadernillo impreso no compra el texto: sostiene la imprenta, el papel y la próxima reimpresión. El texto ya era suyo.</p>
+      <p>Publicamos historia, teoría y experiencias de acción anarquista, porque una lucha que olvida su memoria repite sus derrotas y una que no la analiza no aprende de ellas. Recuperamos lo que fue ocultado, traducimos lo que no llegó y ponemos en palabras simples lo que otros dejaron en pesados tratados.</p>
+      <p>Publicamos para que se lea en la asamblea, en el taller, en la fila del bus. Para que se subraye, se fotocopie y se discuta. Un libro que nadie puede copiar es un libro a medias.</p>
+      <p>No tenemos dueños ni jefes, ni pedimos permiso para reeditar. Si algo de lo que hacemos te sirve, tómalo: reimprímelo, tradúcelo, repártelo.</p>
+      <p style="margin-top:28px"><a class="btn" href="#/catalogo/descarga">Ir a las descargas libres</a></p>
     </div>
   </section>
 
@@ -197,22 +161,14 @@
 <footer>
   <div class="wrap">
     <div class="foot-grid">
-      <div>
-        <span class="sello sello--azul solo-cuad" style="--s:88px;margin-bottom:14px" aria-hidden="true"></span>
+      <div class="foot-brand">
+        <img class="logo logo--foot" src="assets/sello-rojo.png" alt="" width="500" height="500" aria-hidden="true">
         <h2>Contacto</h2>
         <p><a href="mailto:contacto-marea@riseup.net">contacto-marea@riseup.net</a><br>marea.antarquia.cl</p>
       </div>
       <div>
         <h2>Licencia</h2>
-        <p>Sin copyright. Reproducción libre con reconocimiento de autoría. Se reconoce la autoría del texto, no su propiedad.</p>
-      </div>
-      <div>
-        <h2>Lemas</h2>
-        <ul>
-          <li>Lee · Comparte · Organízate</li>
-          <li>¡Colectivicemos las ideas!</li>
-          <li>¡La propiedad es un robo!</li>
-        </ul>
+        <p>Los textos se reproducen libremente, completos o en parte, por cualquier medio. Se reconoce la autoría, no la propiedad: copiá, imprimí, traducí y compartí sin pedir permiso. Lo único que pedimos es no encerrar estas publicaciones tras un muro de pago.</p>
       </div>
     </div>
     <p class="foot-end">¡Contra toda autoridad y que viva la anarquía!</p>

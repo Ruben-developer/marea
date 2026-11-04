@@ -1,33 +1,34 @@
-# Marea · M.A.R. Editorial Anarquista
+# M.A.R.E.A. · Editorial Anarquista
 
-Sitio de la editorial libertaria Marea. Dos funciones: **descargar los PDF gratis** y
+Sitio de la editorial libertaria M.A.R.E.A. Dos funciones: **descargar los PDF gratis** y
 **comprar los impresos** para sostener la imprenta. El acceso al texto nunca se paga.
 
 - **En línea**: https://ruben-developer.github.io/marea/
 - **Dominio final**: `marea.antarquia.cl` (pendiente de DNS; ver «Publicación»)
 - **Stack**: HTML + CSS + JavaScript vanilla. Sin build, sin dependencias, sin CDN.
-- **Contenido**: `catalogo.json` (2 fichas de muestra) · `pdfs/` (PDFs) · `assets/` (sello y favicon)
+- **Contenido**: `catalogo.json` (2 fichas de muestra) · `pdfs/` (PDFs) · `assets/` (sello rojo y favicon)
 - **Contacto**: contacto-marea@riseup.net (alias de Riseup; crearlo antes de usarlo)
 
 ## Estética
 
-El sitio usa una sola estética, **Cuadernillo**: papel crema, serif, tinta azul y el
-sello rojo estampado (`data-estetica="cuadernillo"` en `<html>`). El rojo queda
-reservado al sello; el azul es el acento de botones y títulos.
+El sitio usa una sola estética, **Xilografía**: papel crudo, tinta negra y
+bermellón para el sello y los acentos. Dos tintas planas, esquinas rectas,
+filetes y portadas generadas en SVG. Sin texturas, tramas, degradados ni sombras.
 
-El tema (papel claro / modo noche) se guarda en `localStorage` y se aplica antes de
-pintar para evitar el destello.
+El logo es `assets/sello-rojo.png`; el tema claro/noche (`data-theme`) se guarda
+en `localStorage` (`marea_tema_v1`) y se aplica antes de pintar. Detalle de
+tokens y reglas: [`ESTETICA.md`](ESTETICA.md).
 
 ## Estructura
 
 ```
-index.html      Todas las vistas (inicio, catálogo, difusión, carrito) + modales
-style.css       Estética Cuadernillo; el tema noche cuelga de [data-theme=dark]
-app.js          Router por hash, catálogo, filtros, carrito, modales, portadas SVG
+index.html      Todas las vistas + modales
+style.css       Tokens de Xilografía y componentes (colores planos)
+app.js          Router, catálogo, carrito, modales, portadas SVG en Xilografía
 config.js       window.MAREA_PDF_BASE (base del servidor de PDFs)
 catalogo.json   Las fichas
 covers/         Portadas subidas desde el CMS (hoy vacío: se generan en SVG)
-assets/         sello.png (máscara alfa del sello real) y favicon.png
+assets/         sello-rojo.png (logo), favicon.png y sello.png (histórico)
 pdfs/           PDFs servidos junto al sitio
 .pages.yml      Configuración de Pages CMS (formularios sobre catalogo.json)
 scripts/        validar.mjs, revisa el catálogo antes de publicar
@@ -68,7 +69,7 @@ scripts/        validar.mjs, revisa el catálogo antes de publicar
 
 - `coleccion`: `historia` o `praxis` (Historia y Praxis).
 - `portada`: ruta a una imagen. Si es `null` se dibuja una portada SVG generada
-  (distinta en cada estética), así que nunca hay hueco roto.
+  en Xilografía, así que nunca hay hueco roto.
 - `archivo`: nombre del PDF dentro de `MAREA_PDF_BASE`. Si empieza por `http`,
   se usa tal cual.
 - `enlace`: URL externa de respaldo (Mega, etc.). Solo se usa si no hay `archivo`.

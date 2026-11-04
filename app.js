@@ -1,6 +1,7 @@
 /* =========================================================
-   MAREA · M.A.R. Editorial Anarquista
-   Router, catálogo, carrito y modales. Sin dependencias.
+   M.A.R.E.A. · Editorial Anarquista
+   Estética única: Xilografía. Router, catálogo, carrito y
+   modales. Sin dependencias.
 
    El catálogo vive en catalogo.json. Campos por ficha:
      id, titulo, autor, coleccion, anio, paginas, sinopsis,
@@ -17,7 +18,7 @@
   var COLECCIONES = { historia: 'Historia', praxis: 'Praxis' };
   var MICROCOPY_DESCARGA = 'Copiá, compartí, reimprimí. Se reconoce la autoría, no su propiedad.';
   var LS_CART = 'marea_carrito_v1';
-  var LS_THEME = 'marea_tema_v1_cuadernillo';
+  var LS_THEME = 'marea_tema_v1';
   var CONTACTO = { correo: 'contacto-marea@riseup.net', sitio: 'marea.antarquia.cl' };
   var TITULOS = {
     inicio: 'Inicio',
@@ -146,8 +147,6 @@
      colección: Historia oscura, Praxis papel. Cero imágenes
      externas, cero peticiones.
      ========================================================= */
-  var _cv = 0;
-
   function wrapText(text, max) {
     var out = [], line = '';
     String(text).split(/\s+/).forEach(function (w) {
@@ -180,61 +179,69 @@
       var alt = label ? 'Portada de ' + p.titulo + ', de ' + p.autor : '';
       return '<img src="' + esc(p.portada) + '" alt="' + esc(alt) + '" loading="lazy" width="300" height="420">';
     }
-    return portadaCU(p, label);
+    return portadaXilo(p, label);
   }
 
-  /* Portada generada: papel crema, tarjeta redondeada con el título, píldora con
-     el autor y una ilustración simple en tinta azul (olas + sol para Historia;
-     círculo de asamblea para Praxis). */
-  function portadaCU(p, label) {
-    var id = 'cu' + (++_cv);
-    var hist = p.coleccion === 'historia';
-    var bg = hist ? '#eadfc4' : '#dfe4e0', azul = '#1f3d63', papel = '#fbf7ec', tinta = '#1c1b18';
-    function wave(y, amp, ph, fill, op) {
-      var d = 'M0,' + y;
-      for (var x = 0; x <= 300; x += 6) d += ' L' + x + ',' + (y + amp * Math.sin(x / 300 * Math.PI * 3 + ph)).toFixed(1);
-      return '<path d="' + d + ' L300,420 L0,420 Z" fill="' + fill + '" opacity="' + (op || 1) + '"/>';
-    }
-    var ilus = '';
-    if (hist) {
-      var rays = '';
-      for (var i = 0; i <= 9; i++) {
-        var a = Math.PI + i * Math.PI / 9, c = Math.cos(a), s = Math.sin(a);
-        rays += '<line x1="' + (150 + c * 54).toFixed(1) + '" y1="' + (250 + s * 54).toFixed(1) +
-          '" x2="' + (150 + c * 70).toFixed(1) + '" y2="' + (250 + s * 70).toFixed(1) +
-          '" stroke="' + azul + '" stroke-width="3" stroke-linecap="round"/>';
+  /* Portada generada en Xilografía: papel crudo, doble marco, título en
+     bloque y sello tallado. La colección decide el acento: Historia =
+     azul tinta, Praxis = bermellón. */
+  var PALETA_PORTADA = { papel: '#ede6d4', tinta: '#17150f', hist: '#22364a', praxis: '#b5342a' };
+
+  function acentoPortada(p) { return p.coleccion === 'historia' ? PALETA_PORTADA.hist : PALETA_PORTADA.praxis; }
+  function n1(v) { return Math.round(v * 10) / 10; }
+
+  function ariaPortada(p, label) {
+    if (!label) return 'aria-hidden="true"';
+    return 'role="img" aria-label="Portada de ejemplo: ' + esc(p.titulo) + ', de ' + esc(p.autor) + '"';
+  }
+
+  /* Sello cuadrado dibujado en SVG: cuadrado macizo con barras del color
+     del papel, como una estampa tallada. */
+  function selloSVG(x, y, s, color, papel) {
+    var out = '<rect x="' + x + '" y="' + y + '" width="' + s + '" height="' + s + '" fill="' + color + '"/>';
+    var m = s * 0.15, cell = s * 0.30, gap = s * 0.10;
+    var pos = [m, m + cell + gap];
+    for (var i = 0; i < 2; i++) {
+      for (var j = 0; j < 2; j++) {
+        var cx = x + pos[i], cy = y + pos[j];
+        [0.22, 0.45, 0.68].forEach(function (f) {
+          out += '<rect x="' + n1(cx + cell * 0.16) + '" y="' + n1(cy + cell * f) + '" width="' + n1(cell * 0.68) +
+            '" height="' + n1(cell * 0.10) + '" fill="' + papel + '"/>';
+        });
+        out += '<rect x="' + n1(cx + cell * 0.45) + '" y="' + n1(cy + cell * 0.14) + '" width="' + n1(cell * 0.10) +
+          '" height="' + n1(cell * 0.72) + '" fill="' + papel + '"/>';
       }
-      ilus = rays + '<circle cx="150" cy="250" r="42" fill="' + papel + '" fill-opacity=".6" stroke="' + azul + '" stroke-width="5"/>' +
-        '<path d="M124,284 L150,214 L176,284 M133,262 L167,262" fill="none" stroke="' + azul + '" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>' +
-        wave(268, 7, 0, '#9bb3cc') + wave(296, 9, 1.3, '#5f81a6') + wave(328, 8, 2.4, azul) + wave(364, 6, 3.3, '#14283f');
-    } else {
-      var ring = '';
-      for (var j = 0; j < 10; j++) {
-        var b = j * 2 * Math.PI / 10;
-        ring += '<circle cx="' + (150 + Math.cos(b) * 68).toFixed(1) + '" cy="' + (290 + Math.sin(b) * 68).toFixed(1) +
-          '" r="15" fill="' + (j % 2 ? 'none' : azul) + '" stroke="' + azul + '" stroke-width="4"/>';
-      }
-      ilus = ring + '<circle cx="150" cy="290" r="28" fill="' + azul + '"/><rect x="0" y="372" width="300" height="48" fill="' + azul + '" opacity=".14"/>';
     }
-    var ajuste = ajustarTitulo(p.titulo, 228, 5, [26, 23, 20, 18, 16, 14]);
-    var lines = ajuste.lines;
-    var fs = ajuste.fs;
-    var cardH = 34 + lines.length * (fs + 6);
+    return out;
+  }
+
+  function portadaXilo(p, label) {
+    var pal = PALETA_PORTADA, ac = acentoPortada(p);
+    var aj = ajustarTitulo(p.titulo, 215, 4, [30, 26, 22, 19, 16]);
+    var fs = aj.fs, lines = aj.lines, y = 104, salto = fs + 8;
+    var alto = lines.length * salto;
     var txt = lines.map(function (l, k) {
-      return '<text x="150" y="' + (40 + fs + k * (fs + 6)) + '" text-anchor="middle" font-size="' + fs +
-        '" font-style="italic" font-weight="700" fill="' + tinta + '" style="font-family:Georgia,\'Times New Roman\',serif">' + esc(l) + '</text>';
+      return '<text x="32" y="' + (y + fs + k * salto) + '" font-family="Georgia,serif" font-size="' + fs +
+        '" font-weight="700" letter-spacing="-0.4" fill="' + pal.tinta + '">' + esc(String(l).toUpperCase()) + '</text>';
     }).join('');
-    var afs = Math.max(8, Math.min(13, Math.floor(220 / (p.autor.length * 0.55))));
-    var aria = label ? 'role="img" aria-label="Portada de ejemplo: ' + esc(p.titulo) + ', de ' + esc(p.autor) + '"' : 'aria-hidden="true"';
-    return '<svg viewBox="0 0 300 420" xmlns="http://www.w3.org/2000/svg" ' + aria + '>' +
-      '<defs><clipPath id="' + id + 'c"><rect width="300" height="420" rx="4"/></clipPath></defs>' +
-      '<g clip-path="url(#' + id + 'c)">' +
-      '<rect width="300" height="420" fill="' + bg + '"/>' + ilus +
-      '<rect x="18" y="22" width="264" height="' + cardH + '" rx="18" fill="' + papel + '" fill-opacity=".9"/>' + txt +
-      '<rect x="36" y="368" width="228" height="32" rx="16" fill="' + papel + '" fill-opacity=".94"/>' +
-      '<text x="150" y="' + (389 - (13 - afs) / 2) + '" text-anchor="middle" font-size="' + afs +
-      '" font-weight="700" fill="' + tinta + '" style="font-family:system-ui,Arial,sans-serif">' + esc(p.autor) + '</text>' +
-      '</g></svg>';
+    var trazos = '';
+    for (var i = 0; i < 3; i++) {
+      trazos += '<rect x="32" y="' + (302 + i * 13) + '" width="' + (86 + i * 38) + '" height="6" fill="' + pal.tinta + '"/>';
+    }
+    var autor = p.autor.toUpperCase();
+    if (autor.length > 34) autor = autor.slice(0, 33) + '…';
+    return '<svg viewBox="0 0 300 420" xmlns="http://www.w3.org/2000/svg" ' + ariaPortada(p, label) + '>' +
+      '<rect width="300" height="420" fill="' + pal.papel + '"/>' +
+      '<rect x="12" y="12" width="276" height="396" fill="none" stroke="' + pal.tinta + '" stroke-width="2"/>' +
+      '<rect x="17" y="17" width="266" height="386" fill="none" stroke="' + pal.tinta + '" stroke-width="0.8"/>' +
+      '<text x="32" y="50" font-family="Courier New,monospace" font-size="10" letter-spacing="2.5" fill="' + pal.tinta + '">M.A.R.E.A. · ' +
+      COLECCIONES[p.coleccion].toUpperCase() + '</text>' +
+      '<rect x="19" y="88" width="7" height="' + n1(alto + 12) + '" fill="' + ac + '"/>' +
+      txt + trazos +
+      '<text x="32" y="392" font-family="Courier New,monospace" font-size="9" letter-spacing="1.6" fill="' + pal.tinta + '">' +
+      esc(autor) + '</text>' +
+      selloSVG(212, 320, 54, ac, pal.papel) +
+      '</svg>';
   }
 
   /* =========================================================
@@ -518,10 +525,10 @@
       '<dl class="datos">' + datos + '</dl>' +
       (p.sinopsis ? '<p class="sinopsis">' + esc(p.sinopsis) + '</p>' : '<p class="sinopsis vacio">Sin sinopsis todavía.</p>') +
       '<div class="block libre">' +
-      (tiene ? '<span class="sello sello--rojo sello-stamp solo-cuad" aria-hidden="true"></span>' : '') +
+      (tiene ? '<img class="logo sello-stamp" src="assets/sello-rojo.png" alt="" width="500" height="500" aria-hidden="true">' : '') +
       '<h3>Lectura libre</h3>' + libre + '</div>' +
       '<div class="block"><h3>Apoya el proyecto</h3>' + apoyo + '</div>' +
-      '<div class="contra solo-cuad"><span class="sello sello--azul" style="--s:64px" aria-hidden="true"></span>' +
+      '<div class="contra"><img class="logo" src="assets/sello-rojo.png" alt="" width="500" height="500" aria-hidden="true">' +
       '<span>' + CONTACTO.correo + '<br>' + CONTACTO.sitio + '</span></div>' +
       '</div></div>';
 
@@ -535,12 +542,12 @@
     var lineas = items.map(function (it) {
       return '- ' + it.q + ' × ' + it.p.titulo + ' — ' + it.p.autor + ' — ' + clp(it.p.precio * it.q);
     });
-    var cuerpo = ['Hola:', '', 'Quiero encargar estos impresos de Marea:', '']
+    var cuerpo = ['Hola:', '', 'Quiero encargar estos impresos de M.A.R.E.A.:', '']
       .concat(lineas)
       .concat(['', 'Subtotal: ' + clp(cartTotal()), '', 'Mi nombre:', 'Dirección o punto de entrega:', 'Comuna / ciudad:', '', 'Gracias.'])
       .join('\n');
     var mailto = 'mailto:' + CONTACTO.correo +
-      '?subject=' + encodeURIComponent('Pedido de impresos · Marea') +
+      '?subject=' + encodeURIComponent('Pedido de impresos · M.A.R.E.A.') +
       '&body=' + encodeURIComponent(cuerpo);
 
     $('#checkoutBody').innerHTML =
@@ -608,6 +615,11 @@
   });
 
   /* ---------- tema ---------- */
+  function aplicarColorBarra() {
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (!m) return;
+    m.setAttribute('content', document.documentElement.dataset.theme === 'dark' ? '#14130f' : '#e9e1cd');
+  }
   function setTheme(t) {
     document.documentElement.dataset.theme = t;
     var claro = t === 'light';
@@ -617,10 +629,12 @@
       b.setAttribute('aria-pressed', String(claro));
     }
     lsSet(LS_THEME, t);
+    aplicarColorBarra();
   }
   if ($('#themeBtn')) $('#themeBtn').addEventListener('click', function () {
     setTheme(document.documentElement.dataset.theme === 'light' ? 'dark' : 'light');
   });
+  aplicarColorBarra();
 
   /* =========================================================
      ROUTER (hash, sin recargar)
@@ -648,7 +662,7 @@
     if (vista === 'catalogo') { syncControls(); renderCatalog(); }
     if (vista === 'carrito') renderCart();
 
-    document.title = TITULOS[name] + ' · MAREA, M.A.R. Editorial Anarquista';
+    document.title = TITULOS[name] + ' · M.A.R.E.A. Editorial Anarquista';
     window.scrollTo(0, 0);
     if (!primeraCarga) {
       var h = $('[data-view="' + vista + '"] h1');
