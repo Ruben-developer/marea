@@ -117,7 +117,7 @@ Con Pages CMS:
    `Ruben-developer/marea` (una vez).
 2. Abrir **Catálogo** → **Add entry**, o editar una ficha existente.
 3. Las portadas se suben desde el campo «Portada» y quedan en `covers/`.
-4. Guardar: hace commit y GitHub Pages redespliega.
+4. Guardar: hace commit y el workflow despliega en Cloudflare Workers.
 
 A mano:
 
@@ -136,19 +136,27 @@ fichas viejas conservan `m-001`…`m-067`.
 
 ## Publicación
 
-GitHub Pages sirve la rama `main` desde la raíz. URL actual:
+El sitio se sirve desde **Cloudflare Workers** con assets estáticos:
 
-**https://ruben-developer.github.io/marea/**
+- Producción: `main` → **https://marea.antarquia.cl/** (`deploy-workers.yml`).
+- Beta: `develop` → **https://marea-beta.antarquia.cl/** (`deploy-beta.yml`).
 
-El dominio `marea.antarquia.cl` todavía no tiene DNS. Para activarlo:
+`scripts/build.mjs` copia a `dist/` solo lo publicable. El Worker sirve
+`index.html` ante cualquier ruta desconocida
+(`not_found_handling: "single-page-application"`), por eso el router usa rutas
+reales (`/catalogo`, `/catalogo/descarga`) sin `#`.
 
-1. En Cloudflare, crear `CNAME marea` → `ruben-developer.github.io`.
-2. Renombrar `CNAME.pending` a `CNAME` (contiene `marea.antarquia.cl`) y hacer push.
-3. En GitHub: Settings → Pages → Custom domain, verificar y activar «Enforce HTTPS».
+Para desplegar a mano:
 
-Mientras el DNS no exista, el archivo `CNAME` debe quedar fuera: si Pages tiene un
-dominio personalizado configurado, la URL `github.io` redirige a él y el sitio queda
-inaccesible.
+```bash
+npm ci
+npm run build
+npx wrangler deploy --config wrangler.jsonc       # producción
+npx wrangler deploy --config wrangler.beta.jsonc  # beta
+```
+
+GitHub Pages quedó retirado: era hosting estático sin rewrites y obligaba a usar
+`#/...` en las URLs.
 
 ## Origen del catálogo
 
