@@ -439,7 +439,7 @@
     if (!items.length) {
       b.innerHTML = '<div class="empty"><h2>Tu carrito está vacío</h2>' +
         '<p>No hace falta comprar nada para leer: todos los PDF disponibles se descargan libres. Si querés sostener el proyecto, elegí un impreso.</p>' +
-        '<p><a class="btn btn-solid" href="#/catalogo">Ver catálogo</a> <a class="btn" href="#/catalogo/descarga">Descargar gratis</a></p></div>';
+        '<p><a class="btn btn-solid" href="/catalogo">Ver catálogo</a> <a class="btn" href="/catalogo/descarga">Descargar gratis</a></p></div>';
       return;
     }
     b.innerHTML = items.map(function (it) {
@@ -462,7 +462,7 @@
       '<p class="note">Envío no incluido. Tu aporte financia impresión y reimpresión; el contenido no se vende.</p>' +
       '<div class="cta-row" style="margin-top:18px">' +
       '<button class="btn btn-solid" type="button" data-action="checkout">Armar pedido</button>' +
-      '<a class="btn" href="#/catalogo">Seguir mirando</a>' +
+      '<a class="btn" href="/catalogo">Seguir mirando</a>' +
       '</div>';
   }
 
@@ -637,17 +637,49 @@
   aplicarColorBarra();
 
   /* =========================================================
-     ROUTER (hash, sin recargar)
-     #/inicio  #/catalogo[/descarga]  #/historia  #/praxis  #/difusion  #/carrito
+     ROUTER (rutas reales, sin recargar)
+     /inicio  /catalogo[/descarga]  /historia  /praxis  /difusion  /carrito
+     En el respaldo de GitHub Pages se usa hash (#/catalogo): allí no hay
+     rewrites y cualquier ruta real devolvería 404.
      ========================================================= */
   var primeraCarga = true;
+  var ES_PAGES = /\.github\.io$/i.test(location.hostname);
+  var BASE = ES_PAGES ? '/marea/' : '/';
+
+  function hrefDe(ruta) {
+    var limpia = String(ruta || 'inicio').replace(/^\/+/, '');
+    return ES_PAGES ? '#/' + limpia : BASE + limpia;
+  }
+
+  function rutaActual() {
+    var ruta;
+    if (ES_PAGES) {
+      ruta = location.hash.replace(/^#\/?/, '');
+    } else {
+      ruta = location.pathname;
+      if (BASE !== '/' && ruta.indexOf(BASE) === 0) ruta = ruta.slice(BASE.length);
+      ruta = ruta.replace(/^\/+/, '');
+    }
+    return ruta;
+  }
+
+  function irA(ruta) {
+    var href = hrefDe(ruta);
+    var actual = ES_PAGES ? (location.hash || '#/inicio') : (location.pathname + location.search);
+    if (actual === href) { route(); return; }
+    if (ES_PAGES) location.hash = href;
+    else history.pushState(null, '', href);
+    route();
+  }
 
   function route() {
     if (!cargado) return;
-    var trozos = (location.hash.replace(/^#\/?/, '') || 'inicio').split('/');
+    var trozos = (rutaActual() || 'inicio').split('/');
     var n0 = trozos[0], param = trozos[1];
     var name = TITULOS[n0] ? n0 : 'inicio';
     var vista = name;
+    // Ruta desconocida: se muestra el inicio y se corrige la URL.
+    if (!ES_PAGES && n0 !== 'inicio' && !TITULOS[n0]) history.replaceState(null, '', hrefDe('inicio'));
 
     if (name === 'historia' || name === 'praxis') { state.col = name; vista = 'catalogo'; }
     else if (name === 'catalogo') { state.col = 'todas'; state.disp = param === 'descarga' ? 'descarga' : 'todo'; }
@@ -670,7 +702,30 @@
     }
     primeraCarga = false;
   }
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+    if (!a) return;
+    if (a.target && a.target !== '_self') return;
+    if (a.hasAttribute('download')) return;
+    var href = a.getAttribute('href') || '';
+    if (/^(mailto:|tel:|https?:|\/\/)/i.test(href)) return;
+    var ruta = null;
+    if (href.indexOf('#/') === 0) ruta = href.slice(2);
+    else if (href.charAt(0) === '/' && href.indexOf('//') !== 0) ruta = href.slice(1);
+    if (!ruta) return;
+    e.preventDefault();
+    irA(ruta);
+  });
+  window.addEventListener('popstate', route);
   window.addEventListener('hashchange', route);
+
+  // Enlaces antiguos con hash en el dominio propio: se canonizan a ruta real.
+  if (!ES_PAGES && /^#\/?/.test(location.hash)) {
+    var rutaLegada = location.hash.replace(/^#\/?/, '');
+    if (rutaLegada) history.replaceState(null, '', hrefDe(rutaLegada));
+  }
+  // La raíz se normaliza a /inicio.
+  if (!ES_PAGES && !rutaActual()) history.replaceState(null, '', hrefDe('inicio'));
 
   /* =========================================================
      ARRANQUE

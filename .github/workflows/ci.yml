@@ -31,8 +31,14 @@ jobs:
       - name: Validar el catálogo
         run: node scripts/validar.mjs
 
+      - name: Revisar sintaxis del JavaScript
+        run: node --check app.js
+
       - name: Validar HTML
         run: npx --yes html-validate@9 index.html
+
+      - name: Construir dist/
+        run: node scripts/build.mjs
 
       - name: Escanear secretos
         uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7

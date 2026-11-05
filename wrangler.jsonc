@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "marea",
+  "compatibility_date": "2026-11-05",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  },
+  "routes": [
+    {
+      "pattern": "marea.antarquia.cl/*",
+      "zone_name": "antarquia.cl"
+    }
+  ]
+}
