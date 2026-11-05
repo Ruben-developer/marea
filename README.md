@@ -87,9 +87,9 @@ scripts/        validar.mjs, revisa el catálogo antes de publicar
 3. `enlace` externo → tal cual.
 4. Nada → botón «Próximamente» deshabilitado.
 
-`MAREA_PDF_BASE` es relativo a propósito: funciona igual en local, en
-`ruben-developer.github.io/marea/` y en `marea.antarquia.cl`. Cuando exista el
-servidor de descargas, basta cambiarlo por su URL en `config.js`.
+`MAREA_PDF_BASE` es relativo a propósito: los PDF se sirven desde `pdfs/` en el
+mismo sitio, en local y en `marea.antarquia.cl`. Si algún día se externalizan,
+basta cambiar la base por una URL absoluta en `config.js`.
 
 ## Carrito
 
@@ -121,8 +121,8 @@ Con Pages CMS:
 
 A mano:
 
-1. Si el PDF va al sitio (mientras no exista R2), copiarlo a `pdfs/` y escribir
-   su nombre en `archivo`. Con R2, subirlo allá y dejar solo el nombre.
+1. Copiar el PDF a `pdfs/` y escribir su nombre en `archivo`. Se sirve desde el
+   mismo sitio; no hay subdominio de descargas.
 2. Si hay portada real, copiarla a `covers/` y escribir la ruta en `portada`.
 3. Añadir o editar la ficha en `catalogo.json`.
 4. Validar antes de subir:
