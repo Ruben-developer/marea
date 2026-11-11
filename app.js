@@ -205,9 +205,8 @@
     }).join('');
     var autor = p.autor.toUpperCase();
     if (autor.length > 30) autor = autor.slice(0, 29).trim() + '…';
-    /* Etiqueta negra al pie: alto y ancho justos para el autor, misma
-       tipografía y cuerpo que la línea de autor de siempre. */
-    var ancho = Math.round(autor.length * 7 + 20);
+    /* Etiqueta negra centrada al pie: ancha, con aire a los costados,
+       y levantada del marco inferior. El autor va centrado dentro. */
     return '<svg viewBox="0 0 300 420" xmlns="http://www.w3.org/2000/svg" ' + ariaPortada(p, label) + '>' +
       '<rect width="300" height="420" fill="' + pal.papel + '"/>' +
       '<rect x="12" y="12" width="276" height="396" fill="none" stroke="' + pal.tinta + '" stroke-width="2"/>' +
@@ -215,8 +214,8 @@
       /* Barra de acento de alto fijo: el mismo de la portada de título largo. */
       '<rect x="19" y="88" width="7" height="132" fill="' + ac + '"/>' +
       txt +
-      '<rect x="19" y="374" width="' + ancho + '" height="26" fill="' + pal.tinta + '"/>' +
-      '<text x="30" y="391" font-family="Courier New,monospace" font-size="9" letter-spacing="1.6" fill="' + pal.papel + '">' +
+      '<rect x="32" y="362" width="236" height="26" fill="' + pal.tinta + '"/>' +
+      '<text x="150" y="379" text-anchor="middle" font-family="Courier New,monospace" font-size="9" letter-spacing="1.6" fill="' + pal.papel + '">' +
       esc(autor) + '</text>' +
       '</svg>';
   }
