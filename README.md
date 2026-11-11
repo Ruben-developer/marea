@@ -55,13 +55,11 @@ scripts/        validar.mjs, revisa el catálogo antes de publicar
   "titulo": "Ai Ferri Corti",
   "autor": "Anónimo",
   "coleccion": "praxis",
-  "anio": null,
-  "paginas": 28,
   "sinopsis": "",
   "portada": null,
   "archivo": null,
   "enlace": null,
-  "precio": 500,
+  "precio": 1000,
   "stock": 3,
   "destacado": true
 }
@@ -73,10 +71,21 @@ scripts/        validar.mjs, revisa el catálogo antes de publicar
 - `archivo`: nombre del PDF dentro de `MAREA_PDF_BASE`. Si empieza por `http`,
   se usa tal cual.
 - `enlace`: URL externa de respaldo (Mega, etc.). Solo se usa si no hay `archivo`.
-- `precio`: precio del impreso en CLP. **`null` = solo digital**, sin edición impresa;
-  la ficha ofrece escribir a la editorial en vez de comprar.
-- `stock`: unidades disponibles. `0` = agotado (el PDF sigue libre).
-- Sin `archivo` ni `enlace` la ficha se muestra como «Próximamente».
+- `precio`: precio del impreso en CLP. Por ahora todos los impresos valen `1000`.
+  **`null` = solo digital**, sin edición impresa.
+- `stock`: unidades disponibles. `0` = solo digital: el PDF sigue libre pero no
+  se puede encargar.
+
+Estados (se derivan de los datos, no se cargan a mano):
+
+| Estado | Datos | Botones |
+|---|---|---|
+| Próximamente | sin PDF | Encargar y Descargar PDF deshabilitados |
+| En venta | PDF + `precio` + stock | Encargar habilitado (si hay stock) y Descargar PDF habilitado |
+| Solo digital | PDF sin `precio`, o con stock 0 | Encargar deshabilitado y Descargar PDF habilitado |
+
+Las tarjetas y la ficha muestran siempre los dos botones, con los textos
+«Encargar» y «Descargar PDF».
 
 ## Descargas
 
@@ -85,7 +94,7 @@ scripts/        validar.mjs, revisa el catálogo antes de publicar
 1. `archivo` absoluto (`https://…`) → tal cual.
 2. `archivo` relativo → `MAREA_PDF_BASE + archivo` (por defecto `pdfs/`).
 3. `enlace` externo → tal cual.
-4. Nada → botón «Próximamente» deshabilitado.
+4. Nada → «Descargar PDF» deshabilitado; la ficha queda en «Próximamente».
 
 `MAREA_PDF_BASE` es relativo a propósito: los PDF se sirven desde `pdfs/` en el
 mismo sitio, en local y en `marea.antarquia.cl`. Si algún día se externalizan,
@@ -95,7 +104,7 @@ basta cambiar la base por una URL absoluta en `config.js`.
 
 No hay backend ni pago en línea. «Armar pedido» genera un resumen y abre el cliente
 de correo con un `mailto:` a contacto-marea@riseup.net; el pedido se acuerda por correo.
-El carrito se guarda en `localStorage` y solo acepta títulos con impreso y stock.
+El carrito se guarda en `localStorage` y solo acepta títulos con PDF, precio y stock.
 
 ## Desarrollo local
 
@@ -165,5 +174,5 @@ editorial). **Hoy `catalogo.json` conserva solo 2 fichas de muestra**
 (`m-001` y `m-067`, esta última con PDF); el resto sigue en la planilla y en el
 historial de git, en el commit anterior a la reducción. La clasificación
 Historia/Praxis es **provisional**: la planilla no trae ese campo y se asignó por
-tema. Faltan año, sinopsis y portadas reales; el precio y el stock también hay
-que verificarlos antes de publicar.
+tema. Faltan sinopsis y portadas reales; el stock también hay que verificarlo
+antes de publicar.

@@ -20,8 +20,9 @@ Lo que falta verificar o completar:
 - [ ] **Clasificación Historia/Praxis**: es provisional. La planilla no trae colección;
       se asignó por tema (teoría y organización → Praxis; episodios y biografías → Historia).
       Revisar una por una con la editorial.
-- [ ] **Año y sinopsis**: hoy van `null` / vacíos. Hay que escribirlos.
-- [ ] **Precio y stock**: salen de la planilla y pueden estar desactualizados.
+- [ ] **Sinopsis**: hoy están vacías. Hay que escribirlas.
+- [ ] **Precio y stock**: por ahora todos los impresos valen $1.000. El stock sale
+      de la planilla y puede estar desactualizado; `0` deja el título como «Solo digital».
 - [ ] **Restaurar el catálogo completo**: si se retoma el inventario de 67, recuperar
       las fichas desde `MAREA.xlsx` o el commit anterior a la reducción.
 - [ ] **Portadas reales**: las fichas usan portada SVG generada. Descargar las
