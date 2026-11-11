@@ -40,6 +40,10 @@ content:
             - name: historia
               label: Historia
 
+      - name: paginas
+        label: Páginas
+        type: number
+
       - name: sinopsis
         label: Sinopsis
         type: text

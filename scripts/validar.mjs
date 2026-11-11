@@ -45,7 +45,7 @@ catalogo.forEach((p, i) => {
   if (ids.has(id)) errores.push(`${donde} ${nombre}: id repetido «${id}» (ya en ${ids.get(id)})`);
   else ids.set(id, donde);
 
-  ['precio', 'stock'].forEach(c => {
+  ['paginas', 'precio', 'stock'].forEach(c => {
     if (!numero(p[c])) errores.push(`${donde} ${nombre}: «${c}» debe ser número o null (tiene ${JSON.stringify(p[c])})`);
   });
   if (typeof p.precio === 'number' && p.precio < 0) errores.push(`${donde} ${nombre}: precio negativo`);

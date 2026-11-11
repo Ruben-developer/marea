@@ -4,8 +4,8 @@
    modales. Sin dependencias.
 
    El catálogo vive en catalogo.json. Campos por ficha:
-     id, titulo, autor, coleccion, sinopsis, portada, archivo,
-     enlace, precio, stock, destacado
+     id, titulo, autor, coleccion, paginas, sinopsis, portada,
+     archivo, enlace, precio, stock, destacado
    - id:      opcional; si falta se genera del título (m-titulo)
    - archivo: nombre en el servidor de PDFs (se antepone MAREA_PDF_BASE)
    - enlace:  URL externa de respaldo (p. ej. Mega)
@@ -110,6 +110,7 @@
       titulo: String(p.titulo),
       autor: p.autor ? String(p.autor) : 'Sin autoría',
       coleccion: p.coleccion === 'historia' ? 'historia' : 'praxis',
+      paginas: num(p.paginas),
       sinopsis: p.sinopsis ? String(p.sinopsis).trim() : '',
       portada: rutaMedia(p.portada),
       archivo: p.archivo || null,
@@ -299,7 +300,9 @@
      TARJETAS
      ========================================================= */
   function metaLinea(p) {
-    return COLECCIONES[p.coleccion];
+    var partes = [COLECCIONES[p.coleccion]];
+    if (p.paginas) partes.push(p.paginas + ' p.');
+    return partes.join(' · ');
   }
 
   /* Tres estados: sin PDF (Próximamente), con PDF y precio (en venta)
@@ -484,6 +487,7 @@
     var consulta = 'mailto:' + CONTACTO.correo + '?subject=' + encodeURIComponent('Consulta: ' + p.titulo);
 
     var datos = '<dt>Colección</dt><dd>' + COLECCIONES[p.coleccion] + '</dd>';
+    if (p.paginas) datos += '<dt>Páginas</dt><dd>' + p.paginas + '</dd>';
     if (estado === 'venta') {
       datos += '<dt>Impreso</dt><dd>' +
         (stock ? clp(p.precio) + ' · ' + p.stock + ' en stock' : 'Agotado · solo digital') + '</dd>';

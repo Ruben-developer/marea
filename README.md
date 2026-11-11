@@ -55,6 +55,7 @@ scripts/        validar.mjs, revisa el catálogo antes de publicar
   "titulo": "Ai Ferri Corti",
   "autor": "Anónimo",
   "coleccion": "praxis",
+  "paginas": 28,
   "sinopsis": "",
   "portada": null,
   "archivo": null,
@@ -66,6 +67,8 @@ scripts/        validar.mjs, revisa el catálogo antes de publicar
 ```
 
 - `coleccion`: `historia` o `praxis` (Historia y Praxis).
+- `paginas`: cantidad de páginas del impreso. Es un dato informativo: el precio
+  es fijo y no depende de las páginas.
 - `portada`: ruta a una imagen. Si es `null` se dibuja una portada SVG generada
   en Xilografía, así que nunca hay hueco roto.
 - `archivo`: nombre del PDF dentro de `MAREA_PDF_BASE`. Si empieza por `http`,
