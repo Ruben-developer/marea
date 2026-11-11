@@ -143,9 +143,9 @@
 
   /* =========================================================
      PORTADAS
-     Sin imagen propia se dibuja un SVG en línea: papel crema
-     con retícula de puntos, título serif junto a una barra
-     roja y autor sobre barra negra al pie. Cero imágenes
+     Sin imagen propia se dibuja un SVG en línea: papel crudo,
+     doble marco, título en bloque, barra de acento fija y
+     etiqueta negra con el autor al pie. Cero imágenes
      externas, cero peticiones.
      ========================================================= */
   function wrapText(text, max) {
@@ -183,52 +183,41 @@
     return portadaXilo(p, label);
   }
 
-  /* Paleta de la portada generada. */
-  var PALETA_PORTADA = { papel: '#ede6d4', tinta: '#17150f', rojo: '#b5342a', claro: '#f4eddc' };
+  /* Portada generada en Xilografía: papel crudo, doble marco, título en
+     bloque y barra de acento. La colección decide el acento: Historia =
+     azul tinta, Praxis = bermellón. */
+  var PALETA_PORTADA = { papel: '#ede6d4', tinta: '#17150f', hist: '#22364a', praxis: '#b5342a' };
 
-  /* El id del <pattern> debe ser único por portada para que varias
-     tarjetas en la misma página no compartan la trama. */
-  var portadaSeq = 0;
+  function acentoPortada(p) { return p.coleccion === 'historia' ? PALETA_PORTADA.hist : PALETA_PORTADA.praxis; }
 
   function ariaPortada(p, label) {
     if (!label) return 'aria-hidden="true"';
     return 'role="img" aria-label="Portada de ejemplo: ' + esc(p.titulo) + ', de ' + esc(p.autor) + '"';
   }
 
-  /* Portada: fondo crema con retícula de puntos, barra roja vertical,
-     título en serif arriba a la izquierda y autor sobre barra negra
-     al pie. Solo título y autor. */
   function portadaXilo(p, label) {
-    var pal = PALETA_PORTADA;
-    var aj = ajustarTitulo(p.titulo, 218, 5, [36, 32, 29, 26, 23, 20, 18, 16]);
-    var fs = aj.fs, lines = aj.lines;
-    var salto = Math.round(fs * 116) / 100;
-    var first = 58 + fs * 0.78;
-    /* La barra roja abraza el bloque de título: empieza en la altura
-       de la primera mayúscula y termina en el descendente de la última
-       línea. Cambia de alto con cada título. */
-    var barraY = first - fs * 0.74;
-    var barraAlto = (first + (lines.length - 1) * salto + fs * 0.24) - barraY;
+    var pal = PALETA_PORTADA, ac = acentoPortada(p);
+    var aj = ajustarTitulo(p.titulo, 215, 4, [30, 26, 22, 19, 16]);
+    var fs = aj.fs, lines = aj.lines, y = 104, salto = fs + 8;
     var txt = lines.map(function (l, k) {
-      return '<text x="48" y="' + Math.round(first + k * salto) + '" font-family="Georgia,\'Times New Roman\',serif" font-size="' +
-        fs + '" font-weight="700" letter-spacing="-0.3" fill="' + pal.tinta + '">' + esc(l) + '</text>';
+      return '<text x="32" y="' + (y + fs + k * salto) + '" font-family="Georgia,serif" font-size="' + fs +
+        '" font-weight="700" letter-spacing="-0.4" fill="' + pal.tinta + '">' + esc(String(l).toUpperCase()) + '</text>';
     }).join('');
-    var autor = String(p.autor);
-    if (autor.length > 32) autor = autor.slice(0, 31).trim() + '…';
-    portadaSeq += 1;
-    var pid = 'marea-puntos-' + portadaSeq;
-    var barra = 308, altoBarra = 420 - barra;
+    var autor = p.autor.toUpperCase();
+    if (autor.length > 30) autor = autor.slice(0, 29).trim() + '…';
+    /* Etiqueta negra al pie: alto y ancho justos para el autor, misma
+       tipografía y cuerpo que la línea de autor de siempre. */
+    var ancho = Math.round(autor.length * 7 + 20);
     return '<svg viewBox="0 0 300 420" xmlns="http://www.w3.org/2000/svg" ' + ariaPortada(p, label) + '>' +
-      '<defs><pattern id="' + pid + '" width="12" height="12" patternUnits="userSpaceOnUse">' +
-      '<circle cx="2" cy="2" r="1" fill="' + pal.tinta + '" opacity="0.38"/>' +
-      '</pattern></defs>' +
       '<rect width="300" height="420" fill="' + pal.papel + '"/>' +
-      '<rect width="300" height="' + barra + '" fill="url(#' + pid + ')"/>' +
-      '<rect x="30" y="' + Math.round(barraY) + '" width="6" height="' + Math.round(barraAlto) + '" fill="' + pal.rojo + '"/>' +
+      '<rect x="12" y="12" width="276" height="396" fill="none" stroke="' + pal.tinta + '" stroke-width="2"/>' +
+      '<rect x="17" y="17" width="266" height="386" fill="none" stroke="' + pal.tinta + '" stroke-width="0.8"/>' +
+      /* Barra de acento de alto fijo: el mismo de la portada de título largo. */
+      '<rect x="19" y="88" width="7" height="132" fill="' + ac + '"/>' +
       txt +
-      '<rect y="' + barra + '" width="300" height="' + altoBarra + '" fill="' + pal.tinta + '"/>' +
-      '<text x="48" y="' + (barra + altoBarra / 2 + 7) + '" font-family="Georgia,\'Times New Roman\',serif" ' +
-      'font-size="19" fill="' + pal.claro + '">' + esc(autor) + '</text>' +
+      '<rect x="19" y="374" width="' + ancho + '" height="26" fill="' + pal.tinta + '"/>' +
+      '<text x="30" y="391" font-family="Courier New,monospace" font-size="9" letter-spacing="1.6" fill="' + pal.papel + '">' +
+      esc(autor) + '</text>' +
       '</svg>';
   }
 
