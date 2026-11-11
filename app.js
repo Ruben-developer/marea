@@ -159,20 +159,29 @@
   }
 
   /* Elige el mayor cuerpo de letra que quepa en el ancho y el alto dados.
-     Evita que los títulos largos se salgan del marco de la portada.
-     El factor 0.68 estima el ancho medio de glifo + el letter-spacing. */
-  function ajustarTitulo(titulo, maxW, maxLines, tamanos) {
-    var fs = tamanos[tamanos.length - 1], lines = [], i, k, maxChars, ancho, ok;
+     Evita que los títulos largos se salgan de la barra de acento: baja de
+     cuerpo y gana líneas antes que recortar el texto. El factor 0.68
+     estima el ancho medio de glifo + el letter-spacing. */
+  function ajustarTitulo(titulo, maxW, maxH, tamanos) {
+    var fs = tamanos[tamanos.length - 1], lines = [], i, k, maxChars, ancho, alto;
     for (i = 0; i < tamanos.length; i++) {
       fs = tamanos[i];
       maxChars = Math.max(6, Math.floor(maxW / (fs * 0.68)));
       lines = wrapText(titulo, maxChars);
       ancho = 0;
       for (k = 0; k < lines.length; k++) ancho = Math.max(ancho, lines[k].length);
-      ok = lines.length <= maxLines && ancho * fs * 0.68 <= maxW;
-      if (ok) return { fs: fs, lines: lines };
+      alto = (lines.length - 1) * (fs + 8) + fs * 1.24;
+      if (ancho * fs * 0.68 <= maxW && alto <= maxH) return { fs: fs, lines: lines };
     }
-    return { fs: fs, lines: lines.slice(0, maxLines) };
+    /* Último recurso: cuerpo mínimo, las líneas que quepan y elipsis. */
+    maxChars = Math.max(6, Math.floor(maxW / (fs * 0.68)));
+    lines = wrapText(titulo, maxChars);
+    var cabe = Math.max(1, Math.floor((maxH - fs * 1.24) / (fs + 8)) + 1);
+    if (lines.length > cabe) {
+      lines = lines.slice(0, cabe);
+      lines[cabe - 1] = lines[cabe - 1].slice(0, maxChars - 1).trim() + '…';
+    }
+    return { fs: fs, lines: lines };
   }
 
   function portada(p, label) {
@@ -197,7 +206,7 @@
 
   function portadaXilo(p, label) {
     var pal = PALETA_PORTADA, ac = acentoPortada(p);
-    var aj = ajustarTitulo(p.titulo, 215, 4, [30, 26, 22, 19, 16]);
+    var aj = ajustarTitulo(p.titulo, 215, 118, [30, 26, 22, 19, 16, 14, 13, 12]);
     var fs = aj.fs, lines = aj.lines, y = 104, salto = fs + 8;
     var txt = lines.map(function (l, k) {
       return '<text x="32" y="' + (y + fs + k * salto) + '" font-family="Georgia,serif" font-size="' + fs +

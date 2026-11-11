@@ -39,10 +39,12 @@ mayúsculas, barra de acento a la izquierda y etiqueta negra al pie con el autor
 
 La barra de acento tiene alto fijo (132 unidades), independiente del título. La
 colección decide el color: Historia = azul tinta (`#22364a`), Praxis = bermellón
-(`#b5342a`). La etiqueta del autor es una barra negra centrada y ancha, con aire
-respecto al marco inferior y laterales; el nombre va centrado dentro, en la misma
-tipografía mono de 9 px. La portada no lleva marca, colección, sello ni líneas
-decorativas.
+(`#b5342a`). El título se ajusta solo: baja de cuerpo (de 30 a 12 px) y gana
+líneas (hasta 6) para no superar la barra; solo se recorta con elipsis si el
+texto excede ese límite. La etiqueta del autor es una barra negra centrada y
+ancha, con aire respecto al marco inferior y laterales; el nombre va centrado
+dentro, en la misma tipografía mono de 9 px. La portada no lleva marca,
+colección, sello ni líneas decorativas.
 
 ## Tema claro / oscuro
 
