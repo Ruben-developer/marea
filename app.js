@@ -203,28 +203,32 @@
     var aj = ajustarTitulo(p.titulo, 218, 5, [36, 32, 29, 26, 23, 20, 18, 16]);
     var fs = aj.fs, lines = aj.lines;
     var salto = Math.round(fs * 116) / 100;
-    var first = 52 + fs * 0.78;
-    var alto = (lines.length - 1) * salto + fs;
+    var first = 58 + fs * 0.78;
+    /* La barra roja abraza el bloque de título: empieza en la altura
+       de la primera mayúscula y termina en el descendente de la última
+       línea. Cambia de alto con cada título. */
+    var barraY = first - fs * 0.74;
+    var barraAlto = (first + (lines.length - 1) * salto + fs * 0.24) - barraY;
     var txt = lines.map(function (l, k) {
-      return '<text x="46" y="' + Math.round(first + k * salto) + '" font-family="Georgia,\'Times New Roman\',serif" font-size="' +
+      return '<text x="48" y="' + Math.round(first + k * salto) + '" font-family="Georgia,\'Times New Roman\',serif" font-size="' +
         fs + '" font-weight="700" letter-spacing="-0.3" fill="' + pal.tinta + '">' + esc(l) + '</text>';
     }).join('');
     var autor = String(p.autor);
-    if (autor.length > 34) autor = autor.slice(0, 33).trim() + '…';
+    if (autor.length > 32) autor = autor.slice(0, 31).trim() + '…';
     portadaSeq += 1;
     var pid = 'marea-puntos-' + portadaSeq;
-    var barra = 354, altoBarra = 420 - barra;
+    var barra = 308, altoBarra = 420 - barra;
     return '<svg viewBox="0 0 300 420" xmlns="http://www.w3.org/2000/svg" ' + ariaPortada(p, label) + '>' +
       '<defs><pattern id="' + pid + '" width="12" height="12" patternUnits="userSpaceOnUse">' +
       '<circle cx="2" cy="2" r="1" fill="' + pal.tinta + '" opacity="0.38"/>' +
       '</pattern></defs>' +
       '<rect width="300" height="420" fill="' + pal.papel + '"/>' +
       '<rect width="300" height="' + barra + '" fill="url(#' + pid + ')"/>' +
-      '<rect x="28" y="44" width="6" height="' + Math.round(alto + 8) + '" fill="' + pal.rojo + '"/>' +
+      '<rect x="30" y="' + Math.round(barraY) + '" width="6" height="' + Math.round(barraAlto) + '" fill="' + pal.rojo + '"/>' +
       txt +
       '<rect y="' + barra + '" width="300" height="' + altoBarra + '" fill="' + pal.tinta + '"/>' +
-      '<text x="150" y="' + (barra + altoBarra / 2 + 5) + '" text-anchor="middle" font-family="Georgia,\'Times New Roman\',serif" ' +
-      'font-size="15" fill="' + pal.claro + '">' + esc(autor) + '</text>' +
+      '<text x="48" y="' + (barra + altoBarra / 2 + 7) + '" font-family="Georgia,\'Times New Roman\',serif" ' +
+      'font-size="19" fill="' + pal.claro + '">' + esc(autor) + '</text>' +
       '</svg>';
   }
 
