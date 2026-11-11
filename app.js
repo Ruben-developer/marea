@@ -143,8 +143,9 @@
 
   /* =========================================================
      PORTADAS
-     Sin imagen propia se dibuja un SVG en línea según id y
-     colección: Historia oscura, Praxis papel. Cero imágenes
+     Sin imagen propia se dibuja un SVG en línea: papel crudo,
+     doble marco, título en bloque, barra de acento fija y
+     etiqueta negra con el autor al pie. Cero imágenes
      externas, cero peticiones.
      ========================================================= */
   function wrapText(text, max) {
@@ -158,20 +159,29 @@
   }
 
   /* Elige el mayor cuerpo de letra que quepa en el ancho y el alto dados.
-     Evita que los títulos largos se salgan del marco de la portada.
-     El factor 0.68 estima el ancho medio de glifo + el letter-spacing. */
-  function ajustarTitulo(titulo, maxW, maxLines, tamanos) {
-    var fs = tamanos[tamanos.length - 1], lines = [], i, k, maxChars, ancho, ok;
+     Evita que los títulos largos se salgan de la barra de acento: baja de
+     cuerpo y gana líneas antes que recortar el texto. El factor 0.68
+     estima el ancho medio de glifo + el letter-spacing. */
+  function ajustarTitulo(titulo, maxW, maxH, tamanos) {
+    var fs = tamanos[tamanos.length - 1], lines = [], i, k, maxChars, ancho, alto;
     for (i = 0; i < tamanos.length; i++) {
       fs = tamanos[i];
       maxChars = Math.max(6, Math.floor(maxW / (fs * 0.68)));
       lines = wrapText(titulo, maxChars);
       ancho = 0;
       for (k = 0; k < lines.length; k++) ancho = Math.max(ancho, lines[k].length);
-      ok = lines.length <= maxLines && ancho * fs * 0.68 <= maxW;
-      if (ok) return { fs: fs, lines: lines };
+      alto = (lines.length - 1) * (fs + 8) + fs * 1.24;
+      if (ancho * fs * 0.68 <= maxW && alto <= maxH) return { fs: fs, lines: lines };
     }
-    return { fs: fs, lines: lines.slice(0, maxLines) };
+    /* Último recurso: cuerpo mínimo, las líneas que quepan y elipsis. */
+    maxChars = Math.max(6, Math.floor(maxW / (fs * 0.68)));
+    lines = wrapText(titulo, maxChars);
+    var cabe = Math.max(1, Math.floor((maxH - fs * 1.24) / (fs + 8)) + 1);
+    if (lines.length > cabe) {
+      lines = lines.slice(0, cabe);
+      lines[cabe - 1] = lines[cabe - 1].slice(0, maxChars - 1).trim() + '…';
+    }
+    return { fs: fs, lines: lines };
   }
 
   function portada(p, label) {
@@ -183,64 +193,39 @@
   }
 
   /* Portada generada en Xilografía: papel crudo, doble marco, título en
-     bloque y sello tallado. La colección decide el acento: Historia =
+     bloque y barra de acento. La colección decide el acento: Historia =
      azul tinta, Praxis = bermellón. */
   var PALETA_PORTADA = { papel: '#ede6d4', tinta: '#17150f', hist: '#22364a', praxis: '#b5342a' };
 
   function acentoPortada(p) { return p.coleccion === 'historia' ? PALETA_PORTADA.hist : PALETA_PORTADA.praxis; }
-  function n1(v) { return Math.round(v * 10) / 10; }
 
   function ariaPortada(p, label) {
     if (!label) return 'aria-hidden="true"';
     return 'role="img" aria-label="Portada de ejemplo: ' + esc(p.titulo) + ', de ' + esc(p.autor) + '"';
   }
 
-  /* Sello cuadrado dibujado en SVG: cuadrado macizo con barras del color
-     del papel, como una estampa tallada. */
-  function selloSVG(x, y, s, color, papel) {
-    var out = '<rect x="' + x + '" y="' + y + '" width="' + s + '" height="' + s + '" fill="' + color + '"/>';
-    var m = s * 0.15, cell = s * 0.30, gap = s * 0.10;
-    var pos = [m, m + cell + gap];
-    for (var i = 0; i < 2; i++) {
-      for (var j = 0; j < 2; j++) {
-        var cx = x + pos[i], cy = y + pos[j];
-        [0.22, 0.45, 0.68].forEach(function (f) {
-          out += '<rect x="' + n1(cx + cell * 0.16) + '" y="' + n1(cy + cell * f) + '" width="' + n1(cell * 0.68) +
-            '" height="' + n1(cell * 0.10) + '" fill="' + papel + '"/>';
-        });
-        out += '<rect x="' + n1(cx + cell * 0.45) + '" y="' + n1(cy + cell * 0.14) + '" width="' + n1(cell * 0.10) +
-          '" height="' + n1(cell * 0.72) + '" fill="' + papel + '"/>';
-      }
-    }
-    return out;
-  }
-
   function portadaXilo(p, label) {
     var pal = PALETA_PORTADA, ac = acentoPortada(p);
-    var aj = ajustarTitulo(p.titulo, 215, 4, [30, 26, 22, 19, 16]);
+    var aj = ajustarTitulo(p.titulo, 215, 118, [30, 26, 22, 19, 16, 14, 13, 12]);
     var fs = aj.fs, lines = aj.lines, y = 104, salto = fs + 8;
-    var alto = lines.length * salto;
     var txt = lines.map(function (l, k) {
       return '<text x="32" y="' + (y + fs + k * salto) + '" font-family="Georgia,serif" font-size="' + fs +
         '" font-weight="700" letter-spacing="-0.4" fill="' + pal.tinta + '">' + esc(String(l).toUpperCase()) + '</text>';
     }).join('');
-    var trazos = '';
-    for (var i = 0; i < 3; i++) {
-      trazos += '<rect x="32" y="' + (302 + i * 13) + '" width="' + (86 + i * 38) + '" height="6" fill="' + pal.tinta + '"/>';
-    }
     var autor = p.autor.toUpperCase();
-    if (autor.length > 34) autor = autor.slice(0, 33) + '…';
+    if (autor.length > 30) autor = autor.slice(0, 29).trim() + '…';
+    /* Etiqueta negra centrada al pie: ancha, con aire a los costados,
+       y levantada del marco inferior. El autor va centrado dentro. */
     return '<svg viewBox="0 0 300 420" xmlns="http://www.w3.org/2000/svg" ' + ariaPortada(p, label) + '>' +
       '<rect width="300" height="420" fill="' + pal.papel + '"/>' +
       '<rect x="12" y="12" width="276" height="396" fill="none" stroke="' + pal.tinta + '" stroke-width="2"/>' +
       '<rect x="17" y="17" width="266" height="386" fill="none" stroke="' + pal.tinta + '" stroke-width="0.8"/>' +
-      '<text x="32" y="50" font-family="Courier New,monospace" font-size="10" letter-spacing="2.5" fill="' + pal.tinta + '">M.A.R.E.A. · ' +
-      COLECCIONES[p.coleccion].toUpperCase() + '</text>' +
-      '<rect x="19" y="88" width="7" height="' + n1(alto + 12) + '" fill="' + ac + '"/>' +
-      txt + trazos +
-      '<text x="32" y="392" font-family="Courier New,monospace" font-size="9" letter-spacing="1.6" fill="' + pal.tinta + '">' +
+      /* Barra de acento de alto fijo: el mismo de la portada de título largo. */
+      '<rect x="19" y="88" width="7" height="132" fill="' + ac + '"/>' +
+      txt +
+      '<rect x="32" y="362" width="236" height="26" fill="' + pal.tinta + '"/>' +
+      '<text x="150" y="379" text-anchor="middle" font-family="Courier New,monospace" font-size="9" letter-spacing="1.6" fill="' + pal.papel + '">' +
       esc(autor) + '</text>' +
-      selloSVG(212, 320, 54, ac, pal.papel) +
       '</svg>';
   }
 

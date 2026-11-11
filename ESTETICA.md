@@ -29,15 +29,22 @@ No hay fuentes externas: la CSP solo permite el propio dominio.
 
 El logo es `assets/sello-rojo.png` (500×500, fondo transparente). Se usa como
 `<img class="logo">` en cabecera, portada, pie y ficha; el tamaño se controla con
-`--s` (`style="--s:64px"`). Las portadas generadas dibujan un sello cuadrado en
-SVG con el acento de la colección.
+`--s` (`style="--s:64px"`). Las portadas generadas no dibujan sello.
 
 ## Portadas
 
 `portada()` en `app.js` usa la imagen de `catalogo.json` si existe; si no, dibuja
-`portadaXilo()`: papel `#ede6d4`, doble marco, título en bloque, barra de acento
-y sello tallado. La colección decide el acento: Historia = azul tinta
-(`#22364a`), Praxis = bermellón (`#b5342a`).
+`portadaXilo()`: papel crudo `#ede6d4`, doble marco negro, título en bloque en
+mayúsculas, barra de acento a la izquierda y etiqueta negra al pie con el autor.
+
+La barra de acento tiene alto fijo (132 unidades), independiente del título. La
+colección decide el color: Historia = azul tinta (`#22364a`), Praxis = bermellón
+(`#b5342a`). El título se ajusta solo: baja de cuerpo (de 30 a 12 px) y gana
+líneas (hasta 6) para no superar la barra; solo se recorta con elipsis si el
+texto excede ese límite. La etiqueta del autor es una barra negra centrada y
+ancha, con aire respecto al marco inferior y laterales; el nombre va centrado
+dentro, en la misma tipografía mono de 9 px. La portada no lleva marca,
+colección, sello ni líneas decorativas.
 
 ## Tema claro / oscuro
 
