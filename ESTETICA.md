@@ -29,15 +29,20 @@ No hay fuentes externas: la CSP solo permite el propio dominio.
 
 El logo es `assets/sello-rojo.png` (500×500, fondo transparente). Se usa como
 `<img class="logo">` en cabecera, portada, pie y ficha; el tamaño se controla con
-`--s` (`style="--s:64px"`). Las portadas generadas dibujan un sello cuadrado en
-SVG con el acento de la colección.
+`--s` (`style="--s:64px"`). Las portadas generadas ya no dibujan sello: solo
+título y autor.
 
 ## Portadas
 
 `portada()` en `app.js` usa la imagen de `catalogo.json` si existe; si no, dibuja
-`portadaXilo()`: papel `#ede6d4`, doble marco, título en bloque, barra de acento
-y sello tallado. La colección decide el acento: Historia = azul tinta
-(`#22364a`), Praxis = bermellón (`#b5342a`).
+`portadaXilo()`: papel crema `#ede6d4` con retícula de puntos, barra roja
+(`#b5342a`) junto al título, título en serif arriba a la izquierda y autor sobre
+una barra negra al pie. Solo se muestran título y autor: sin colección, sello,
+marcos ni numeración.
+
+La retícula se dibuja con un `<pattern>` SVG con id único por portada; así varias
+tarjetas comparten trama sin llenar el DOM de círculos. La portada es arte de
+cubierta: los puntos no se usan como fondo de la interfaz.
 
 ## Tema claro / oscuro
 
@@ -51,4 +56,5 @@ el destello. El botón de la cabecera alterna y actualiza `<meta name="theme-col
 - Filetes de 1–2 px; el pie y la cabecera usan trazos más gruesos.
 - El bermellón no se usa para párrafos pequeños: solo titulares, sellos, el
   cierre de la portada y botones.
-- Nada decorativo que simule papel: ni ruido, ni puntos, ni líneas de fondo.
+- Nada decorativo que simule papel: ni ruido, ni puntos, ni líneas de fondo en la
+  interfaz. La única excepción es la retícula de puntos de las portadas generadas.

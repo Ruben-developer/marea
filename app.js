@@ -143,8 +143,9 @@
 
   /* =========================================================
      PORTADAS
-     Sin imagen propia se dibuja un SVG en línea según id y
-     colección: Historia oscura, Praxis papel. Cero imágenes
+     Sin imagen propia se dibuja un SVG en línea: papel crema
+     con retícula de puntos, título serif junto a una barra
+     roja y autor sobre barra negra al pie. Cero imágenes
      externas, cero peticiones.
      ========================================================= */
   function wrapText(text, max) {
@@ -182,65 +183,48 @@
     return portadaXilo(p, label);
   }
 
-  /* Portada generada en Xilografía: papel crudo, doble marco, título en
-     bloque y sello tallado. La colección decide el acento: Historia =
-     azul tinta, Praxis = bermellón. */
-  var PALETA_PORTADA = { papel: '#ede6d4', tinta: '#17150f', hist: '#22364a', praxis: '#b5342a' };
+  /* Paleta de la portada generada. */
+  var PALETA_PORTADA = { papel: '#ede6d4', tinta: '#17150f', rojo: '#b5342a', claro: '#f4eddc' };
 
-  function acentoPortada(p) { return p.coleccion === 'historia' ? PALETA_PORTADA.hist : PALETA_PORTADA.praxis; }
-  function n1(v) { return Math.round(v * 10) / 10; }
+  /* El id del <pattern> debe ser único por portada para que varias
+     tarjetas en la misma página no compartan la trama. */
+  var portadaSeq = 0;
 
   function ariaPortada(p, label) {
     if (!label) return 'aria-hidden="true"';
     return 'role="img" aria-label="Portada de ejemplo: ' + esc(p.titulo) + ', de ' + esc(p.autor) + '"';
   }
 
-  /* Sello cuadrado dibujado en SVG: cuadrado macizo con barras del color
-     del papel, como una estampa tallada. */
-  function selloSVG(x, y, s, color, papel) {
-    var out = '<rect x="' + x + '" y="' + y + '" width="' + s + '" height="' + s + '" fill="' + color + '"/>';
-    var m = s * 0.15, cell = s * 0.30, gap = s * 0.10;
-    var pos = [m, m + cell + gap];
-    for (var i = 0; i < 2; i++) {
-      for (var j = 0; j < 2; j++) {
-        var cx = x + pos[i], cy = y + pos[j];
-        [0.22, 0.45, 0.68].forEach(function (f) {
-          out += '<rect x="' + n1(cx + cell * 0.16) + '" y="' + n1(cy + cell * f) + '" width="' + n1(cell * 0.68) +
-            '" height="' + n1(cell * 0.10) + '" fill="' + papel + '"/>';
-        });
-        out += '<rect x="' + n1(cx + cell * 0.45) + '" y="' + n1(cy + cell * 0.14) + '" width="' + n1(cell * 0.10) +
-          '" height="' + n1(cell * 0.72) + '" fill="' + papel + '"/>';
-      }
-    }
-    return out;
-  }
-
+  /* Portada: fondo crema con retícula de puntos, barra roja vertical,
+     título en serif arriba a la izquierda y autor sobre barra negra
+     al pie. Solo título y autor. */
   function portadaXilo(p, label) {
-    var pal = PALETA_PORTADA, ac = acentoPortada(p);
-    var aj = ajustarTitulo(p.titulo, 215, 4, [30, 26, 22, 19, 16]);
-    var fs = aj.fs, lines = aj.lines, y = 104, salto = fs + 8;
-    var alto = lines.length * salto;
+    var pal = PALETA_PORTADA;
+    var aj = ajustarTitulo(p.titulo, 218, 5, [36, 32, 29, 26, 23, 20, 18, 16]);
+    var fs = aj.fs, lines = aj.lines;
+    var salto = Math.round(fs * 116) / 100;
+    var first = 52 + fs * 0.78;
+    var alto = (lines.length - 1) * salto + fs;
     var txt = lines.map(function (l, k) {
-      return '<text x="32" y="' + (y + fs + k * salto) + '" font-family="Georgia,serif" font-size="' + fs +
-        '" font-weight="700" letter-spacing="-0.4" fill="' + pal.tinta + '">' + esc(String(l).toUpperCase()) + '</text>';
+      return '<text x="46" y="' + Math.round(first + k * salto) + '" font-family="Georgia,\'Times New Roman\',serif" font-size="' +
+        fs + '" font-weight="700" letter-spacing="-0.3" fill="' + pal.tinta + '">' + esc(l) + '</text>';
     }).join('');
-    var trazos = '';
-    for (var i = 0; i < 3; i++) {
-      trazos += '<rect x="32" y="' + (302 + i * 13) + '" width="' + (86 + i * 38) + '" height="6" fill="' + pal.tinta + '"/>';
-    }
-    var autor = p.autor.toUpperCase();
-    if (autor.length > 34) autor = autor.slice(0, 33) + '…';
+    var autor = String(p.autor);
+    if (autor.length > 34) autor = autor.slice(0, 33).trim() + '…';
+    portadaSeq += 1;
+    var pid = 'marea-puntos-' + portadaSeq;
+    var barra = 354, altoBarra = 420 - barra;
     return '<svg viewBox="0 0 300 420" xmlns="http://www.w3.org/2000/svg" ' + ariaPortada(p, label) + '>' +
+      '<defs><pattern id="' + pid + '" width="12" height="12" patternUnits="userSpaceOnUse">' +
+      '<circle cx="2" cy="2" r="1" fill="' + pal.tinta + '" opacity="0.38"/>' +
+      '</pattern></defs>' +
       '<rect width="300" height="420" fill="' + pal.papel + '"/>' +
-      '<rect x="12" y="12" width="276" height="396" fill="none" stroke="' + pal.tinta + '" stroke-width="2"/>' +
-      '<rect x="17" y="17" width="266" height="386" fill="none" stroke="' + pal.tinta + '" stroke-width="0.8"/>' +
-      '<text x="32" y="50" font-family="Courier New,monospace" font-size="10" letter-spacing="2.5" fill="' + pal.tinta + '">M.A.R.E.A. · ' +
-      COLECCIONES[p.coleccion].toUpperCase() + '</text>' +
-      '<rect x="19" y="88" width="7" height="' + n1(alto + 12) + '" fill="' + ac + '"/>' +
-      txt + trazos +
-      '<text x="32" y="392" font-family="Courier New,monospace" font-size="9" letter-spacing="1.6" fill="' + pal.tinta + '">' +
-      esc(autor) + '</text>' +
-      selloSVG(212, 320, 54, ac, pal.papel) +
+      '<rect width="300" height="' + barra + '" fill="url(#' + pid + ')"/>' +
+      '<rect x="28" y="44" width="6" height="' + Math.round(alto + 8) + '" fill="' + pal.rojo + '"/>' +
+      txt +
+      '<rect y="' + barra + '" width="300" height="' + altoBarra + '" fill="' + pal.tinta + '"/>' +
+      '<text x="150" y="' + (barra + altoBarra / 2 + 5) + '" text-anchor="middle" font-family="Georgia,\'Times New Roman\',serif" ' +
+      'font-size="15" fill="' + pal.claro + '">' + esc(autor) + '</text>' +
       '</svg>';
   }
 
