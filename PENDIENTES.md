@@ -98,12 +98,14 @@ enlace de Mega (18 antiguas, 11 actuales, 2 hackratas). El WordPress se va a ret
       licencia resuelta**. No crear ficha en `catalogo.json` hasta tener
       material propio o autorizado; iría a la colección `historia`.
 
-      Dossier con fuentes, citas, cronología, imágenes y preguntas abiertas:
-      [`investigacion/ramon-lagos.md`](investigacion/ramon-lagos.md)
+      El material vive en el vault de Obsidian, no en este repo:
+      `~/Documentos/Antarquia/MAREA/Investigacion/`
 
-      Borrador completo del cuadernillo (título, nota preliminar, capítulos,
-      documentos, cronología y fuentes):
-      [`investigacion/cuadernillo-ramon-lagos.md`](investigacion/cuadernillo-ramon-lagos.md)
+      - `Ramón Lagos - dossier.md` — fuentes, citas, cronología, homónimos y
+        preguntas abiertas.
+      - `Ramón Lagos - cuadernillo.md` — borrador completo del cuadernillo
+        (título, nota preliminar, capítulos, documentos y cronología).
+      - `ramon-lagos/` — las 11 imágenes citadas, con rutas relativas.
 
       Pistas ya confirmadas con fuente primaria:
       - **Chileno, chofer/taxista.** «Ramón Lagos, chileno, 35 años, 18 de
@@ -129,7 +131,7 @@ enlace de Mega (18 antiguas, 11 actuales, 2 hackratas). El WordPress se va a ret
       que no es un estudio académico ni una biografía definitiva, sino un
       intento de recuperación de memoria; y que los tres Lagos documentados
       pueden ser la misma persona o no serlo. Texto de trabajo en
-      `investigacion/ramon-lagos.md` § 10.0.
+      `Ramón Lagos - dossier.md` § 10.0.
 
       Pendiente antes de escribir:
       - Probar documentalmente que los tres escenarios son la misma persona
