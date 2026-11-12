@@ -53,7 +53,7 @@ La introducción lo declara sin rodeos: puede ser el mismo hombre, puede que no
 | Residencia | «18 de residencia» en el Río de la Plata hacia 1931 | [DUDOSO] (fórmula policial, ver § 6) |
 | Pareja | Miguelina Costa (Montevideo, 1931) | [HECHO] |
 | Hijos | al menos un hijo, alojado una temporada en la carbonería «El Buen Trato» | [HECHO] |
-| Domicilios | Coquimbo 2314 (Montevideo); antes 25 de Agosto 582; Bahía Blanca, calle Marpú 124 [DUDOSO]; Buenos Aires, Tacuarí 653 (local FORA) | [HECHO] / [DUDOSO] |
+| Domicilios | Coquimbo 2314 (Montevideo); antes 25 de Agosto 582; Bahía Blanca, calle Maipú 124, Villa Mitre [probable]; Buenos Aires, Tacuarí 653 (local FORA) | [HECHO] / [probable] |
 | Militancia | anarquista; FORA (Argentina); colaborador de la fuga de Punta Carretas | [HECHO] |
 | Fallecimiento | desconocido | — |
 
@@ -318,6 +318,9 @@ Digitalizaciones:
 Notas:
 - La lista de diciembre de 1925 incluye a un «R. Lagos» entre los suscriptores, que
   puede ser él mismo o un familiar.
+- En el mismo número del 12/03/1926 aparece también «Vic. Tomé, Ciudad, paq. 5.—»,
+  es decir, el compañero de la comisión de la FORA de 1923 sigue en la misma
+  contabilidad tres años después. Es el mejor indicio de continuidad del grupo.
 - «Lorenzo Lagos» y «Paquita Lagos» aparecen en la misma contabilidad;
   **[HIPÓTESIS]** podrían ser hermanos o parientes, pero no hay prueba.
 
@@ -337,9 +340,11 @@ Y en el número de mayo:
 > «Todo lo relacionado con BRAZO Y CEREBRO diríjase a su debida dirección, y a
 > nombre de R. Lagos.»
 
-**[DUDOSO]** El nombre de la calle aparece como «Marpú» en dos OCR
-independientes, pero no hemos podido confirmarlo contra un callejero de Bahía
-Blanca. Verificar antes de citarlo en un texto publicable.
+**[RESUELTO]** El nombre de la calle aparece como «Marpú» en dos OCR
+independientes, pero el sucesor en el mismo domicilio, Norberto Maillo, figura en
+**calle Maipú 124**, en Villa Mitre (número de julio de 1926). La lectura más
+probable es que «Marpú» sea un error de OCR sobre «Maipú». Queda pendiente
+confirmarlo con un callejero de Bahía Blanca antes de publicar.
 
 Lectura: durante 1926 Lagos es, de hecho, **el buzón y la caja** de un periódico
 anarquista en Bahía Blanca. Es el dato más fuerte sobre su papel organizativo
@@ -351,9 +356,9 @@ sociedad:
 
 | Número | «Correspondencia y valores a» |
 |---|---|
-| enero 1926 (Nº 56) | Ramón Lagos, Villa Mitre, calle Marpú 124 |
-| marzo 1926 | Ramón Lagos, Villa Mitre, calle Marpú 124 |
-| 1 may. 1926 (Nº 58) | Ramón Lagos, Villa Mitre, calle Marpú 124 |
+| enero 1926 (Nº 56) | Ramón Lagos, Villa Mitre, calle Maipú 124 («Marpú» en el OCR) |
+| marzo 1926 | Ramón Lagos, Villa Mitre, calle Maipú 124 |
+| 1 may. 1926 (Nº 58) | Ramón Lagos, Villa Mitre, calle Maipú 124 |
 | julio 1926 | Norberto Maillo, Villa Mitre, calle Maipú 124 |
 | enero 1927 | Oscar Peralta |
 | mayo 1927 | José M. Fernández, Casilla de Correo 1980, Buenos Aires |

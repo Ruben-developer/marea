@@ -101,6 +101,10 @@ enlace de Mega (18 antiguas, 11 actuales, 2 hackratas). El WordPress se va a ret
       Dossier con fuentes, citas, cronología, imágenes y preguntas abiertas:
       [`investigacion/ramon-lagos.md`](investigacion/ramon-lagos.md)
 
+      Borrador completo del cuadernillo (título, nota preliminar, capítulos,
+      documentos, cronología y fuentes):
+      [`investigacion/cuadernillo-ramon-lagos.md`](investigacion/cuadernillo-ramon-lagos.md)
+
       Pistas ya confirmadas con fuente primaria:
       - **Chileno, chofer/taxista.** «Ramón Lagos, chileno, 35 años, 18 de
         residencia» (*La Mañana*, Montevideo, 29/03/1931, p. 14).
