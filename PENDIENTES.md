@@ -90,3 +90,24 @@ enlace de Mega (18 antiguas, 11 actuales, 2 hackratas). El WordPress se va a ret
 - [ ] Aviso en el WordPress viejo apuntando a `marea.antarquia.cl`.
 - [ ] Enlazar el catálogo desde `porlaanarquia.antarquia.cl`.
 - [ ] Revisar accesibilidad con teclado y lector de pantalla en tema claro y oscuro.
+
+## 8. Ideas a investigar
+
+- [ ] **Cuadernillo sobre Ramón Lagos**, anarquista chileno. Idea de la
+      editorial, todavía sin investigar: **no hay fuentes verificadas, ni
+      texto, ni licencia**. No crear ficha en `catalogo.json` hasta tener
+      material propio o autorizado; iría a la colección `historia`.
+
+      Pistas a confirmar (son hipótesis de trabajo, no datos):
+      - Chileno de origen, con actividad anarquista sobre todo en Uruguay y
+        quizá también en Argentina.
+      - Posible relación con Rosinga (confirmar grafía y quién es).
+      - Posible vínculo con la fuga del penal de Punta Carretas, Montevideo.
+      - Posible delegado de obreros en la Patagonia.
+      - Posible redactor de publicaciones anarquistas argentinas.
+      - Posible colaborador logístico en Montevideo.
+
+      Primeros pasos: buscar en prensa anarquista rioplatense de época,
+      archivos uruguayos y argentinos, y bibliografía sobre Punta Carretas;
+      contrastar cada pista antes de escribir. Si la investigación no da
+      para un cuadernillo, dejar constancia acá y cerrar la idea.
