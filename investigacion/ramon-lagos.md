@@ -392,6 +392,49 @@ con Ramón. Ver `ramon-lagos/1923-12-07-la-antorcha-p4-marina-lagos.png`.
 
 ---
 
+### 4.7. *Caras y Caretas* (Buenos Aires), marzo–abril de 1931
+
+Digitalizaciones (ejemplares completos de 1931):
+
+- Nº 1695, 28/03/1931: <https://archive.org/details/Caras_y_Caretas_Buenos_Aires_1931-03-28_N_1695>
+- Nº 1696, 04/04/1931: <https://archive.org/details/Caras_y_Caretas_Buenos_Aires_1931-04-04_N_1696>
+
+#### Nº 1695 — «Sensacional evasión en la cárcel»
+
+Doble página fotográfica: «Once penados lograron huir por un túnel construido en
+forma…», con **retratos de seis de los once evadidos** (Salvador Vicente Moretti,
+Pedro Boada Rivas, Tadeo Peña, Agustín García Cadevla, Carlos Cúneo y Eduardo
+Rubial Pereyra) y tres fotografías de la escena:
+
+- **El frente de la carbonería desde la cual se construyó el túnel**, con el
+  cartel «CARBONERIA El Buen Trato». Es la única imagen que hemos encontrado del
+  local donde estuvo alojado un hijo de Lagos y de donde salió la máquina de
+  coser que lo delató.
+- **El interior del túnel**, con el piso cubierto de una arpillera nueva y el
+  caño por donde se suministraba aire.
+- **El sitio de la cárcel** con los retretes y la palanca tipo «gato» usada por
+  los choferes.
+
+#### Nº 1696 — «La siniestra banda de asaltantes que encabezaba Roscigna»
+
+Reportaje fotográfico sobre la captura en Montevideo: retratos de Roscigna,
+Enrique Malvicini («El Rosarino»), Roberto Dassori («El Gallo»), Augusto Díaz o
+José Manuel Paz, Alcides López y el comisario Carlos Nogués.
+
+**Ninguno de los dos números menciona a Lagos.** El dato vale como control: el
+caso tuvo cobertura porteña, pero Lagos no era, para la prensa argentina, un
+personaje con nombre.
+
+Advertencia de derechos: estos escaneos llevan marca de agua de la **Biblioteca
+Nacional de España** (Hemeroteca Digital / Biblioteca Virtual de Prensa
+Histórica). **No** son la digitalización de Internet Archive y **no** deben
+reutilizarse sin verificar la licencia de la BNE.
+
+Imágenes: `ramon-lagos/1931-03-28-caras-y-caretas-1695-pagina.jpg` y
+`ramon-lagos/1931-03-28-caras-y-caretas-1695-carboneria.jpg`.
+
+---
+
 ## 5. Fuentes secundarias
 
 ### 5.1. Osvaldo Bayer, *Rebellion in Patagonia* (AK Press, 2016), cap. sobre Punta Alta
@@ -507,6 +550,7 @@ aparece como testigo en el sumario. Es un aviso útil contra confusiones.
 | Antonio Ramón Lagos Colindres | Militar guatemalteco | Época |
 | Ángel Lago | Testigo del sumario de 1931 | O'Neill lo distingue expresamente |
 | Marina Lagos | Suscriptora del Comité Pro Presos, Buenos Aires, 1923 | Mujer; el OCR la volvía «Ramón» |
+| Ángel Lagos | Chofer en Montevideo, 1931, víctima/testigo de un asalto | *Caras y Caretas*, 21/11/1931; es el «Angel Lago» que O'Neill distingue |
 
 Nota: **Manuel Andrés Lagos Mieres** es un historiador chileno del anarquismo
 (Diccionario Biográfico CEDINCI). No es homónimo, pero es un contacto bibliográfico
@@ -527,6 +571,8 @@ obvio para esta investigación.
 | `ramon-lagos/1931-03-29-la-manana-p14-pagina.jpg` | Página completa | Ídem |
 | `ramon-lagos/1927-09-30-la-antorcha-p4-r-lagos-montevideo.png` | «R. Lagos, Montevideo, paquete 23.12» | *La Antorcha*, 30/09/1927, p. 4 |
 | `ramon-lagos/1923-12-07-la-antorcha-p4-marina-lagos.png` | «Marina Lagos» (homónima, descartada) | *La Antorcha*, 07/12/1923, p. 4 |
+| `ramon-lagos/1931-03-28-caras-y-caretas-1695-pagina.jpg` | Evasión: retratos de evadidos, túnel y carbonería | *Caras y Caretas*, 28/03/1931 |
+| `ramon-lagos/1931-03-28-caras-y-caretas-1695-carboneria.jpg` | Frente de la carbonería «El Buen Trato» | Ídem (escaneo BNE) |
 
 Hay **retrato confirmado** de 1931. No hay, en cambio, ninguna imagen anterior
 a 1931 ni ningún escrito firmado por él.
@@ -671,6 +717,20 @@ polemiza, no firma; solo administra, cobra, alquila y guarda.
 
 Búsquedas negativas adicionales: *La Protesta* de Chile 1932–1935 no lo
 menciona, pese a ser chileno y anarquista.
+
+### 11.1.b. *Diario Oficial* de Uruguay, 1931
+
+Se descargaron y barrieron los 288 números digitalizados de 1931
+(`DiarioOficialUruguay_1931*`), en busca de un decreto de expulsión o de una
+resolución judicial con su nombre.
+
+**Resultado: ninguna mención de «Ramón Lagos».** Sí aparecen otros Lagos
+(«Antonio Lagos», brasileño, 25 años, edicto matrimonial de noviembre; «Manuel
+Lagos»; la familia «García Lagos»). Conclusión: **si hubo expulsión, no se
+publicó en el Diario Oficial de 1931**, o Lagos no fue expulsado ese año.
+
+El único pasaje con «Roscigna» (22/12/1931) es un debate parlamentario sobre la
+actuación del comisario que lo detuvo, no una pieza del sumario.
 
 ### 11.2. Método gráfico
 
