@@ -94,20 +94,37 @@ enlace de Mega (18 antiguas, 11 actuales, 2 hackratas). El WordPress se va a ret
 ## 8. Ideas a investigar
 
 - [ ] **Cuadernillo sobre Ramón Lagos**, anarquista chileno. Idea de la
-      editorial, todavía sin investigar: **no hay fuentes verificadas, ni
-      texto, ni licencia**. No crear ficha en `catalogo.json` hasta tener
+      editorial **en investigación**. Todavía **no hay texto propio ni
+      licencia resuelta**. No crear ficha en `catalogo.json` hasta tener
       material propio o autorizado; iría a la colección `historia`.
 
-      Pistas a confirmar (son hipótesis de trabajo, no datos):
-      - Chileno de origen, con actividad anarquista sobre todo en Uruguay y
-        quizá también en Argentina.
-      - Posible relación con Rosinga (confirmar grafía y quién es).
-      - Posible vínculo con la fuga del penal de Punta Carretas, Montevideo.
-      - Posible delegado de obreros en la Patagonia.
-      - Posible redactor de publicaciones anarquistas argentinas.
-      - Posible colaborador logístico en Montevideo.
+      Dossier con fuentes, citas, cronología, imágenes y preguntas abiertas:
+      [`investigacion/ramon-lagos.md`](investigacion/ramon-lagos.md)
 
-      Primeros pasos: buscar en prensa anarquista rioplatense de época,
-      archivos uruguayos y argentinos, y bibliografía sobre Punta Carretas;
-      contrastar cada pista antes de escribir. Si la investigación no da
-      para un cuadernillo, dejar constancia acá y cerrar la idea.
+      Pistas ya confirmadas con fuente primaria:
+      - **Chileno, chofer/taxista.** «Ramón Lagos, chileno, 35 años, 18 de
+        residencia» (*La Mañana*, Montevideo, 29/03/1931, p. 14).
+      - **Fuga del penal de Punta Carretas (marzo de 1931).** Alquiló y
+        mantuvo la casa de la calle Coquimbo 2314 donde se guardaron los
+        autos de la banda de Miguel Arcángel Roscigna; detenido en 18 y Río
+        Branco dos días antes que el resto del grupo.
+      - **Delegado obrero en la Patagonia.** Fusilado por el comisario
+        Douglas en Punta Alta (noviembre de 1921) y sobreviviente; dos
+        relatos independientes lo nombran (Bayer, *Rebellion in Patagonia*;
+        *La Patagonia Argentina*, FOLB, 1922).
+      - **Dirigente y administrador anarquista en Argentina.** Consejero del
+        Comité Pro Local de la FORA en Tacuarí 653 y delegado de la FORA en
+        1923 (*La Protesta*); administrador de *La Antorcha* (1923) y agente
+        de *Brazo y Cerebro* en Bahía Blanca (1926).
+
+      Pendiente antes de escribir:
+      - Probar documentalmente que los tres escenarios son la misma persona
+        (falta expediente judicial uruguayo de 1931 y ficha policial).
+      - Localizar el retrato publicado por *La Mañana* (referido en la
+        edición del 29/03/1931, no encontrado aún).
+      - Resolver derechos de las imágenes de prensa (digitalización de
+        Internet Archive; para impresión habría que ir a la Biblioteca
+        Nacional de Uruguay).
+
+      Si la investigación no da para un cuadernillo, dejar constancia acá y
+      cerrar la idea.
