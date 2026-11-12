@@ -574,15 +574,16 @@ resuelve por comodidad narrativa**: se enuncia.
 
 Texto de trabajo para la primera página:
 
-> Este cuadernillo no es un estudio académico ni una biografía definitiva. Es un
-> intento de rescatar la memoria de un anarquista chileno del que casi no queda
-> rastro, y de hacerlo sin convertirlo en héroe ni en villano.
+> Este cuadernillo no es una biografía definitiva. Es un intento de rescatar la
+> memoria de un anarquista chileno del que casi no queda rastro, y de hacerlo sin
+> convertirlo en héroe ni en villano.
 >
-> Quien escribe no es historiador ni tiene formación académica. Lo que hay acá
-> es una recopilación de documentos: recortes de prensa, listas de suscripción,
-> avisos de periódicos, un plano, un retrato. Están citados para que cualquiera
-> pueda verificarlos, corregirlos o desmentirlos. No hay aquí una tesis que
-> defender.
+> No soy historiador. Esto no es un trabajo académico: es una recopilación
+> documentada, hecha con los medios que tengo y con la intención de que sirva
+> para seguir buscando. Lo que hay acá son documentos: recortes de prensa, listas
+> de suscripción, avisos de periódicos, un plano, un retrato. Están citados para
+> que cualquiera pueda verificarlos, corregirlos o desmentirlos. No hay aquí una
+> tesis que defender.
 >
 > El problema es que esos documentos podrían hablar de **tres hombres
 > distintos** o de **uno solo**. Un delegado obrero fusilado en Punta Alta en
