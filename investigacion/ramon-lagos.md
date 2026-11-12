@@ -70,8 +70,10 @@ militante «de confianza», sin obra escrita propia, a partir de huellas dispers
 | 11 dic. 1925 | «Lista No. 160, a cargo de Ramón Lagos, Bahía Blanca» | *La Antorcha*, 11/12/1925 |
 | ene. 1926 | «Correspondencia y valores a Ramón Lagos», Bahía Blanca | *Brazo y Cerebro*, Nº 56 |
 | 12 mar. 1926 | Cobra suscripciones en la ciudad de Buenos Aires | *La Antorcha*, 12/03/1926 |
+| 30 sep. 1927 | «R. Lagos, Montevideo, paquete 23.12» en la colecturía de *La Antorcha* | *La Antorcha*, 30/09/1927 |
 | 1 may. 1926 | Rifa a beneficio de *La Antorcha* sorteada en Bahía Blanca | *La Antorcha*, 15/05/1926 |
 | mar. 1931 | Detenido en 18 y Río Branco, dos días antes que el grupo de Roscigna | La Mañana; O'Neill |
+| 27 mar. 1931 | *La Mañana* publica su retrato; es reconocido como «el titulado Aquino» | La Mañana, p. 8; p. 14 |
 | 29 mar. 1931 | *La Mañana* publica dos notas y su declaración | La Mañana, pp. 5 y 14 |
 
 ---
@@ -180,13 +182,33 @@ Datos que aporta:
   operación por dentro.
 - Lagos declara que supo **15 días antes** que los autos se usarían en la fuga.
 
-#### d) Pendiente: el retrato
+#### d) El retrato — *La Mañana*, viernes 27 de marzo de 1931, p. 8
 
-*La Mañana* publicó un **retrato** de Lagos (mencionado en la p. 14). No lo hemos
-localizado todavía en el run digitalizado: la búsqueda de texto completo solo
-devuelve las páginas 524 y 533, así que el retrato debe de estar en un ejemplar
-anterior (probablemente entre el 26 y el 28 de marzo de 1931). **Es la pieza
-gráfica más valiosa que falta.**
+**Localizado.** No está en el ejemplar del 29 sino dos días antes, en la página 8
+del número del viernes 27 de marzo (hoja 496 del run 4898–4938).
+
+Reproduce un retrato de cuerpo entero, de frente, con traje oscuro y camisa
+clara abierta, y pie de foto:
+
+> «EL CHAUFFEUR CHILENO LAGOS, QUE ESCONDIO LOS AUTOS QUE SIRVIERON PARA LA
+> FUGA»
+
+Este es el retrato al que alude la p. 14 cuando dice que, «al publicarse en LA
+MAÑANA el retrato del chauffeur chileno Lagos, fué reconocido como el titulado
+Aquino». Es decir: **el retrato fue el dispositivo policial que permitió
+identificarlo con otra identidad**. Ese detalle es, por sí solo, material para
+el cuadernillo.
+
+En la misma página 8 se publica un **plano de la casa de la calle Curupí** con
+la leyenda «PLANO DE LA PLANTA DE LA CASA EN QUE FUERON ENCONTRADOS ROSCIGNA,
+MALVICINI, LÓPEZ Y DÍAZ Y EL PUNTO QUE TERMINA EN UNA X INDICA EL CAMINO QUE
+SIGUIÓ EL INSPECTOR BONINO…». Es decir, el 27 de marzo *La Mañana* publica, en
+la misma plana: el retrato de Lagos, el plano del túnel y el retrato de Roscigna
+(«OTRO ASPECTO DE ROSCIGNA, SIN LA GORRA. Y LOS ANTEOJOS OSCUROS»).
+
+Imágenes: `ramon-lagos/1931-03-27-la-manana-p8-retrato.jpg`,
+`ramon-lagos/1931-03-27-la-manana-p8-plano-curupi.jpg` y
+`ramon-lagos/1931-03-27-la-manana-p8-pagina.jpg`.
 
 ---
 
@@ -321,6 +343,51 @@ Lectura: durante 1926 Lagos es, de hecho, **el buzón y la caja** de un periódi
 anarquista en Bahía Blanca. Es el dato más fuerte sobre su papel organizativo
 fuera de Buenos Aires.
 
+La dirección de correspondencia **rota entre militantes** en los números
+siguientes, lo que confirma que se trata de un puesto de confianza y no de una
+sociedad:
+
+| Número | «Correspondencia y valores a» |
+|---|---|
+| enero 1926 (Nº 56) | Ramón Lagos, Villa Mitre, calle Marpú 124 |
+| marzo 1926 | Ramón Lagos, Villa Mitre, calle Marpú 124 |
+| 1 may. 1926 (Nº 58) | Ramón Lagos, Villa Mitre, calle Marpú 124 |
+| julio 1926 | Norberto Maillo, Villa Mitre, calle Maipú 124 |
+| enero 1927 | Oscar Peralta |
+| mayo 1927 | José M. Fernández, Casilla de Correo 1980, Buenos Aires |
+
+**[HECHO]** la sucesión; **[HIPÓTESIS]** que el cambio de titular en julio de
+1926 corresponda a la partida de Lagos de Bahía Blanca.
+
+---
+
+### 4.6. *La Antorcha* (Buenos Aires), 1927 — «R. Lagos, Montevideo»
+
+Digitalización: <https://archive.org/details/laantorcha1927>
+
+En la lista de colaboraciones del número del **30 de septiembre de 1927**, en la
+sección de envíos, figura:
+
+> «MONTEVIDEO. — R. Lagos, paquete 23.12; L. Carbone, subse. 4.20; Joaquín
+> Otero, paq. 1.70; Laureano Rodríguez, id. 15; ejemp. 1.35; Los Precios
+> Sociales, don. 22.50.»
+
+**Leído en la imagen de la página 4**, no en el OCR (el OCR leía «E. Lagos» y
+«payuoto»). Ver `ramon-lagos/1927-09-30-la-antorcha-p4-r-lagos-montevideo.png`.
+
+Lectura: **[HIPÓTESIS]** es probablemente él —misma red de *La Antorcha*, misma
+colecturía de fondos, y Montevideo es coherente con su radicación posterior—,
+pero la inicial sola no basta para afirmarlo. Si se confirmara, situaría a Lagos
+en Montevideo ya en 1927, cuatro años antes de la detención, y adelantaría la
+respuesta a la pregunta 4 del § 9.
+
+#### Descartado: «Marina Lagos»
+
+En los números del 30/11 y 07/12 de 1923 el OCR leía «Marina Lagos, Ciudad, por
+paq. 7». La imagen de página muestra que se trata de **«Marina Lagos»**, una
+suscriptora de Buenos Aires del Comité Pro Presos: mujer, homónima, sin relación
+con Ramón. Ver `ramon-lagos/1923-12-07-la-antorcha-p4-marina-lagos.png`.
+
 ---
 
 ## 5. Fuentes secundarias
@@ -437,6 +504,7 @@ aparece como testigo en el sumario. Es un aviso útil contra confusiones.
 | José Ramón Lagos Lobo | Víctima de violencia en Honduras, 2012 | Época |
 | Antonio Ramón Lagos Colindres | Militar guatemalteco | Época |
 | Ángel Lago | Testigo del sumario de 1931 | O'Neill lo distingue expresamente |
+| Marina Lagos | Suscriptora del Comité Pro Presos, Buenos Aires, 1923 | Mujer; el OCR la volvía «Ramón» |
 
 Nota: **Manuel Andrés Lagos Mieres** es un historiador chileno del anarquismo
 (Diccionario Biográfico CEDINCI). No es homónimo, pero es un contacto bibliográfico
@@ -448,13 +516,18 @@ obvio para esta investigación.
 
 | Archivo | Contenido | Origen |
 |---|---|---|
+| `ramon-lagos/1931-03-27-la-manana-p8-retrato.jpg` | **Retrato de Ramón Lagos** con pie de foto | *La Mañana*, 27/03/1931, p. 8 |
+| `ramon-lagos/1931-03-27-la-manana-p8-plano-curupi.jpg` | Plano de la casa de Curupí y del túnel | Ídem |
+| `ramon-lagos/1931-03-27-la-manana-p8-pagina.jpg` | Página completa (retrato, Roscigna, plano) | Ídem |
 | `ramon-lagos/1931-03-29-la-manana-p5-articulo.jpg` | Artículo «LAGOS EL DE LA CALLE COQUIMBO» | *La Mañana*, 29/03/1931, p. 5 |
 | `ramon-lagos/1931-03-29-la-manana-p5-adjudicatario.jpg` | Párrafo de la máquina de coser | Ídem |
 | `ramon-lagos/1931-03-29-la-manana-p14-declaracion.jpg` | Recuadro «El chauffeur Lagos» | *La Mañana*, 29/03/1931, p. 14 |
 | `ramon-lagos/1931-03-29-la-manana-p14-pagina.jpg` | Página completa | Ídem |
+| `ramon-lagos/1927-09-30-la-antorcha-p4-r-lagos-montevideo.png` | «R. Lagos, Montevideo, paquete 23.12» | *La Antorcha*, 30/09/1927, p. 4 |
+| `ramon-lagos/1923-12-07-la-antorcha-p4-marina-lagos.png` | «Marina Lagos» (homónima, descartada) | *La Antorcha*, 07/12/1923, p. 4 |
 
-**No hay retrato confirmado.** El de *La Mañana* está referido pero no localizado
-(§ 4.1.d).
+Hay **retrato confirmado** de 1931. No hay, en cambio, ninguna imagen anterior
+a 1931 ni ningún escrito firmado por él.
 
 ### Estado de derechos
 
@@ -480,7 +553,10 @@ Nacional de Uruguay o en la Hemeroteca de Montevideo.
    de *La Antorcha*?
 9. ¿Escribió algo propio? Hasta ahora **no hemos encontrado ningún texto firmado
    por él**; solo actos administrativos y declaraciones.
-10. ¿Existe una fotografía en la prensa uruguaya de 1931?
+10. ~~¿Existe una fotografía en la prensa uruguaya de 1931?~~ **Sí**: *La Mañana*,
+    27/03/1931, p. 8. Falta saber si existe alguna anterior a 1931.
+11. ¿Quién es «el titulado Aquino», la identidad con la que la policía lo
+    confundía o con la que él mismo se presentaba?
 
 ---
 
@@ -497,7 +573,8 @@ Tres abordajes posibles, en orden de solidez:
    reconstruida desde la prensa de 1931.
 
 La opción 1 es la más rica y la que mejor justifica un cuadernillo; requiere
-resolver antes el expediente judicial y, idealmente, encontrar el retrato.
+resolver antes el expediente judicial. El retrato ya está localizado, y además
+aporta un motivo narrativo propio: **el retrato que lo delata**.
 
 ---
 
@@ -518,3 +595,37 @@ continuo verificado.
 
 Todo lo marcado [HIPÓTESIS] o [DUDOSO] debe resolverse antes de escribir una
 línea publicable.
+
+### 11.1. Barrido del corpus anarquista rioplatense, 1922–1935
+
+Se descargaron y barrieron 599 OCR (`_djvu.txt`) de:
+
+- *La Protesta* (Buenos Aires): 1924 (feb., mar., may.), 1925 (feb., jul.),
+  1926 (jun., oct., dic.), 1927 (may., sep., dic.), 1928 (may., jun.),
+  1929 (abr., may., oct., nov.), 1930 (ene., abr., jul.).
+- *La Antorcha*: 1922-I, 1923-II, 1926-II, 1927, 1928.
+- *Brazo y Cerebro*: 1926–1927 (19 números).
+- *La Protesta* (Santiago de Chile): 1932–1935 (4 números).
+
+**Resultado:** «Ramón Lagos» no aparece en ninguno de esos años, salvo los
+registros ya citados de *Brazo y Cerebro* y *La Antorcha* (que son de 1926 y
+1927). No hay ningún texto firmado por él ni ninguna mención en *La Protesta*
+porteña entre 1924 y 1930. Es un silencio significativo: Lagos no escribe, no
+polemiza, no firma; solo administra, cobra, alquila y guarda.
+
+Búsquedas negativas adicionales: *La Protesta* de Chile 1932–1935 no lo
+menciona, pese a ser chileno y anarquista.
+
+### 11.2. Método gráfico
+
+Para los pasajes dudosos no se usó el OCR: se localizó la palabra en el
+`_djvu.xml` del ejemplar (que da coordenadas por palabra), se tradujeron las
+coordenadas a la página renderizada y se recortó la imagen para leerla.
+
+- *La Mañana*: endpoint `BookReader/BookReaderImages.php` con `scale=1`, que
+  entrega la página a ~5000 px de ancho.
+- *La Antorcha*: PDF por número (`archive.org/download/<id>/<fecha>.pdf`) y
+  `pdftoppm -r 200`.
+
+Este método permitió corregir dos lecturas del OCR: «E. Lagos» era **R. Lagos**
+(1927) y «Marina Lagos» era efectivamente **Marina**, no Ramón (1923).

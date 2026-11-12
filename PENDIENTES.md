@@ -116,12 +116,14 @@ enlace de Mega (18 antiguas, 11 actuales, 2 hackratas). El WordPress se va a ret
         Comité Pro Local de la FORA en Tacuarí 653 y delegado de la FORA en
         1923 (*La Protesta*); administrador de *La Antorcha* (1923) y agente
         de *Brazo y Cerebro* en Bahía Blanca (1926).
+      - **Retrato localizado.** *La Mañana*, 27/03/1931, p. 8: «EL CHAUFFEUR
+        CHILENO LAGOS, QUE ESCONDIO LOS AUTOS QUE SIRVIERON PARA LA FUGA».
+        Es el retrato que, según la p. 14 del 29/03, hizo que lo reconocieran
+        como «el titulado Aquino».
 
       Pendiente antes de escribir:
       - Probar documentalmente que los tres escenarios son la misma persona
         (falta expediente judicial uruguayo de 1931 y ficha policial).
-      - Localizar el retrato publicado por *La Mañana* (referido en la
-        edición del 29/03/1931, no encontrado aún).
       - Resolver derechos de las imágenes de prensa (digitalización de
         Internet Archive; para impresión habría que ir a la Biblioteca
         Nacional de Uruguay).
