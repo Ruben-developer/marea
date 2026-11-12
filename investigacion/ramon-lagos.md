@@ -37,6 +37,8 @@ anarquista hace muy probable que se trate de **la misma persona** en los tres
 escenarios, pero **no existe un documento que los una explícitamente**. Ese es
 el problema central del cuadernillo y también su interés: reconstruir a un
 militante «de confianza», sin obra escrita propia, a partir de huellas dispersas.
+La introducción lo declara sin rodeos: puede ser el mismo hombre, puede que no
+(ver § 10.0).
 
 ---
 
@@ -560,9 +562,62 @@ Nacional de Uruguay o en la Hemeroteca de Montevideo.
 
 ---
 
-## 10. Hipótesis de escritura para el cuadernillo
+## 10. Cómo se escribe el cuadernillo
 
-Tres abordajes posibles, en orden de solidez:
+### 10.0. Nota preliminar — decisión editorial y texto de trabajo
+
+**Decidido:** el cuadernillo se abre declarando sus límites. No se presenta como
+estudio académico ni como biografía definitiva, sino como un intento de
+recuperación de memoria, hecho con documentos y con las dudas a la vista. La
+posibilidad de que los tres Lagos sean personas distintas **no se oculta ni se
+resuelve por comodidad narrativa**: se enuncia.
+
+Texto de trabajo para la primera página:
+
+> Este cuadernillo no es un estudio académico ni una biografía definitiva. Es un
+> intento de rescatar la memoria de un anarquista chileno del que casi no queda
+> rastro, y de hacerlo sin convertirlo en héroe ni en villano.
+>
+> Quien escribe no es historiador ni tiene formación académica. Lo que hay acá
+> es una recopilación de documentos: recortes de prensa, listas de suscripción,
+> avisos de periódicos, un plano, un retrato. Están citados para que cualquiera
+> pueda verificarlos, corregirlos o desmentirlos. No hay aquí una tesis que
+> defender.
+>
+> El problema es que esos documentos podrían hablar de **tres hombres
+> distintos** o de **uno solo**. Un delegado obrero fusilado en Punta Alta en
+> 1921 y dado por muerto; un consejero de la FORA que administraba un periódico
+> en Buenos Aires y recibía la correspondencia de otro en Bahía Blanca entre
+> 1923 y 1926; un chofer chileno detenido en Montevideo en 1931 por haber
+> guardado los autos de la fuga de Punta Carretas. Comparten oficio,
+> nacionalidad y militancia. No tenemos el documento que los una. Puede que sea
+> el mismo hombre. Puede que no.
+>
+> Elegimos contarlo así, con esa duda a la vista, porque la duda es parte de lo
+> que se puede decir con honestidad sobre una vida de la que no quedan cartas,
+> ni escritos, ni fotografías hasta 1931. Lo que quedó es lo que otros
+> escribieron sobre él: la policía, los diarios, los compañeros que lo
+> recordaron décadas después.
+>
+> Si algo de esto sirve para que alguien aporte un dato, corrija un error o sepa
+> que este hombre existió, el cuadernillo habrá cumplido.
+
+Reglas de tono derivadas de esta decisión:
+
+- **No heroizar.** Nada de «mártir», «ejemplo», «luchador incansable». Los
+  hechos: alquiló una casa, guardó dos autos, cobró suscripciones.
+- **No psicologizar.** No hay fuentes para saber qué pensaba ni qué sintió.
+  Cuando el texto necesite explicar un motivo, que lo marque como conjetura.
+- **No fingir aparato académico.** Sin citas al pie numeradas si no se van a
+  sostener; en su lugar, un apartado final de Fuentes, con la referencia
+  completa y el enlace de Internet Archive de cada documento.
+- **Nombrar la propia ignorancia.** «No lo sabemos» es una frase admisible y,
+  en este caso, la más honesta.
+- **Dejar la puerta abierta.** El cuadernillo invita a corregirlo; eso es
+  coherente con la prensa anarquista de la que Lagos formó parte, que publicaba
+  sus balances y sus errores.
+
+### 10.1. Tres abordajes posibles, en orden de solidez
 
 1. **«El hombre de confianza».** Biografía mínima de un militante sin obra: el
    que alquila la casa, guarda los autos, recibe la correspondencia y da la cara.

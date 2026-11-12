@@ -121,6 +121,12 @@ enlace de Mega (18 antiguas, 11 actuales, 2 hackratas). El WordPress se va a ret
         Es el retrato que, según la p. 14 del 29/03, hizo que lo reconocieran
         como «el titulado Aquino».
 
+      Enfoque decidido: **«el hombre de confianza»**. La introducción declara
+      que no es un estudio académico ni una biografía definitiva, sino un
+      intento de recuperación de memoria; y que los tres Lagos documentados
+      pueden ser la misma persona o no serlo. Texto de trabajo en
+      `investigacion/ramon-lagos.md` § 10.0.
+
       Pendiente antes de escribir:
       - Probar documentalmente que los tres escenarios son la misma persona
         (falta expediente judicial uruguayo de 1931 y ficha policial).
