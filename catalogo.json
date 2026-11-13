@@ -1,5 +1,31 @@
 [
   {
+    "id": "m-068",
+    "titulo": "Fuga del penal de Punta Carretas",
+    "autor": "Osvaldo Bayer, Fernando O’Neill y varios autores",
+    "coleccion": "historia",
+    "paginas": 40,
+    "sinopsis": "",
+    "archivo": "fuga-del-penal-de-punta-carretas.pdf",
+    "stock": 0,
+    "destacado": true,
+    "anio": null,
+    "precio": null
+  },
+  {
+    "id": "m-069",
+    "titulo": "El ideal anarquista",
+    "autor": "Élisée Reclus",
+    "coleccion": "praxis",
+    "paginas": 19,
+    "sinopsis": "",
+    "archivo": "el-ideal-anarquista-elisee-reclus.pdf",
+    "stock": 0,
+    "destacado": false,
+    "anio": null,
+    "precio": null
+  },
+  {
     "titulo": "La anarquía desde el punto de vista de un cristiano",
     "autor": "Jacques Ellul",
     "coleccion": "praxis",
@@ -8,6 +34,8 @@
     "archivo": "la-anarquia-desde-el-punto-de-vista-de-un-cristiano.pdf",
     "stock": 0,
     "destacado": true,
-    "id": "m-067"
+    "id": "m-067",
+    "anio": null,
+    "precio": null
   }
 ]
