@@ -11,7 +11,7 @@
 <!-- Todo se sirve desde el propio dominio (catálogo, portadas, PDFs). -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self'">
 <link rel="icon" href="assets/favicon.png" type="image/png">
-<link rel="stylesheet" href="style.css?v=20261113a">
+<link rel="stylesheet" href="style.css?v=20261113b">
 <script>
   /* Aplica el tema guardado antes de pintar, para evitar el destello. */
   (function(){
@@ -51,46 +51,28 @@
       <div class="wrap">
        <div class="hoja">
         <h1 id="h-inicio" tabindex="-1">Lee, comparte y organízate</h1>
-        <p class="big-copy">Difundimos este material para aportar a la propagación de las ideas y las prácticas anarquistas. Fomentamos la reproducción de todas las publicaciones de M.A.R.E.A. Editorial Anarquista mediante cualquier medio. Se reconoce la autoría del texto, no su propiedad.</p>
+        <div class="manifiesto-hero">
+          <p>Una editorial anarquista no es una tienda con otra estética. Es una herramienta para que las ideas circulen más rápido de lo que alcanzan a prohibirlas.</p>
+          <p>Por eso el acceso al conocimiento no se vende. Todo lo que publicamos se puede leer, descargar y copiar sin pagar. Quien compra un cuadernillo impreso no compra el texto: sostiene la imprenta, el papel y la próxima reimpresión. El texto ya era suyo.</p>
+          <p>Publicamos historia, teoría y experiencias de acción anarquista, porque una lucha que olvida su memoria repite sus derrotas y una que no la analiza no aprende de ellas. Recuperamos lo que fue ocultado, traducimos lo que no llegó y ponemos en palabras simples lo que otros dejaron en pesados tratados.</p>
+          <p>Publicamos para que se lea en la asamblea, en el taller, en la fila del bus. Para que se subraye, se fotocopie y se discuta. Un libro que nadie puede copiar es un libro a medias.</p>
+          <p>No tenemos dueños ni jefes, ni pedimos permiso para reeditar. Si algo de lo que hacemos te sirve, tómalo: reimprímelo, tradúcelo, repártelo.</p>
+        </div>
         <p class="cierre">¡Colectivicemos las ideas!</p>
         <div class="cta-row">
           <a class="btn btn-solid" href="/catalogo">Ver catálogo</a>
-          <a class="btn btn-red" href="/catalogo/descarga">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16"/></svg>
-            Descargar gratis
-          </a>
         </div>
         <img class="logo logo--hero" src="assets/sello-rojo.png" alt="Sello de M.A.R.E.A.: Memoria, Análisis, Revuelta" width="500" height="500">
        </div>
       </div>
     </div>
 
-    <div class="wrap prose manifiesto" style="max-width:72ch">
-      <h2 class="section-h" id="h-manifiesto">Manifiesto</h2>
-      <p>Una editorial anarquista no es una tienda con otra estética. Es una herramienta para que las ideas circulen más rápido de lo que alcanzan a prohibirlas.</p>
-      <p>Por eso el acceso al conocimiento no se vende. Todo lo que publicamos se puede leer, descargar y copiar sin pagar. Quien compra un cuadernillo impreso no compra el texto: sostiene la imprenta, el papel y la próxima reimpresión. El texto ya era suyo.</p>
-      <p>Publicamos historia, teoría y experiencias de acción anarquista, porque una lucha que olvida su memoria repite sus derrotas y una que no la analiza no aprende de ellas. Recuperamos lo que fue ocultado, traducimos lo que no llegó y ponemos en palabras simples lo que otros dejaron en pesados tratados.</p>
-      <p>Publicamos para que se lea en la asamblea, en el taller, en la fila del bus. Para que se subraye, se fotocopie y se discuta. Un libro que nadie puede copiar es un libro a medias.</p>
-      <p>No tenemos dueños ni jefes, ni pedimos permiso para reeditar. Si algo de lo que hacemos te sirve, tómalo: reimprímelo, tradúcelo, repártelo.</p>
-    </div>
   </section>
 
   <!-- ================= CATÁLOGO ================= -->
   <section class="view" data-view="catalogo" aria-labelledby="h-catalogo" hidden>
     <div class="wrap">
       <h1 class="view-title" id="h-catalogo" tabindex="-1">Catálogo</h1>
-
-      <h2 class="section-h" style="margin-top:0">Dos caminos, un mismo texto</h2>
-      <div class="two">
-        <div class="panel">
-          <h3>Lee y comparte</h3>
-          <p>Descarga cualquier PDF disponible. Sin cuenta, sin correo, sin cookies de seguimiento. Imprímelo, pásalo, tradúcelo.</p>
-        </div>
-        <div class="panel">
-          <h3>Sostén el proyecto</h3>
-          <p>Si puedes, compra el cuadernillo impreso. Ese aporte paga papel, tinta y reimpresiones. El contenido sigue siendo de todxs.</p>
-        </div>
-      </div>
 
       <h2 class="section-h">Destacados</h2>
       <div class="grid" id="featured"><p class="cargando">Cargando catálogo…</p></div>
@@ -169,7 +151,7 @@
   </div>
 </noscript>
 
-<script src="config.js?v=20261113a"></script>
-<script src="app.js?v=20261113a"></script>
+<script src="config.js?v=20261113b"></script>
+<script src="app.js?v=20261113b"></script>
 </body>
 </html>
