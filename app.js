@@ -4,12 +4,14 @@
    modales. Sin dependencias.
 
    El catálogo vive en catalogo.json. Campos por ficha:
-     id, titulo, autor, coleccion, anio, paginas, sinopsis,
-     portada, archivo, enlace, precio, stock, destacado
+     id, titulo, autor, coleccion, paginas, sinopsis, portada,
+     archivo, enlace, precio, stock, destacado
    - id:      opcional; si falta se genera del título (m-titulo)
    - archivo: nombre en el servidor de PDFs (se antepone MAREA_PDF_BASE)
    - enlace:  URL externa de respaldo (p. ej. Mega)
-   - precio/stock en null: título sin edición impresa
+   - Estados: sin PDF = Próximamente; con PDF y precio = en venta;
+     con PDF y sin precio = solo digital. El stock 0 deshabilita
+     el encargo pero mantiene la descarga.
    ========================================================= */
 (function () {
   'use strict';
@@ -71,7 +73,7 @@
   /* ---------- estado ---------- */
   var PUBLICACIONES = [];
   var cargado = false;
-  var state = { q: '', col: 'todas', disp: 'todo', orden: 'titulo' };
+  var state = { q: '', col: 'todas', disp: 'todo' };
   var cart = {};
   var ultimoFoco = null;
   var toastT = null;
@@ -108,7 +110,6 @@
       titulo: String(p.titulo),
       autor: p.autor ? String(p.autor) : 'Sin autoría',
       coleccion: p.coleccion === 'historia' ? 'historia' : 'praxis',
-      anio: num(p.anio),
       paginas: num(p.paginas),
       sinopsis: p.sinopsis ? String(p.sinopsis).trim() : '',
       portada: rutaMedia(p.portada),
@@ -241,7 +242,7 @@
       var raw = JSON.parse(lsGet(LS_CART) || '{}');
       Object.keys(raw).forEach(function (id) {
         var p = byId(id), n = Math.floor(Number(raw[id]));
-        if (p && p.precio != null && p.stock > 0 && n > 0) out[id] = Math.min(n, p.stock);
+        if (p && hayDescarga(p) && p.precio != null && p.stock > 0 && n > 0) out[id] = Math.min(n, p.stock);
       });
     } catch (e) { out = {}; }
     return out;
@@ -265,7 +266,7 @@
 
   function addToCart(id) {
     var p = byId(id);
-    if (!p || p.precio == null || p.stock <= 0) return;
+    if (!p || !hayDescarga(p) || p.precio == null || p.stock <= 0) return;
     var cur = cart[id] || 0;
     if (cur >= p.stock) { toast('Ya tenés todo el stock disponible (' + p.stock + ')'); return; }
     cart[id] = cur + 1;
@@ -303,20 +304,36 @@
      ========================================================= */
   function metaLinea(p) {
     var partes = [COLECCIONES[p.coleccion]];
-    if (p.anio) partes.push(p.anio);
     if (p.paginas) partes.push(p.paginas + ' p.');
     return partes.join(' · ');
   }
 
-  function estadoPrecio(p) {
-    if (p.precio == null) return hayDescarga(p) ? 'Solo digital' : 'Sin edición aún';
-    if (p.stock > 0) return 'Impreso ' + clp(p.precio) + (p.stock <= 5 ? ' · quedan ' + p.stock : '');
-    return 'Impreso agotado' + (hayDescarga(p) ? ' · el PDF sigue libre' : '');
+  /* Tres estados: sin PDF (Próximamente), con PDF y precio (en venta)
+     y con PDF sin precio (solo digital). El stock agotado deja el
+     título en «Solo digital» y deshabilita solo el encargo. */
+  function estadoPublicacion(p) {
+    if (!hayDescarga(p)) return 'proximamente';
+    if (hayImpreso(p)) return 'venta';
+    return 'digital';
+  }
+
+  function puedeEncargar(p) {
+    return estadoPublicacion(p) === 'venta' && p.stock > 0;
+  }
+
+  function estadoTexto(p) {
+    var estado = estadoPublicacion(p);
+    if (estado === 'proximamente') return 'Próximamente';
+    if (estado === 'digital' || p.stock <= 0) return 'Solo digital';
+    return 'Impreso ' + clp(p.precio) + ' · quedan ' + p.stock;
   }
 
   function botonDescarga(p, clase) {
     var url = urlDescarga(p);
-    if (!url) return '<button class="btn ' + (clase || '') + '" type="button" disabled>Próximamente</button>';
+    if (!url) {
+      return '<button class="btn ' + (clase || '') + '" type="button" disabled>' +
+        ICON_DL + ' Descargar PDF</button>';
+    }
     var ext = esExterno(p);
     return '<a class="btn btn-solid ' + (clase || '') + '" href="' + esc(url) + '"' +
       (ext ? ' target="_blank" rel="noopener"' : ' download') +
@@ -325,21 +342,20 @@
   }
 
   function botonCompra(p, clase) {
-    if (p.precio == null) return '';
-    if (p.stock > 0) {
-      return '<button class="btn ' + (clase || '') + '" type="button" data-action="add" data-id="' + esc(p.id) +
-        '" aria-label="Comprar impreso de ' + esc(p.titulo) + '">Comprar</button>';
-    }
-    return '<button class="btn ' + (clase || '') + '" type="button" disabled>Agotado</button>';
+    var puede = puedeEncargar(p);
+    var motivo = estadoPublicacion(p) === 'proximamente'
+      ? 'Todavía no está disponible'
+      : (estadoPublicacion(p) === 'digital' ? 'Sin edición impresa por ahora' : 'Sin stock por ahora');
+    return '<button class="btn ' + (clase || '') + '" type="button" data-action="add" data-id="' + esc(p.id) +
+      '" aria-label="Encargar impreso de ' + esc(p.titulo) + '"' +
+      (puede ? '' : ' disabled title="' + motivo + '"') + '>Encargar</button>';
   }
 
   function cardHTML(p) {
-    var tiene = hayDescarga(p), stock = p.stock > 0, impreso = hayImpreso(p);
+    var tiene = hayDescarga(p);
     var nota;
-    if (tiene) nota = '<p class="micro">' + MICROCOPY_DESCARGA + '</p>';
-    else if (!stock && impreso) nota = '<p class="note">Impreso agotado y sin PDF todavía. Vuelve pronto.</p>';
-    else if (impreso) nota = '<p class="note">El PDF libre llega pronto. El impreso ya se puede reservar.</p>';
-    else nota = '<p class="note">Todavía no hay archivo disponible.</p>';
+    if (!tiene) nota = '<p class="note">Todavía no hay PDF ni edición impresa. Vuelve pronto.</p>';
+    else nota = '<p class="micro">' + MICROCOPY_DESCARGA + '</p>';
 
     return '<article class="card">' +
       '<button class="cover-btn" type="button" data-action="open" data-id="' + esc(p.id) + '" aria-label="Ver ficha de ' + esc(p.titulo) + '">' + portada(p) + '</button>' +
@@ -347,8 +363,8 @@
       '<p class="meta">' + esc(metaLinea(p)) + '</p>' +
       '<h3><button type="button" data-action="open" data-id="' + esc(p.id) + '">' + esc(p.titulo) + '</button></h3>' +
       '<p class="autor">' + esc(p.autor) + '</p>' +
-      '<p class="price">' + esc(estadoPrecio(p)) + '</p>' +
-      '<div class="actions' + (impreso ? '' : ' una') + '">' + botonDescarga(p, 'btn-sm') + botonCompra(p, 'btn-sm') + '</div>' +
+      '<p class="price">' + esc(estadoTexto(p)) + '</p>' +
+      '<div class="actions">' + botonCompra(p, 'btn-sm') + botonDescarga(p, 'btn-sm') + '</div>' +
       nota +
       '</div></article>';
   }
@@ -366,12 +382,7 @@
       return true;
     });
     var porTitulo = function (a, b) { return a.titulo.localeCompare(b.titulo, 'es'); };
-    var cmp = {
-      'titulo': porTitulo,
-      'anio-desc': function (a, b) { return (b.anio || -9999) - (a.anio || -9999) || porTitulo(a, b); },
-      'anio-asc': function (a, b) { return (a.anio || 9999) - (b.anio || 9999) || porTitulo(a, b); }
-    }[state.orden] || porTitulo;
-    return out.sort(cmp);
+    return out.sort(porTitulo);
   }
 
   function renderCatalog() {
@@ -403,7 +414,6 @@
   function syncControls() {
     $$('#segCol button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.col === state.col)); });
     $$('#segDisp button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.disp === state.disp)); });
-    if ($('#orden')) $('#orden').value = state.orden;
     if ($('#q')) $('#q').value = state.q;
     if ($('#h-catalogo')) $('#h-catalogo').textContent = state.col === 'todas' ? 'Catálogo' : 'Colección ' + COLECCIONES[state.col];
   }
@@ -476,29 +486,34 @@
   function openFicha(id) {
     var p = byId(id);
     if (!p) return;
-    var tiene = hayDescarga(p), stock = p.stock > 0, impreso = hayImpreso(p);
+    var tiene = hayDescarga(p), stock = p.stock > 0, estado = estadoPublicacion(p);
+    var consulta = 'mailto:' + CONTACTO.correo + '?subject=' + encodeURIComponent('Consulta: ' + p.titulo);
 
     var datos = '<dt>Colección</dt><dd>' + COLECCIONES[p.coleccion] + '</dd>';
-    if (p.anio) datos += '<dt>Año</dt><dd>' + p.anio + '</dd>';
     if (p.paginas) datos += '<dt>Páginas</dt><dd>' + p.paginas + '</dd>';
-    if (impreso) datos += '<dt>Impreso</dt><dd>' + (stock ? clp(p.precio) + ' · ' + p.stock + ' en stock' : 'Agotado por ahora') + '</dd>';
+    if (estado === 'venta') {
+      datos += '<dt>Impreso</dt><dd>' +
+        (stock ? clp(p.precio) + ' · ' + p.stock + ' en stock' : 'Agotado · solo digital') + '</dd>';
+    }
 
-    var libre = tiene
-      ? botonDescarga(p) + '<p class="micro">' + MICROCOPY_DESCARGA + '</p>'
-      : '<button class="btn" type="button" disabled>Próximamente</button>' +
-        '<p class="note">Este texto todavía no tiene archivo. Cuando exista, será libre y sin registro.</p>';
+    var libre = botonDescarga(p) + (tiene
+      ? '<p class="micro">' + MICROCOPY_DESCARGA + '</p>'
+      : '<p class="note">Este texto todavía no tiene archivo. Cuando exista, será libre y sin registro.</p>');
 
     var apoyo;
-    if (!impreso) {
-      apoyo = '<p class="note" style="margin-top:0">Por ahora este título circula solo en digital. Si querés una edición impresa, escribinos.</p>' +
-        '<a class="btn" href="mailto:' + CONTACTO.correo + '?subject=' + encodeURIComponent('Consulta: ' + p.titulo) + '">Escribir a la editorial</a>';
+    if (estado === 'proximamente') {
+      apoyo = '<p class="note" style="margin-top:0">Todavía no hay PDF ni edición impresa. ' +
+        'Si querés que te avisemos cuando esté, <a class="linklike" href="' + esc(consulta) + '">escribinos</a>.</p>';
+    } else if (estado === 'digital') {
+      apoyo = '<p class="note" style="margin-top:0">Por ahora este título circula solo en digital. ' +
+        'Si querés una edición impresa, <a class="linklike" href="' + esc(consulta) + '">escribinos</a>.</p>';
     } else if (stock) {
-      apoyo = '<p class="note" style="margin-top:0">Impreso: ' + clp(p.precio) + (p.stock <= 5 ? ' · quedan ' + p.stock : '') +
-        '. Tu compra financia papel y tinta; no es el precio del texto.</p>' + botonCompra(p);
+      apoyo = '<p class="note" style="margin-top:0">Impreso: ' + clp(p.precio) + ' · quedan ' + p.stock +
+        '. Tu compra financia papel y tinta; no es el precio del texto.</p>';
     } else {
-      apoyo = '<p class="note" style="margin-top:0">Impreso agotado' + (tiene ? '. Mientras tanto, el PDF sigue libre.' : '.') + '</p>' +
-        '<button class="btn" type="button" disabled>Agotado</button>';
+      apoyo = '<p class="note" style="margin-top:0">Impreso agotado por ahora. Mientras tanto, el PDF sigue libre.</p>';
     }
+    apoyo += botonCompra(p);
 
     $('#fichaBody').innerHTML =
       '<div class="dlg-head">' +
@@ -592,7 +607,6 @@
   });
 
   if ($('#q')) $('#q').addEventListener('input', function (e) { state.q = e.target.value; renderCatalog(); });
-  if ($('#orden')) $('#orden').addEventListener('change', function (e) { state.orden = e.target.value; renderCatalog(); });
   if ($('#segCol')) $('#segCol').addEventListener('click', function (e) {
     var b = e.target.closest('button'); if (!b) return;
     state.col = b.dataset.col; syncControls(); renderCatalog();

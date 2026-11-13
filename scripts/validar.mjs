@@ -21,14 +21,17 @@ if (!Array.isArray(catalogo)) {
 }
 
 const texto = v => typeof v === 'string' && v.trim().length > 0;
-const numero = v => v === null || (typeof v === 'number' && Number.isFinite(v));
+/* Un campo vacío llega como null o, si lo borra Pages CMS, como ausente:
+   ambos significan lo mismo. */
+const numero = v => v === undefined || v === null || (typeof v === 'number' && Number.isFinite(v));
 const COLECCIONES = ['praxis', 'historia'];
 
 const slug = s => String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '')
   .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 
 const ids = new Map();
-let sinArchivo = 0, sinPortada = 0, sinSinopsis = 0, impresos = 0, descargables = 0;
+let sinArchivo = 0, sinPortada = 0, sinSinopsis = 0;
+let enVenta = 0, soloDigital = 0, proximamente = 0, descargables = 0;
 
 catalogo.forEach((p, i) => {
   const donde = `catalogo.json[${i}]`;
@@ -44,7 +47,7 @@ catalogo.forEach((p, i) => {
   if (ids.has(id)) errores.push(`${donde} ${nombre}: id repetido «${id}» (ya en ${ids.get(id)})`);
   else ids.set(id, donde);
 
-  ['anio', 'paginas', 'precio', 'stock'].forEach(c => {
+  ['paginas', 'precio', 'stock'].forEach(c => {
     if (!numero(p[c])) errores.push(`${donde} ${nombre}: «${c}» debe ser número o null (tiene ${JSON.stringify(p[c])})`);
   });
   if (typeof p.precio === 'number' && p.precio < 0) errores.push(`${donde} ${nombre}: precio negativo`);
@@ -61,14 +64,25 @@ catalogo.forEach((p, i) => {
   if (p.archivo) {
     descargables++;
     if (!/^https?:\/\//i.test(p.archivo) && !existsSync(fileURLToPath(new URL(`pdfs/${p.archivo.replace(/^\/+/, '')}`, raiz)))) {
-      avisos.push(`${donde} ${nombre}: «${p.archivo}» no está en pdfs/ (¿ya se subió a R2?)`);
+      avisos.push(`${donde} ${nombre}: «${p.archivo}» no está en pdfs/ (¿ya se subió?)`);
     }
   } else if (p.enlace) descargables++;
   else sinArchivo++;
 
+  const conPdf = !!(p.archivo || p.enlace);
+  if (!conPdf) {
+    proximamente++;
+    if (typeof p.precio === 'number') {
+      avisos.push(`${donde} ${nombre}: tiene precio pero no PDF; quedará como Próximamente y no se podrá encargar`);
+    }
+  } else if (typeof p.precio === 'number') {
+    enVenta++;
+  } else {
+    soloDigital++;
+  }
+
   if (!p.portada) sinPortada++;
   if (!texto(p.sinopsis)) sinSinopsis++;
-  if (typeof p.precio === 'number') impresos++;
 });
 
 if (errores.length) {
@@ -77,8 +91,8 @@ if (errores.length) {
   process.exit(1);
 }
 
-console.log(`✓ Catálogo válido: ${catalogo.length} fichas (${impresos} con precio, ${descargables} con descarga).`);
-console.log(`  Sin PDF ni enlace: ${sinArchivo} · sin portada: ${sinPortada} · sin sinopsis: ${sinSinopsis}.`);
+console.log(`✓ Catálogo válido: ${catalogo.length} fichas (${enVenta} en venta, ${soloDigital} solo digital, ${proximamente} próximamente).`);
+console.log(`  Con PDF o enlace: ${descargables} · sin PDF: ${sinArchivo} · sin portada: ${sinPortada} · sin sinopsis: ${sinSinopsis}.`);
 if (avisos.length) {
   console.log(`\n  ${avisos.length} aviso(s):`);
   avisos.slice(0, 12).forEach(a => console.log('  - ' + a));

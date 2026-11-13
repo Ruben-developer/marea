@@ -1,8 +1,8 @@
 # Configuración de Pages CMS (https://pagescms.org) para MAREA.
 # Se lee desde la raíz del repo. Edita catalogo.json con formularios.
 #
-# Los PDFs NO se suben acá: van a Cloudflare R2 (ver descargas.antarquia.cl).
-# Las portadas sí: viven en covers/ y pesan poco.
+# Los PDFs viven en pdfs/ y se sirven con el mismo Worker.
+# Las portadas sí se suben acá: viven en covers/ y pesan poco.
 
 media:
   input: covers
@@ -40,11 +40,6 @@ content:
             - name: historia
               label: Historia
 
-      - name: anio
-        label: Año de edición
-        type: number
-        description: "Año del texto original, si se conoce."
-
       - name: paginas
         label: Páginas
         type: number
@@ -62,7 +57,7 @@ content:
       - name: archivo
         label: Archivo PDF
         type: string
-        description: "Nombre del PDF en el servidor de descargas (R2), por ejemplo la-comuna-de-paris.pdf. El PDF se sube aparte, no por acá."
+        description: "Nombre del PDF en pdfs/, por ejemplo la-comuna-de-paris.pdf. El PDF se sube aparte, no por acá."
 
       - name: enlace
         label: Enlace externo
@@ -72,12 +67,12 @@ content:
       - name: precio
         label: Precio (CLP)
         type: number
-        description: "Vacío = no hay edición impresa."
+        description: "Vacío = solo digital, sin venta. Con precio y PDF se habilita el encargo."
 
       - name: stock
         label: Stock
         type: number
-        description: "0 = agotado."
+        description: "Unidades disponibles. 0 = solo digital: se descarga el PDF pero no se puede encargar."
 
       - name: destacado
         label: Destacado
