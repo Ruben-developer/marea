@@ -8,17 +8,21 @@
     "archivo": "fuga-del-penal-de-punta-carretas.pdf",
     "stock": 0,
     "destacado": true,
-    "id": "m-068"
+    "id": "m-068",
+    "anio": null,
+    "precio": null
   },
   {
     "titulo": "El ideal anarquista",
     "autor": "Élisée Reclus",
     "coleccion": "praxis",
-    "paginas": 19,
+    "paginas": 18,
     "archivo": "el-ideal-anarquista-elisee-reclus.pdf",
     "stock": 0,
     "destacado": false,
-    "id": "m-069"
+    "id": "m-069",
+    "anio": null,
+    "precio": null
   },
   {
     "titulo": "La anarquía desde el punto de vista de un cristiano",
@@ -29,6 +33,8 @@
     "archivo": "la-anarquia-desde-el-punto-de-vista-de-un-cristiano.pdf",
     "stock": 0,
     "destacado": true,
-    "id": "m-067"
+    "id": "m-067",
+    "anio": null,
+    "precio": null
   }
 ]
