@@ -18,7 +18,7 @@
 
   /* ---------- constantes ---------- */
   var COLECCIONES = { historia: 'Historia', praxis: 'Praxis' };
-  var MICROCOPY_DESCARGA = 'Copiá, compartí, reimprimí. Se reconoce la autoría, no su propiedad.';
+  var MICROCOPY_DESCARGA = 'Copia, comparte, reimprime. Se reconoce la autoría, no su propiedad.';
   var LS_CART = 'marea_carrito_v1';
   var LS_THEME = 'marea_tema_v1';
   var CONTACTO = { correo: 'contacto-marea@riseup.net', sitio: 'marea.antarquia.cl' };
@@ -136,7 +136,7 @@
 
   function errorCatalogo() {
     var msg = '<div class="empty"><h2>No se pudo cargar el catálogo</h2>' +
-      '<p>Revisá que <code>catalogo.json</code> exista y que la página se esté sirviendo por HTTP ' +
+      '<p>Revisa que <code>catalogo.json</code> exista y que la página se esté sirviendo por HTTP ' +
       '(con <code>python3 -m http.server</code>, por ejemplo). Abrir el archivo con <code>file://</code> bloquea la lectura.</p></div>';
     var g = $('#catalogGrid'); if (g) g.innerHTML = msg;
     var f = $('#featured'); if (f) f.innerHTML = msg;
@@ -268,7 +268,7 @@
     var p = byId(id);
     if (!p || !hayDescarga(p) || p.precio == null || p.stock <= 0) return;
     var cur = cart[id] || 0;
-    if (cur >= p.stock) { toast('Ya tenés todo el stock disponible (' + p.stock + ')'); return; }
+    if (cur >= p.stock) { toast('Ya tienes todo el stock disponible (' + p.stock + ')'); return; }
     cart[id] = cur + 1;
     saveCart();
     toast('«' + p.titulo + '» añadido al carrito');
@@ -404,7 +404,7 @@
         : '';
       g.innerHTML = '<div class="empty"><h2>Nada coincide con eso</h2>' +
         '<p>Filtros activos: ' + (activos.join(' · ') || 'ninguno') + '.' + extra +
-        ' La búsqueda ya ignora tildes y mayúsculas; probá con menos palabras o quitá algún filtro.</p>' +
+        ' La búsqueda ya ignora tildes y mayúsculas; prueba con menos palabras o quita algún filtro.</p>' +
         '<button class="btn btn-solid" type="button" data-action="clearfilters">Limpiar filtros</button></div>';
     } else {
       g.innerHTML = '<div class="grid">' + res.map(cardHTML).join('') + '</div>';
@@ -436,7 +436,7 @@
     var items = cartItems();
     if (!items.length) {
       b.innerHTML = '<div class="empty"><h2>Tu carrito está vacío</h2>' +
-        '<p>No hace falta comprar nada para leer: todos los PDF disponibles se descargan libres. Si querés sostener el proyecto, elegí un impreso.</p>' +
+        '<p>No hace falta comprar nada para leer: todos los PDF disponibles se descargan libres. Si quieres sostener el proyecto, elige un impreso.</p>' +
         '<p><a class="btn btn-solid" href="/catalogo">Ver catálogo</a> <a class="btn" href="/catalogo/descarga">Descargar gratis</a></p></div>';
       return;
     }
@@ -453,7 +453,7 @@
         '<button type="button" data-action="inc" data-id="' + esc(p.id) + '" aria-label="Añadir una unidad"' + (q >= p.stock ? ' disabled' : '') + '>+</button>' +
         '</div>' +
         '<button class="linklike" type="button" data-action="remove" data-id="' + esc(p.id) + '" aria-label="Quitar ' + esc(p.titulo) + ' del carrito">Quitar</button>' +
-        (hayDescarga(p) ? '<a class="linklike" href="' + esc(urlDescarga(p)) + '" data-action="download">o descargá el PDF libre</a>' : '') +
+        (hayDescarga(p) ? '<a class="linklike" href="' + esc(urlDescarga(p)) + '" data-action="download">o descarga el PDF libre</a>' : '') +
         '</div></div>';
     }).join('') +
       '<div class="subtotal"><span>Subtotal</span><span>' + clp(cartTotal()) + '</span></div>' +
@@ -496,24 +496,26 @@
         (stock ? clp(p.precio) + ' · ' + p.stock + ' en stock' : 'Agotado · solo digital') + '</dd>';
     }
 
-    var libre = botonDescarga(p) + (tiene
+    /* Los botones van antes de la sinopsis: descarga siempre, encargo
+       cuando hay impreso (deshabilitado si todavía no o no hay stock). */
+    var acciones = botonDescarga(p) + botonCompra(p);
+    var notaAcciones = tiene
       ? '<p class="micro">' + MICROCOPY_DESCARGA + '</p>'
-      : '<p class="note">Este texto todavía no tiene archivo. Cuando exista, será libre y sin registro.</p>');
+      : '<p class="note">Este texto todavía no tiene archivo. Cuando exista, será libre y sin registro.</p>';
 
     var apoyo;
     if (estado === 'proximamente') {
       apoyo = '<p class="note" style="margin-top:0">Todavía no hay PDF ni edición impresa. ' +
-        'Si querés que te avisemos cuando esté, <a class="linklike" href="' + esc(consulta) + '">escribinos</a>.</p>';
+        'Si quieres que te avisemos cuando esté, <a class="linklike" href="' + esc(consulta) + '">escríbenos</a>.</p>';
     } else if (estado === 'digital') {
       apoyo = '<p class="note" style="margin-top:0">Por ahora este título circula solo en digital. ' +
-        'Si querés una edición impresa, <a class="linklike" href="' + esc(consulta) + '">escribinos</a>.</p>';
+        'Si quieres una edición impresa, <a class="linklike" href="' + esc(consulta) + '">escríbenos</a>.</p>';
     } else if (stock) {
       apoyo = '<p class="note" style="margin-top:0">Impreso: ' + clp(p.precio) + ' · quedan ' + p.stock +
         '. Tu compra financia papel y tinta; no es el precio del texto.</p>';
     } else {
       apoyo = '<p class="note" style="margin-top:0">Impreso agotado por ahora. Mientras tanto, el PDF sigue libre.</p>';
     }
-    apoyo += botonCompra(p);
 
     $('#fichaBody').innerHTML =
       '<div class="dlg-head">' +
@@ -526,10 +528,8 @@
       '<h2 id="fichaTitulo">' + esc(p.titulo) + '</h2>' +
       '<p class="autor" style="font-size:1.1rem;margin-top:.4em">' + esc(p.autor) + '</p>' +
       '<dl class="datos">' + datos + '</dl>' +
+      '<div class="ficha-acciones">' + acciones + '</div>' + notaAcciones +
       (p.sinopsis ? '<p class="sinopsis">' + esc(p.sinopsis) + '</p>' : '<p class="sinopsis vacio">Sin sinopsis todavía.</p>') +
-      '<div class="block libre">' +
-      (tiene ? '<img class="logo sello-stamp" src="assets/sello-rojo.png" alt="" width="500" height="500" aria-hidden="true">' : '') +
-      '<h3>Lectura libre</h3>' + libre + '</div>' +
       '<div class="block"><h3>Apoya el proyecto</h3>' + apoyo + '</div>' +
       '<div class="contra"><img class="logo" src="assets/sello-rojo.png" alt="" width="500" height="500" aria-hidden="true">' +
       '<span>' + CONTACTO.correo + '<br>' + CONTACTO.sitio + '</span></div>' +
