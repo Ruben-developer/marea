@@ -1,29 +1,24 @@
 [
   {
-    "id": "m-068",
     "titulo": "Fuga del penal de Punta Carretas",
     "autor": "Osvaldo Bayer, Fernando O’Neill y varios autores",
     "coleccion": "historia",
     "paginas": 40,
-    "sinopsis": "",
+    "sinopsis": "Esta publicación reconstruye uno de los episodios más conocidos del anarquismo de acción rioplatense: la fuga de varios presos de la cárcel de Punta Carretas, en Montevideo, el 18 de marzo de 1931. A través de los relatos de Osvaldo Bayer y Fernando O’Neill, se repasa la participación de militantes como Miguel Arcángel Roscigna, José Manuel Paz y Gino Gatti, quienes organizaron la construcción de un túnel de más de cuarenta metros, oculto bajo la fachada de una carbonería, para liberar a sus compañeros encarcelados.\n\nEl texto también aborda las posteriores capturas, las persecuciones policiales y las dificultades que enfrentaron los fugitivos para mantenerse en la clandestinidad. Se incluyen, además, las reconstrucciones de las detenciones de Carlos Cúneo Funes y Pedro Boadas Rivas, junto con una conferencia de prensa realizada en marzo de 1931, en la que los propios anarquistas explican sus ideas, rechazan la existencia de jefes y defienden una organización basada en la ausencia de autoridad.\n\nMás que narrar una fuga espectacular, esta recopilación permite acercarse a la historia de los grupos anarquistas expropiadores, sus redes de solidaridad, sus métodos de acción y el contexto de represión estatal que marcó aquellos años.",
     "archivo": "fuga-del-penal-de-punta-carretas.pdf",
     "stock": 0,
     "destacado": true,
-    "anio": null,
-    "precio": null
+    "id": "m-068"
   },
   {
-    "id": "m-069",
     "titulo": "El ideal anarquista",
     "autor": "Élisée Reclus",
     "coleccion": "praxis",
     "paginas": 19,
-    "sinopsis": "",
     "archivo": "el-ideal-anarquista-elisee-reclus.pdf",
     "stock": 0,
     "destacado": false,
-    "anio": null,
-    "precio": null
+    "id": "m-069"
   },
   {
     "titulo": "La anarquía desde el punto de vista de un cristiano",
@@ -34,8 +29,6 @@
     "archivo": "la-anarquia-desde-el-punto-de-vista-de-un-cristiano.pdf",
     "stock": 0,
     "destacado": true,
-    "id": "m-067",
-    "anio": null,
-    "precio": null
+    "id": "m-067"
   }
 ]
