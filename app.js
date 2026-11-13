@@ -72,7 +72,7 @@
   /* ---------- estado ---------- */
   var PUBLICACIONES = [];
   var cargado = false;
-  var state = { q: '', col: 'todas', disp: 'todo' };
+  var state = { q: '', col: 'todas' };
   var cart = {};
   var ultimoFoco = null;
   var toastT = null;
@@ -375,8 +375,6 @@
     var q = norm(state.q).trim();
     var out = PUBLICACIONES.filter(function (p) {
       if (state.col !== 'todas' && p.coleccion !== state.col) return false;
-      if (state.disp === 'descarga' && !hayDescarga(p)) return false;
-      if (state.disp === 'proximamente' && hayDescarga(p)) return false;
       if (q && norm(p.titulo + ' ' + p.autor + ' ' + p.sinopsis + ' ' + COLECCIONES[p.coleccion]).indexOf(q) === -1) return false;
       return true;
     });
@@ -396,13 +394,8 @@
       var activos = [];
       if (state.q.trim()) activos.push('búsqueda «' + esc(state.q.trim()) + '»');
       if (state.col !== 'todas') activos.push('colección ' + COLECCIONES[state.col]);
-      if (state.disp === 'descarga') activos.push('solo con descarga');
-      if (state.disp === 'proximamente') activos.push('solo próximamente');
-      var extra = state.disp === 'descarga'
-        ? ' Todavía estamos subiendo los PDF: por ahora solo hay un título descargable.'
-        : '';
       g.innerHTML = '<div class="empty"><h2>Nada coincide con eso</h2>' +
-        '<p>Filtros activos: ' + (activos.join(' · ') || 'ninguno') + '.' + extra +
+        '<p>Filtros activos: ' + (activos.join(' · ') || 'ninguno') + '.' +
         ' La búsqueda ya ignora tildes y mayúsculas; prueba con menos palabras o quita algún filtro.</p>' +
         '<button class="btn btn-solid" type="button" data-action="clearfilters">Limpiar filtros</button></div>';
     } else {
@@ -412,7 +405,6 @@
 
   function syncControls() {
     $$('#segCol button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.col === state.col)); });
-    $$('#segDisp button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.disp === state.disp)); });
     if ($('#q')) $('#q').value = state.q;
     if ($('#h-catalogo')) $('#h-catalogo').textContent = state.col === 'todas' ? 'Catálogo' : 'Colección ' + COLECCIONES[state.col];
   }
@@ -565,7 +557,7 @@
         closeDialog($('#dlgCheckout')); toast('Carrito vaciado'); break;
       case 'close': closeDialog(t.closest('dialog')); break;
       case 'clearfilters':
-        state.q = ''; state.col = 'todas'; state.disp = 'todo';
+        state.q = ''; state.col = 'todas';
         syncControls(); renderCatalog(); break;
     }
   });
@@ -574,10 +566,6 @@
   if ($('#segCol')) $('#segCol').addEventListener('click', function (e) {
     var b = e.target.closest('button'); if (!b) return;
     state.col = b.dataset.col; syncControls(); renderCatalog();
-  });
-  if ($('#segDisp')) $('#segDisp').addEventListener('click', function (e) {
-    var b = e.target.closest('button'); if (!b) return;
-    state.disp = b.dataset.disp; syncControls(); renderCatalog();
   });
 
   /* ---------- tema ---------- */
@@ -641,14 +629,14 @@
   function route() {
     if (!cargado) return;
     var trozos = (rutaActual() || 'inicio').split('/');
-    var n0 = trozos[0], param = trozos[1];
+    var n0 = trozos[0];
     var name = TITULOS[n0] ? n0 : 'inicio';
     var vista = name;
     // Ruta desconocida: se muestra el inicio y se corrige la URL.
     if (!ES_PAGES && n0 !== 'inicio' && !TITULOS[n0]) history.replaceState(null, '', hrefDe('inicio'));
 
     if (name === 'historia' || name === 'praxis') { state.col = name; vista = 'catalogo'; }
-    else if (name === 'catalogo') { state.col = 'todas'; state.disp = param === 'descarga' ? 'descarga' : 'todo'; }
+    else if (name === 'catalogo') { state.col = 'todas'; }
 
     $$('dialog[open]').forEach(closeDialog);
     $$('.view').forEach(function (v) { v.hidden = v.dataset.view !== vista; });
