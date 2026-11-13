@@ -11,7 +11,7 @@
 <!-- Todo se sirve desde el propio dominio (catálogo, portadas, PDFs). -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self'">
 <link rel="icon" href="assets/favicon.png" type="image/png">
-<link rel="stylesheet" href="style.css?v=20261112a">
+<link rel="stylesheet" href="style.css?v=20261113a">
 <script>
   /* Aplica el tema guardado antes de pintar, para evitar el destello. */
   (function(){
@@ -34,7 +34,6 @@
     <nav aria-label="Principal">
       <ul>
         <li><a href="/catalogo" data-nav="catalogo">Catálogo</a></li>
-        <li><a href="/difusion" data-nav="difusion">Difusión</a></li>
         <li><a href="/carrito" data-nav="carrito" id="cartLink" aria-label="Carrito, 0 artículos">Carrito <span class="count" id="cartCount" aria-hidden="true">0</span></a></li>
       </ul>
     </nav>
@@ -66,15 +65,22 @@
       </div>
     </div>
 
-    <div class="strip">
-      <div class="wrap">
-        <p>Comprar es sostener la imprenta, no pagar por leer. Cada PDF es libre, hoy y siempre.</p>
-        <a class="btn btn-sm" href="/difusion">Leer el manifiesto →</a>
-      </div>
+    <div class="wrap prose manifiesto" style="max-width:72ch">
+      <h2 class="section-h" id="h-manifiesto">Manifiesto</h2>
+      <p>Una editorial anarquista no es una tienda con otra estética. Es una herramienta para que las ideas circulen más rápido de lo que alcanzan a prohibirlas.</p>
+      <p>Por eso el acceso al conocimiento no se vende. Todo lo que publicamos se puede leer, descargar y copiar sin pagar. Quien compra un cuadernillo impreso no compra el texto: sostiene la imprenta, el papel y la próxima reimpresión. El texto ya era suyo.</p>
+      <p>Publicamos historia, teoría y experiencias de acción anarquista, porque una lucha que olvida su memoria repite sus derrotas y una que no la analiza no aprende de ellas. Recuperamos lo que fue ocultado, traducimos lo que no llegó y ponemos en palabras simples lo que otros dejaron en pesados tratados.</p>
+      <p>Publicamos para que se lea en la asamblea, en el taller, en la fila del bus. Para que se subraye, se fotocopie y se discuta. Un libro que nadie puede copiar es un libro a medias.</p>
+      <p>No tenemos dueños ni jefes, ni pedimos permiso para reeditar. Si algo de lo que hacemos te sirve, tómalo: reimprímelo, tradúcelo, repártelo.</p>
     </div>
+  </section>
 
+  <!-- ================= CATÁLOGO ================= -->
+  <section class="view" data-view="catalogo" aria-labelledby="h-catalogo" hidden>
     <div class="wrap">
-      <h2 class="section-h">Dos caminos, un mismo texto</h2>
+      <h1 class="view-title" id="h-catalogo" tabindex="-1">Catálogo</h1>
+
+      <h2 class="section-h" style="margin-top:0">Dos caminos, un mismo texto</h2>
       <div class="two">
         <div class="panel">
           <h3>Lee y comparte</h3>
@@ -86,17 +92,10 @@
         </div>
       </div>
 
-      <h2 class="section-h" style="margin-top:0">Destacados</h2>
+      <h2 class="section-h">Destacados</h2>
       <div class="grid" id="featured"><p class="cargando">Cargando catálogo…</p></div>
-    </div>
-  </section>
 
-  <!-- ================= CATÁLOGO ================= -->
-  <section class="view" data-view="catalogo" aria-labelledby="h-catalogo" hidden>
-    <div class="wrap">
-      <h1 class="view-title" id="h-catalogo" tabindex="-1">Catálogo</h1>
-
-      <div class="controls" role="search" aria-label="Buscar y filtrar el catálogo">
+      <div class="controls" role="search" aria-label="Buscar y filtrar el catálogo" style="margin-top:40px">
         <div class="ctl-row">
           <div class="field search-field">
             <label for="q">Buscar</label>
@@ -125,19 +124,6 @@
 
       <p class="result-count" id="resultCount" role="status" aria-live="polite"></p>
       <div id="catalogGrid"><p class="cargando">Cargando catálogo…</p></div>
-    </div>
-  </section>
-
-  <!-- ================= DIFUSIÓN ================= -->
-  <section class="view" data-view="difusion" aria-labelledby="h-difusion" hidden>
-    <div class="wrap prose" style="max-width:760px">
-      <h1 class="view-title" id="h-difusion" tabindex="-1">Manifiesto</h1>
-      <p>Una editorial anarquista no es una tienda con otra estética. Es una herramienta para que las ideas circulen más rápido de lo que alcanzan a prohibirlas.</p>
-      <p>Por eso el acceso al conocimiento no se vende. Todo lo que publicamos se puede leer, descargar y copiar sin pagar. Quien compra un cuadernillo impreso no compra el texto: sostiene la imprenta, el papel y la próxima reimpresión. El texto ya era suyo.</p>
-      <p>Publicamos historia, teoría y experiencias de acción anarquista, porque una lucha que olvida su memoria repite sus derrotas y una que no la analiza no aprende de ellas. Recuperamos lo que fue ocultado, traducimos lo que no llegó y ponemos en palabras simples lo que otros dejaron en pesados tratados.</p>
-      <p>Publicamos para que se lea en la asamblea, en el taller, en la fila del bus. Para que se subraye, se fotocopie y se discuta. Un libro que nadie puede copiar es un libro a medias.</p>
-      <p>No tenemos dueños ni jefes, ni pedimos permiso para reeditar. Si algo de lo que hacemos te sirve, tómalo: reimprímelo, tradúcelo, repártelo.</p>
-      <p style="margin-top:28px"><a class="btn" href="/catalogo/descarga">Ir a las descargas libres</a></p>
     </div>
   </section>
 
@@ -183,7 +169,7 @@
   </div>
 </noscript>
 
-<script src="config.js?v=20261112a"></script>
-<script src="app.js?v=20261112a"></script>
+<script src="config.js?v=20261113a"></script>
+<script src="app.js?v=20261113a"></script>
 </body>
 </html>

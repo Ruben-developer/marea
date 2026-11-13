@@ -100,9 +100,6 @@ nav a[aria-current="page"]{border-color:var(--ink);background:var(--ink);color:v
 .logo--hero{position:absolute;right:clamp(16px,4vw,40px);bottom:clamp(16px,3vw,34px);
   --s:clamp(84px,14vw,120px);transform:rotate(-7deg)}
 
-.strip{border-block:1px solid var(--ink);background:var(--bg2);padding-block:20px}
-.strip .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 28px}
-.strip p{margin:0;font-size:1.1rem;max-width:60ch}
 
 .two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .panel{border:1px solid var(--ink);padding:22px;background:var(--bg2)}
@@ -182,10 +179,6 @@ dl.datos dd{margin:0}
 .block h3{font-size:1rem;margin-bottom:.5em}
 .block.libre{border:2px solid var(--acento)}
 .block .btn{width:100%}
-.ficha-acciones{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
-.contra{display:flex;align-items:center;gap:14px;margin-top:22px;padding-top:16px;
-  border-top:1px solid var(--line);font-family:var(--mono);font-size:.82rem;line-height:1.5;color:var(--ink2)}
-.contra .logo{--s:64px}
 
 /* ---------- carrito ---------- */
 .cart-row{display:grid;grid-template-columns:72px 1fr auto;gap:8px 16px;align-items:center;
@@ -241,7 +234,7 @@ footer ul{list-style:none;padding:0}
   .brand{order:1}
   .two,.foot-grid,.ficha{grid-template-columns:1fr}
   .ficha .cover-col{order:0;max-width:260px}
-  .actions,.ficha-acciones{grid-template-columns:1fr}
+  .actions{grid-template-columns:1fr}
   .cart-row{grid-template-columns:56px 1fr}
   .cart-row svg,.cart-row img{width:56px}
   .line-total{grid-column:2;text-align:left}

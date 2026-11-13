@@ -27,7 +27,6 @@
     catalogo: 'Catálogo',
     historia: 'Colección Historia',
     praxis: 'Colección Praxis',
-    difusion: 'Difusión',
     carrito: 'Carrito'
   };
 
@@ -486,35 +485,13 @@
   function openFicha(id) {
     var p = byId(id);
     if (!p) return;
-    var tiene = hayDescarga(p), stock = p.stock > 0, estado = estadoPublicacion(p);
-    var consulta = 'mailto:' + CONTACTO.correo + '?subject=' + encodeURIComponent('Consulta: ' + p.titulo);
+    var stock = p.stock > 0, estado = estadoPublicacion(p);
 
     var datos = '<dt>Colección</dt><dd>' + COLECCIONES[p.coleccion] + '</dd>';
     if (p.paginas) datos += '<dt>Páginas</dt><dd>' + p.paginas + '</dd>';
     if (estado === 'venta') {
       datos += '<dt>Impreso</dt><dd>' +
         (stock ? clp(p.precio) + ' · ' + p.stock + ' en stock' : 'Agotado · solo digital') + '</dd>';
-    }
-
-    /* Los botones van antes de la sinopsis: descarga siempre, encargo
-       cuando hay impreso (deshabilitado si todavía no o no hay stock). */
-    var acciones = botonDescarga(p) + botonCompra(p);
-    var notaAcciones = tiene
-      ? '<p class="micro">' + MICROCOPY_DESCARGA + '</p>'
-      : '<p class="note">Este texto todavía no tiene archivo. Cuando exista, será libre y sin registro.</p>';
-
-    var apoyo;
-    if (estado === 'proximamente') {
-      apoyo = '<p class="note" style="margin-top:0">Todavía no hay PDF ni edición impresa. ' +
-        'Si quieres que te avisemos cuando esté, <a class="linklike" href="' + esc(consulta) + '">escríbenos</a>.</p>';
-    } else if (estado === 'digital') {
-      apoyo = '<p class="note" style="margin-top:0">Por ahora este título circula solo en digital. ' +
-        'Si quieres una edición impresa, <a class="linklike" href="' + esc(consulta) + '">escríbenos</a>.</p>';
-    } else if (stock) {
-      apoyo = '<p class="note" style="margin-top:0">Impreso: ' + clp(p.precio) + ' · quedan ' + p.stock +
-        '. Tu compra financia papel y tinta; no es el precio del texto.</p>';
-    } else {
-      apoyo = '<p class="note" style="margin-top:0">Impreso agotado por ahora. Mientras tanto, el PDF sigue libre.</p>';
     }
 
     $('#fichaBody').innerHTML =
@@ -528,11 +505,7 @@
       '<h2 id="fichaTitulo">' + esc(p.titulo) + '</h2>' +
       '<p class="autor" style="font-size:1.1rem;margin-top:.4em">' + esc(p.autor) + '</p>' +
       '<dl class="datos">' + datos + '</dl>' +
-      '<div class="ficha-acciones">' + acciones + '</div>' + notaAcciones +
       (p.sinopsis ? '<p class="sinopsis">' + esc(p.sinopsis) + '</p>' : '<p class="sinopsis vacio">Sin sinopsis todavía.</p>') +
-      '<div class="block"><h3>Apoya el proyecto</h3>' + apoyo + '</div>' +
-      '<div class="contra"><img class="logo" src="assets/sello-rojo.png" alt="" width="500" height="500" aria-hidden="true">' +
-      '<span>' + CONTACTO.correo + '<br>' + CONTACTO.sitio + '</span></div>' +
       '</div></div>';
 
     openDialog($('#dlgFicha'));
@@ -640,7 +613,7 @@
 
   /* =========================================================
      ROUTER (rutas reales, sin recargar)
-     /inicio  /catalogo[/descarga]  /historia  /praxis  /difusion  /carrito
+     /inicio  /catalogo[/descarga]  /historia  /praxis  /carrito
      En el respaldo de GitHub Pages se usa hash (#/catalogo): allí no hay
      rewrites y cualquier ruta real devolvería 404.
      ========================================================= */
