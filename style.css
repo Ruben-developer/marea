@@ -149,6 +149,9 @@ input[type=search],select{width:100%;min-height:44px;background:var(--bg);color:
 .actions .btn{padding-inline:.3em;letter-spacing:.03em;font-size:.62rem;line-height:1.2;min-height:40px}
 .micro{font-size:.82rem;color:var(--ink2);font-style:italic;margin:6px 0 0;line-height:1.4}
 .price{font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;font-size:.75rem;color:var(--ink2);margin:4px 0 0}
+.tag{display:inline-block;font-family:var(--mono);text-transform:uppercase;letter-spacing:.12em;
+  font-size:.6rem;line-height:1.6;color:var(--on-acento);background:var(--acento);padding:0 6px;
+  vertical-align:middle;margin-left:4px}
 .note{font-size:.82rem;color:var(--ink2);margin:6px 0 0;line-height:1.4}
 
 .empty{border:1px dashed var(--ink);padding:36px 22px;text-align:center;background:var(--bg2)}

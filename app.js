@@ -138,7 +138,6 @@
       '<p>Revisa que <code>catalogo.json</code> exista y que la página se esté sirviendo por HTTP ' +
       '(con <code>python3 -m http.server</code>, por ejemplo). Abrir el archivo con <code>file://</code> bloquea la lectura.</p></div>';
     var g = $('#catalogGrid'); if (g) g.innerHTML = msg;
-    var f = $('#featured'); if (f) f.innerHTML = msg;
   }
 
   /* =========================================================
@@ -359,7 +358,8 @@
     return '<article class="card">' +
       '<button class="cover-btn" type="button" data-action="open" data-id="' + esc(p.id) + '" aria-label="Ver ficha de ' + esc(p.titulo) + '">' + portada(p) + '</button>' +
       '<div class="card-body">' +
-      '<p class="meta">' + esc(metaLinea(p)) + '</p>' +
+      '<p class="meta">' + esc(metaLinea(p)) +
+        (p.destacado ? ' <span class="tag">Destacado</span>' : '') + '</p>' +
       '<h3><button type="button" data-action="open" data-id="' + esc(p.id) + '">' + esc(p.titulo) + '</button></h3>' +
       '<p class="autor">' + esc(p.autor) + '</p>' +
       '<p class="price">' + esc(estadoTexto(p)) + '</p>' +
@@ -415,15 +415,6 @@
     $$('#segDisp button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.disp === state.disp)); });
     if ($('#q')) $('#q').value = state.q;
     if ($('#h-catalogo')) $('#h-catalogo').textContent = state.col === 'todas' ? 'Catálogo' : 'Colección ' + COLECCIONES[state.col];
-  }
-
-  function renderFeatured() {
-    if (!cargado) return;
-    var f = $('#featured');
-    if (!f) return;
-    var destacados = PUBLICACIONES.filter(function (p) { return p.destacado; });
-    if (!destacados.length) destacados = PUBLICACIONES.slice(0, 4);
-    f.innerHTML = destacados.map(cardHTML).join('');
   }
 
   /* =========================================================
@@ -712,7 +703,6 @@
     .then(function () {
       cart = loadCart();
       updateCartUI();
-      renderFeatured();
       route();
     })
     .catch(function (err) {
