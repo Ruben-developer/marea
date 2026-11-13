@@ -330,13 +330,13 @@
     var url = urlDescarga(p);
     if (!url) {
       return '<button class="btn ' + (clase || '') + '" type="button" disabled>' +
-        ICON_DL + ' Descargar PDF</button>';
+        ICON_DL + ' Descargar</button>';
     }
     var ext = esExterno(p);
     return '<a class="btn btn-solid ' + (clase || '') + '" href="' + esc(url) + '"' +
       (ext ? ' target="_blank" rel="noopener"' : ' download') +
       ' data-action="download" aria-label="Descargar PDF de ' + esc(p.titulo) + '">' +
-      ICON_DL + ' ' + (ext ? 'Descargar (externo)' : 'Descargar PDF') + '</a>';
+      ICON_DL + ' Descargar</a>';
   }
 
   function botonCompra(p, clase) {
