@@ -193,11 +193,14 @@
   }
 
   /* Portada generada en Xilografía: papel crudo, doble marco, título en
-     bloque y barra de acento. La colección decide el acento: Historia =
-     azul tinta, Praxis = bermellón. */
-  var PALETA_PORTADA = { papel: '#ede6d4', tinta: '#17150f', hist: '#22364a', praxis: '#b5342a' };
+     bloque y barra de acento. La colección invierte los dos acentos:
+     Praxis = barra bermellón en el título y etiqueta negra en el autor;
+     Historia = barra negra en el título y etiqueta bermellón en el autor. */
+  var PALETA_PORTADA = { papel: '#ede6d4', tinta: '#17150f', rojo: '#b5342a' };
 
-  function acentoPortada(p) { return p.coleccion === 'historia' ? PALETA_PORTADA.hist : PALETA_PORTADA.praxis; }
+  function acentoPortada(p) { return p.coleccion === 'historia' ? PALETA_PORTADA.tinta : PALETA_PORTADA.rojo; }
+
+  function etiquetaPortada(p) { return p.coleccion === 'historia' ? PALETA_PORTADA.rojo : PALETA_PORTADA.tinta; }
 
   function ariaPortada(p, label) {
     if (!label) return 'aria-hidden="true"';
@@ -214,8 +217,8 @@
     }).join('');
     var autor = p.autor.toUpperCase();
     if (autor.length > 30) autor = autor.slice(0, 29).trim() + '…';
-    /* Etiqueta negra centrada al pie: ancha, con aire a los costados,
-       y levantada del marco inferior. El autor va centrado dentro. */
+    /* Etiqueta al pie centrada: negra en Praxis, bermellón en Historia,
+       ancha, con aire a los costados y levantada del marco inferior. */
     return '<svg viewBox="0 0 300 420" xmlns="http://www.w3.org/2000/svg" ' + ariaPortada(p, label) + '>' +
       '<rect width="300" height="420" fill="' + pal.papel + '"/>' +
       '<rect x="12" y="12" width="276" height="396" fill="none" stroke="' + pal.tinta + '" stroke-width="2"/>' +
@@ -223,7 +226,7 @@
       /* Barra de acento de alto fijo: el mismo de la portada de título largo. */
       '<rect x="19" y="88" width="7" height="132" fill="' + ac + '"/>' +
       txt +
-      '<rect x="32" y="362" width="236" height="26" fill="' + pal.tinta + '"/>' +
+      '<rect x="32" y="362" width="236" height="26" fill="' + etiquetaPortada(p) + '"/>' +
       '<text x="150" y="379" text-anchor="middle" font-family="Courier New,monospace" font-size="9" letter-spacing="1.6" fill="' + pal.papel + '">' +
       esc(autor) + '</text>' +
       '</svg>';
