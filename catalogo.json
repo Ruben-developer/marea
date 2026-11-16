@@ -31,5 +31,27 @@
     "stock": 0,
     "destacado": true,
     "id": "m-067"
+  },
+  {
+    "titulo": "Kotoku, Osugi, Yamaga: tres anarquistas japoneses",
+    "autor": "Víctor García",
+    "coleccion": "historia",
+    "paginas": 44,
+    "sinopsis": "Tres retratos del anarquismo japonés a través de Kotoku Shusui, Osugi Sakae y Yamaga Taiji, militantes que compartieron la persecución del Estado y la tarea de traducir y difundir las ideas libertarias en el Extremo Oriente. El recorrido va desde la llegada de Kropotkin y Bakunin al japonés —Kotoku tradujo La conquista del pan en 1908— hasta su ejecución, el 24 de enero de 1911, tras la represión que desarticuló al movimiento.\n\nEl libro sigue después la figura de Osugi, asesinado en 1923 junto a Ito Noe, y cierra con Yamaga, el militante que sobrevivió a la persecución y tendió puentes entre el anarquismo japonés y los movimientos libertarios del resto del mundo. Publicado originalmente en la revista RUTA, combina biografía, historia política y memoria del martirologio anarquista nipón.",
+    "archivo": "kotoku-osugi-yamaga-tres-anarquistas-japoneses.pdf",
+    "stock": 0,
+    "destacado": false,
+    "id": "m-070"
+  },
+  {
+    "titulo": "Los mártires de Tokio y la sociedad de la guillotina",
+    "autor": "Li Pei-Kan",
+    "coleccion": "historia",
+    "paginas": 20,
+    "sinopsis": "Li Pei-Kan, uno de los anarquistas chinos más lúcidos de su generación, reconstruye la historia de la Sociedad de la Guillotina (Girochinsha), grupo ilegalista fundado en Japón en 1922. El relato arranca con el ascenso del movimiento tras las protestas del arroz de 1918 y llega al punto de quiebre: la cacería de anarquistas desatada con el terremoto de 1923, el asesinato de Osugi Sakae, Ito Noe y su sobrino, y la represión que siguió.\n\nA partir de ahí, el texto sigue a quienes intentaron vengar esas muertes, su detención, el proceso y la sentencia, y se detiene en las cartas y los últimos días de los condenados. Escrito desde la mirada de un militante chino que rechazaba toda alianza con el Guomindang, es a la vez crónica, denuncia y homenaje a los mártires de Tokio.",
+    "archivo": "los-martires-de-tokio-y-la-sociedad-de-la-guillotina.pdf",
+    "stock": 0,
+    "destacado": false,
+    "id": "m-071"
   }
 ]
