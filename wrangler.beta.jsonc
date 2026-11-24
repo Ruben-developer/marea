@@ -1,11 +1,28 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "marea-beta",
+  "main": "worker/index.js",
   "compatibility_date": "2026-11-05",
   "assets": {
     "directory": "./dist",
-    "not_found_handling": "single-page-application"
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/pdfs/*", "/api/*"]
   },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "DESCARGAS",
+        "class_name": "DownloadCounter"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["DownloadCounter"]
+    }
+  ],
   "routes": [
     {
       "pattern": "marea-beta.antarquia.cl",

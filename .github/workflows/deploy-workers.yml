@@ -40,3 +40,15 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy --config wrangler.jsonc
+
+      - name: Configurar token del contador
+        env:
+          DESCARGAS_TOKEN: ${{ secrets.DESCARGAS_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -z "$DESCARGAS_TOKEN" ]; then
+            echo "DESCARGAS_TOKEN no configurado; se omite el token del contador."
+            exit 0
+          fi
+          printf '%s' "$DESCARGAS_TOKEN" | npx wrangler secret put ADMIN_TOKEN --config wrangler.jsonc
