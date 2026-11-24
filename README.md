@@ -103,6 +103,66 @@ Las tarjetas y la ficha muestran siempre los dos botones, con los textos
 mismo sitio, en local y en `marea.antarquia.cl`. Si algún día se externalizan,
 basta cambiar la base por una URL absoluta en `config.js`.
 
+## Contador privado de descargas
+
+Cada descarga completa de un PDF se cuenta en un Durable Object de Cloudflare,
+sin cookies, sin IPs y sin servicios de terceros. El contador empieza en cero
+en el primer despliegue y conserva el total entre despliegues. Guarda:
+
+- total histórico por archivo;
+- detalle diario (se consultan hasta 365 días).
+
+No hay contador visible en el sitio. La consulta es un JSON privado en
+`/api/descargas`, protegido con un token Bearer (`ADMIN_TOKEN`). Sin token
+responde 401; el endpoint no se enlaza desde ninguna página y `robots.txt`
+lo excluye.
+
+### Configurar el token
+
+El token debe ser largo (32 bytes o más) y se guarda como secreto del Worker,
+nunca en el repositorio:
+
+```bash
+openssl rand -hex 32 > ~/.config/antarquia/marea-descargas.token
+chmod 600 ~/.config/antarquia/marea-descargas.token
+
+npx wrangler secret put ADMIN_TOKEN --config wrangler.beta.jsonc
+npx wrangler secret put ADMIN_TOKEN --config wrangler.jsonc
+```
+
+Para beta y producción se puede usar el mismo token o dos distintos. En GitHub
+Actions, el secreto `DESCARGAS_TOKEN` se carga como `ADMIN_TOKEN` en cada
+despliegue (ver `deploy-beta.yml` y `deploy-workers.yml`).
+### Consultar
+
+```bash
+scripts/descargas.sh          # tabla de totales
+scripts/descargas.sh --csv    # CSV para planilla
+```
+
+El script lee el token de `MAREA_DESCARGAS_TOKEN` o de
+`~/.config/antarquia/marea-descargas.token`. También se puede consultar a mano:
+
+```bash
+curl -H "Authorization: Bearer $TOKEN" \
+  "https://marea.antarquia.cl/api/descargas?days=30"
+```
+
+Para beta, cambiar la base:
+
+```bash
+MAREA_BASE=https://marea-beta.antarquia.cl scripts/descargas.sh
+```
+
+### Qué cuenta y qué no
+
+- Cuenta: `GET` completos de un `.pdf` servido con estado 200.
+- No cuenta: `HEAD`, peticiones `Range` (visor de PDF, reanudaciones), errores
+  y bots conocidos.
+- Puede inflarse con descargas automatizadas que no se identifiquen como bot.
+- Al ser un contador de servidor, no distingue si la persona terminó de leer el
+  archivo: cuenta la entrega completa del PDF.
+
 ## Carrito
 
 No hay backend ni pago en línea. «Armar pedido» genera un resumen y abre el cliente
