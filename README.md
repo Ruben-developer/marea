@@ -114,8 +114,7 @@ en el primer despliegue y conserva el total entre despliegues. Guarda:
 
 No hay contador visible en el sitio. La consulta es un JSON privado en
 `/api/descargas`, protegido con un token Bearer (`ADMIN_TOKEN`). Sin token
-responde 401; el endpoint no se enlaza desde ninguna página y `robots.txt`
-lo excluye.
+responde 401 y el endpoint no se enlaza desde ninguna página.
 
 ### Configurar el token
 
