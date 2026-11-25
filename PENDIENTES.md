@@ -10,18 +10,20 @@ Sitio de la editorial libertaria Marea. Dominio final: `marea.antarquia.cl`.
 ## 1. Catálogo (estado real)
 
 El inventario completo de `MAREA.xlsx` tiene **67 fichas** (29 Historia / 38
-Praxis), 32 con stock y 1 con PDF propio. Por pedido, `catalogo.json` quedó
-**reducido a 2 fichas de muestra**: `m-001` *Ai Ferri Corti* y `m-067` *La
-anarquía desde el punto de vista de un cristiano* (la única con PDF). Las otras
-65 se recuperan de la planilla o del historial de git.
+Praxis). Por ahora `catalogo.json` tiene **21 fichas**, todas con PDF propio y
+en estado «solo digital»: los 21 cuadernillos revisados de `Textos Listos`.
+Las restantes se recuperan de la planilla o del historial de git.
 
 Lo que falta verificar o completar:
 
-- [ ] **Clasificación Historia/Praxis**: es provisional. La planilla no trae colección;
-      se asignó por tema (teoría y organización → Praxis; episodios y biografías → Historia).
-      Revisar una por una con la editorial.
-- [ ] **Año y sinopsis**: hoy van `null` / vacíos. Hay que escribirlos.
-- [ ] **Precio y stock**: salen de la planilla y pueden estar desactualizados.
+- [x] **Sinopsis**: escritas a partir de los resúmenes de la editorial
+      (`Textos Listos/Resumen`). *La Biblia, fuente de anarquía* se redactó
+      desde su propia introducción.
+- [ ] **Clasificación Historia/Praxis**: sigue las hojas de `MAREA.xlsx` y el
+      `Cerebro/colecciones.md`. Revisar una por una con la editorial.
+- [ ] **Año**: hoy va `null` en todas.
+- [ ] **Precio y stock**: todas quedaron sin precio y con stock 0. Cargarlos
+      cuando haya impresión disponible.
 - [ ] **Restaurar el catálogo completo**: si se retoma el inventario de 67, recuperar
       las fichas desde `MAREA.xlsx` o el commit anterior a la reducción.
 - [ ] **Portadas reales**: las fichas usan portada SVG generada. Descargar las
@@ -31,14 +33,15 @@ Lo que falta verificar o completar:
 - [ ] **«Contra los jueces»**: la planilla dice 180 páginas y $2.000; parece un libro,
       no un cuadernillo. Confirmar.
 
-## 2. PDFs (servidor aún inexistente)
+## 2. PDFs
 
-Hoy solo hay un PDF de muestra: `pdfs/la-anarquia-desde-el-punto-de-vista-de-un-cristiano.pdf`.
+Los 21 cuadernillos están en `pdfs/`, servidos desde el mismo sitio. El
+contador privado de descargas los registra en `/api/descargas`.
 
-- [ ] Definir dónde vivirán los PDFs (mismo sitio o servidor aparte).
-- [ ] Subirlos y rellenar `archivo` en cada ficha.
-- [ ] Si se rehospedan desde Mega, mantener `enlace` como respaldo mientras se migra.
-- [ ] Confirmar peso y licencia de cada texto antes de publicarlo.
+- [x] Definir dónde viven los PDFs (mismo sitio, `pdfs/`).
+- [x] Subirlos y rellenar `archivo` en cada ficha.
+- [ ] **Licencias**: confirmar la de cada texto antes de difundirlo fuera del sitio.
+- [ ] **Portadas reales**: hoy se genera una portada SVG por ficha.
 
 ## 3. Contenido del WordPress viejo
 
