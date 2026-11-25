@@ -17,7 +17,7 @@
     "titulo": "Contra el Dios Emperador",
     "autor": "Stefan Anarkowic",
     "coleccion": "historia",
-    "paginas": 37,
+    "paginas": 36,
     "sinopsis": "«Contra el Dios Emperador» reconstruye el Caso de Alta Traición (Taigyaku Jiken), la operación con que el Estado japonés desmanteló el movimiento anarquista y socialista en 1910-1911. Stefan Anarkowic sigue la fabricación del complot, los arrestos, las torturas, el proceso y las ejecuciones —veintiséis acusados, veinticuatro condenas a muerte, doce ahorcados, entre ellos Kōtoku Shūsui y Kanno Sugako— y los inserta en una historia más larga: la construcción del mito imperial, la censura, la carta abierta que los anarquistas clavaron en el consulado de Japón en San Francisco y el «invierno del socialismo» que siguió a la matanza.\n\nEl libro no es solo una crónica judicial. Usa Japón como mirada oblicua sobre los métodos universales del poder —la policía, la justicia de excepción, la tortura, el uso del miedo— y sobre la capacidad del Estado para convertir una amenaza imaginaria en una matanza legal. Con documentos y testimonios del proceso, Anarkowic muestra cómo un puñado de militantes fue transformado en enemigo público y cómo el imperio necesitó ejecutar a sus propios súbditos para seguir siendo sagrado.",
     "portada": null,
     "archivo": "contra-el-dios-emperador-stefan-anarkowic.pdf",
@@ -121,20 +121,6 @@
     "stock": 0,
     "destacado": false,
     "id": "m-077"
-  },
-  {
-    "titulo": "Las prisiones",
-    "autor": "Piotr Kropotkin",
-    "coleccion": "historia",
-    "paginas": 36,
-    "sinopsis": "«Las prisiones» es una conferencia de Piotr Kropotkin (1842-1921) sobre el sistema penal, publicada en cuatro partes precedidas de una introducción. Kropotkin parte de una constatación: la justicia y el castigo fueron el instrumento principal de la constitución de todos los poderes, y la cárcel es su fundamento más sólido. A partir de ahí examina el costo económico de las prisiones —ciento cincuenta mil personas encarceladas cada año solo en Francia—, la lógica de la reclusión celular, los testimonios de los presos que no reconocen la justicia de su condena y los efectos del encierro sobre el cuerpo y la mente.\n\nEl texto discute las teorías criminológicas de su época, en especial la del criminal nato de Lombroso, y sostiene que la mayor parte de los delitos tiene causas sociales: miseria, ignorancia, enfermedad, abandono. Su conclusión no es reformar la prisión sino abolirla, sustituir el castigo por la prevención y el trato fraternal, y reconocer que ninguna privación de libertad puede mejorar a un ser humano. Es una pieza de propaganda y de análisis, escrita para ser leída en voz alta.",
-    "portada": null,
-    "archivo": "las-prisiones-piotr-kropotkin.pdf",
-    "enlace": null,
-    "precio": null,
-    "stock": 0,
-    "destacado": false,
-    "id": "m-078"
   },
   {
     "titulo": "Los mártires de Tokio",
@@ -255,6 +241,20 @@
     "stock": 0,
     "destacado": false,
     "id": "m-085"
+  },
+  {
+    "titulo": "Las prisiones",
+    "autor": "Piotr Kropotkin",
+    "coleccion": "praxis",
+    "paginas": 36,
+    "sinopsis": "«Las prisiones» es una conferencia de Piotr Kropotkin (1842-1921) sobre el sistema penal, publicada en cuatro partes precedidas de una introducción. Kropotkin parte de una constatación: la justicia y el castigo fueron el instrumento principal de la constitución de todos los poderes, y la cárcel es su fundamento más sólido. A partir de ahí examina el costo económico de las prisiones —ciento cincuenta mil personas encarceladas cada año solo en Francia—, la lógica de la reclusión celular, los testimonios de los presos que no reconocen la justicia de su condena y los efectos del encierro sobre el cuerpo y la mente.\n\nEl texto discute las teorías criminológicas de su época, en especial la del criminal nato de Lombroso, y sostiene que la mayor parte de los delitos tiene causas sociales: miseria, ignorancia, enfermedad, abandono. Su conclusión no es reformar la prisión sino abolirla, sustituir el castigo por la prevención y el trato fraternal, y reconocer que ninguna privación de libertad puede mejorar a un ser humano. Es una pieza de propaganda y de análisis, escrita para ser leída en voz alta.",
+    "portada": null,
+    "archivo": "las-prisiones-piotr-kropotkin.pdf",
+    "enlace": null,
+    "precio": null,
+    "stock": 0,
+    "destacado": false,
+    "id": "m-078"
   },
   {
     "titulo": "Patriotismo y Gobierno",
