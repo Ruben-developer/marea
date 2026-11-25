@@ -32,7 +32,9 @@ jobs:
         run: node scripts/validar.mjs
 
       - name: Revisar sintaxis del JavaScript
-        run: node --check app.js
+        run: |
+          node --check app.js
+          node --check worker/index.js
 
       - name: Validar HTML
         run: npx --yes html-validate@9 index.html
