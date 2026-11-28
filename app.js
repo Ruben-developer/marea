@@ -193,13 +193,13 @@
 
   /* Portada generada en Xilografía: papel crudo, doble marco, título en
      bloque y barra de acento. La colección invierte los dos acentos:
-     Praxis = barra bermellón en el título y etiqueta negra en el autor;
-     Historia = barra negra en el título y etiqueta bermellón en el autor. */
+     Historia = barra bermellón en el título y etiqueta negra en el autor;
+     Praxis = barra negra en el título y etiqueta bermellón en el autor. */
   var PALETA_PORTADA = { papel: '#ede6d4', tinta: '#17150f', rojo: '#b5342a' };
 
-  function acentoPortada(p) { return p.coleccion === 'historia' ? PALETA_PORTADA.tinta : PALETA_PORTADA.rojo; }
+  function acentoPortada(p) { return p.coleccion === 'historia' ? PALETA_PORTADA.rojo : PALETA_PORTADA.tinta; }
 
-  function etiquetaPortada(p) { return p.coleccion === 'historia' ? PALETA_PORTADA.rojo : PALETA_PORTADA.tinta; }
+  function etiquetaPortada(p) { return p.coleccion === 'historia' ? PALETA_PORTADA.tinta : PALETA_PORTADA.rojo; }
 
   function ariaPortada(p, label) {
     if (!label) return 'aria-hidden="true"';
@@ -216,7 +216,7 @@
     }).join('');
     var autor = p.autor.toUpperCase();
     if (autor.length > 30) autor = autor.slice(0, 29).trim() + '…';
-    /* Etiqueta al pie centrada: negra en Praxis, bermellón en Historia,
+    /* Etiqueta al pie centrada: negra en Historia, bermellón en Praxis,
        ancha, con aire a los costados y levantada del marco inferior. */
     return '<svg viewBox="0 0 300 420" xmlns="http://www.w3.org/2000/svg" ' + ariaPortada(p, label) + '>' +
       '<rect width="300" height="420" fill="' + pal.papel + '"/>' +
