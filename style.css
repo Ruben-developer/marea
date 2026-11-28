@@ -6,6 +6,20 @@
    Sin texturas, sin tramas, sin degradados, sin sombras.
    ========================================================= */
 
+/* Tipografías de las portadas impresas: Liberation Serif para el título y
+   Liberation Sans para el autor (Liberation 2.1.5, SIL OFL 1.1). Se incrustan
+   para que las portadas generadas se vean igual en cualquier dispositivo. */
+@font-face{
+  font-family:"Liberation Serif";
+  src:url("assets/fonts/LiberationSerif-Bold.woff2") format("woff2");
+  font-weight:700; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:"Liberation Sans";
+  src:url("assets/fonts/LiberationSans-Regular.woff2") format("woff2");
+  font-weight:400; font-style:normal; font-display:swap;
+}
+
 :root{
   --bg:#e9e1cd; --bg2:#f4eddc; --ink:#17150f; --ink2:#4a4437; --line:#c3b795;
   --acento:#b5342a; --red:#b5342a; --redtxt:#8e231b; --on-acento:#f7f1e3;
