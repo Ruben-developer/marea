@@ -194,7 +194,9 @@
   /* Portada generada en Xilografía: papel crudo, doble marco, título en
      bloque y barra de acento. La colección invierte los dos acentos:
      Historia = barra bermellón en el título y etiqueta negra en el autor;
-     Praxis = barra negra en el título y etiqueta bermellón en el autor. */
+     Praxis = barra negra en el título y etiqueta bermellón en el autor.
+     Título en Liberation Serif y autor en Liberation Sans, las tipografías
+     de las portadas impresas (se cargan con @font-face desde assets/fonts). */
   var PALETA_PORTADA = { papel: '#ede6d4', tinta: '#17150f', rojo: '#b5342a' };
 
   function acentoPortada(p) { return p.coleccion === 'historia' ? PALETA_PORTADA.rojo : PALETA_PORTADA.tinta; }
@@ -211,7 +213,7 @@
     var aj = ajustarTitulo(p.titulo, 215, 118, [30, 26, 22, 19, 16, 14, 13, 12]);
     var fs = aj.fs, lines = aj.lines, y = 104, salto = fs + 8;
     var txt = lines.map(function (l, k) {
-      return '<text x="32" y="' + (y + fs + k * salto) + '" font-family="Georgia,serif" font-size="' + fs +
+      return '<text x="32" y="' + (y + fs + k * salto) + '" font-family="Liberation Serif,Georgia,serif" font-size="' + fs +
         '" font-weight="700" letter-spacing="-0.4" fill="' + pal.tinta + '">' + esc(String(l).toUpperCase()) + '</text>';
     }).join('');
     var autor = p.autor.toUpperCase();
@@ -226,7 +228,7 @@
       '<rect x="19" y="88" width="7" height="132" fill="' + ac + '"/>' +
       txt +
       '<rect x="32" y="362" width="236" height="26" fill="' + etiquetaPortada(p) + '"/>' +
-      '<text x="150" y="379" text-anchor="middle" font-family="Courier New,monospace" font-size="9" letter-spacing="1.6" fill="' + pal.papel + '">' +
+      '<text x="150" y="379" text-anchor="middle" font-family="Liberation Sans,Arial,sans-serif" font-size="9" letter-spacing="1.6" fill="' + pal.papel + '">' +
       esc(autor) + '</text>' +
       '</svg>';
   }
